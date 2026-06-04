@@ -1,0 +1,21 @@
+# Node / frontend tooling — NOT shipped.
+# No trailing slash: node_modules here is a symlink, and `node_modules/` would
+# only match a real directory, letting the symlink slip into the commit.
+node_modules
+*.tsbuildinfo
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+.mypy_cache/
+
+# Editor / OS
+.vscode/
+.DS_Store
+
+# NOTE: js/ IS committed on purpose. ComfyUI serves the built frontend
+# directly — users install by `git clone` / ComfyUI Manager and never run a
+# build, so the compiled js/main.js must ship in the repo. Rebuild with
+# `npm run build` after changing anything under src/.
