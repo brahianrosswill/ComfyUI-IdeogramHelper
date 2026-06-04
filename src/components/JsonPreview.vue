@@ -62,7 +62,7 @@ const parseError = computed(() => {
 
 async function copy() {
   try {
-    await navigator.clipboard.writeText(result.value.json)
+    await navigator.clipboard.writeText(result.value.pretty)
     copied.value = true
     setTimeout(() => (copied.value = false), 1200)
   } catch {
