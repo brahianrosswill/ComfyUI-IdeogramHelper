@@ -223,3 +223,51 @@ export function serialize(state: CaptionState): { json: string; pretty: string; 
     warnings,
   }
 }
+
+// Parse an Ideogram caption object back into editor-shaped pieces. Editor-only
+// metadata that the caption doesn't carry (ids, box colors, enabled, links) is
+// regenerated. Returns just the content fields — width/height/overlay are left
+// to the caller so importing a caption doesn't clobber the chosen format.
+export function captionToState(
+  obj: any,
+): Pick<CaptionState, 'high_level_description' | 'style' | 'background' | 'elements'> {
+  const hld = typeof obj?.high_level_description === 'string' ? obj.high_level_description : ''
+
+  const style = emptyStyle()
+  const sd = obj?.style_description
+  if (sd && typeof sd === 'object') {
+    style.enabled = true
+    style.aesthetics = typeof sd.aesthetics === 'string' ? sd.aesthetics : ''
+    style.lighting = typeof sd.lighting === 'string' ? sd.lighting : ''
+    style.medium = typeof sd.medium === 'string' ? sd.medium : ''
+    if (typeof sd.photo === 'string' && sd.photo.trim()) {
+      style.mode = 'photo'
+      style.photo = sd.photo
+    } else if (typeof sd.art_style === 'string' && sd.art_style.trim()) {
+      style.mode = 'art'
+      style.art_style = sd.art_style
+    }
+    if (Array.isArray(sd.color_palette)) style.color_palette = sd.color_palette.map(String)
+  } else {
+    style.enabled = false
+  }
+
+  const comp = obj?.compositional_deconstruction ?? {}
+  const background = typeof comp.background === 'string' ? comp.background : ''
+  const clamp = (v: number) => Math.max(0, Math.min(1000, Math.round(Number(v) || 0)))
+  const rawElements = Array.isArray(comp.elements) ? comp.elements : []
+  const elements: CaptionElement[] = rawElements.map((el: any) => {
+    const type: ElementType = el?.type === 'text' ? 'text' : 'obj'
+    const bbox =
+      Array.isArray(el?.bbox) && el.bbox.length === 4
+        ? (el.bbox.map(clamp) as [number, number, number, number])
+        : null
+    const e = newElement(type, bbox)
+    e.desc = typeof el?.desc === 'string' ? el.desc : ''
+    e.text = typeof el?.text === 'string' ? el.text : ''
+    if (Array.isArray(el?.color_palette)) e.color_palette = el.color_palette.map(String)
+    return e
+  })
+
+  return { high_level_description: hld, style, background, elements }
+}
