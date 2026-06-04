@@ -41,13 +41,13 @@ const store = useStudioStore()
 </script>
 
 <style scoped>
-.ellist { display: flex; flex-direction: column; gap: 6px; }
+.ellist { display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto; min-height: 0; }
 .head { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #ccc; }
 .adds { display: flex; gap: 4px; }
 .adds button { border: none; border-radius: 4px; padding: 3px 8px; font-size: 11px; cursor: pointer; color: #fff; }
 .adds .obj { background: #3b82f6; }
 .adds .text { background: #f59e0b; color: #1a1a1a; }
-ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; max-height: 180px; overflow-y: auto; }
+ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; flex: 1 1 auto; min-height: 80px; overflow-y: auto; }
 li {
   display: flex; align-items: center; gap: 6px; padding: 4px 6px; border-radius: 5px;
   background: #232329; border: 1px solid transparent; cursor: pointer; font-size: 12px; color: #ddd;

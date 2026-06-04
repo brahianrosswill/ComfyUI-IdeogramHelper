@@ -123,7 +123,8 @@ onMounted(() => {
 .studio {
   display: flex; flex-direction: column; gap: 9px; padding: 10px;
   font-family: -apple-system, system-ui, sans-serif; color: #e5e5ea;
-  background: #1a1a1f; border-radius: 8px; box-sizing: border-box; width: 100%;
+  background: #1a1a1f; border-radius: 8px; box-sizing: border-box;
+  width: 100%; min-height: 100%; /* fill the node so the layout grows to fit */
 }
 .topbar { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .title { font-size: 14px; font-weight: 700; letter-spacing: .3px; white-space: nowrap; }
@@ -146,9 +147,14 @@ onMounted(() => {
   background: #15151a; border: 1px solid #3a3a44; color: #eee; border-radius: 6px;
   padding: 7px; font-size: 12px; resize: vertical; font-family: inherit; line-height: 1.4;
 }
-.main { display: grid; grid-template-columns: minmax(280px, 1.4fr) minmax(220px, 1fr); gap: 12px; align-items: start; }
-.left { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.right { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+/* flex:1 → the canvas/list area soaks up spare node height; align-items:stretch
+   makes both columns equal height so the right column no longer floats. */
+.main { display: grid; grid-template-columns: minmax(280px, 1.4fr) minmax(220px, 1fr); gap: 12px; align-items: stretch; flex: 1 1 auto; min-height: 0; }
+/* left keeps its natural height (canvas + a normal, resizable background);
+   only the right column stretches, so the elements LIST is what grows to fill
+   the node — the background stays a normal, drag-to-resize textarea. */
+.left { display: flex; flex-direction: column; gap: 8px; min-width: 0; align-self: start; }
+.right { display: flex; flex-direction: column; gap: 8px; min-width: 0; min-height: 0; }
 hr { border: none; border-top: 1px solid #2e2e36; width: 100%; margin: 2px 0; }
 @media (max-width: 520px) { .main { grid-template-columns: 1fr; } }
 </style>
