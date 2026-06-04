@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=70.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "comfyui_ideogramhelper"
+version = "0.1.0"
+description = "Visual studio for composing Ideogram 4 structured JSON box prompts in ComfyUI"
+authors = [
+  {name = "Henry Lee", email = "contact@nynxz.com"}
+]
+readme = "README.md"
+license = {text = "GNU General Public License v3"}
+requires-python = ">=3.10"
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/nynxz/ComfyUI-IdeogramHelper"
+
+[tool.comfy]
+PublisherId = "nynxz"
+DisplayName = "ComfyUI Ideogram Helper"
+Icon = ""
+Tags = ["ideogram", "prompt", "json", "studio"]
+Repository = "https://github.com/nynxz/ComfyUI-IdeogramHelper"
+includes = ["js"]
+
+[tool.setuptools.package-data]
+"*" = ["*.*"]
