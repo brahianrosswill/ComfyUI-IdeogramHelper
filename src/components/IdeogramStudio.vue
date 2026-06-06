@@ -298,8 +298,11 @@ onMounted(() => {
 /* grow to fill a tall node, but never shrink below content (shrink:0) — on a
    small node the studio scrolls rather than squeezing/clipping the canvas. */
 /* sidebar is capped so the canvas column soaks up the rest — much better for
-   wide/landscape canvases (and you can drag the node wider to grow it more). */
-.main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 300px); gap: 12px; align-items: stretch; flex: 1 0 auto; }
+   wide/landscape canvases (and you can drag the node wider to grow it more).
+   flex:0 0 auto (natural height, no grow) so this row's height depends only on
+   its own columns — toggling the editor / JSON card BELOW it can't resize it,
+   which kept the centered canvas jumping up/down. */
+.main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 300px); gap: 12px; align-items: stretch; flex: 0 0 auto; }
 /* center the canvas vertically so spare height splits above/below it instead
    of pooling under it when the elements list makes the right column taller */
 .left { display: flex; flex-direction: column; gap: 8px; min-width: 0; align-self: center; }
