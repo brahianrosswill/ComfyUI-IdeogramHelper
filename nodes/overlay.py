@@ -73,6 +73,28 @@ def _fit_font(text: str, max_w: int, max_h: int, bold: bool, start: int):
     return _load_font(8, bold=bold)
 
 
+def _wrap(draw, text, font, max_w):
+    """Greedy word-wrap to a pixel width; breaks over-long words by character."""
+    lines = []
+    for word in text.split():
+        if lines and draw.textlength(lines[-1] + " " + word, font=font) <= max_w:
+            lines[-1] += " " + word
+        elif draw.textlength(word, font=font) <= max_w:
+            lines.append(word)
+        else:
+            cur = ""
+            for ch in word:
+                if draw.textlength(cur + ch, font=font) <= max_w:
+                    cur += ch
+                else:
+                    if cur:
+                        lines.append(cur)
+                    cur = ch
+            if cur:
+                lines.append(cur)
+    return lines
+
+
 def render_overlay(
     items,
     width: int,
@@ -82,6 +104,7 @@ def render_overlay(
     label_size: int = 16,
     show_index: bool = True,
     show_text: bool = True,
+    global_palette=None,
 ):
     """Render draw-items into (IMAGE [1,H,W,3], MASK [1,H,W]), both float 0..1.
 
@@ -131,40 +154,81 @@ def render_overlay(
     for s in specs:
         draw.rectangle(s["rect"], outline=s["color"] + (255,), width=line_width)
 
-    # Pass 3 — literal text + labels on top.
+    # Pass 3 — index badge, wrapped description, and palette swatches, inside each box.
+    body_font = _load_font(max(9, label_size - 1))
+    body_lh = (body_font.getbbox("Ay")[3] - body_font.getbbox("Ay")[1]) + 3
     for s in specs:
         el, etype, color = s["el"], s["etype"], s["color"]
         px0, py0, px1, py1 = s["rect"]
         bw, bh = s["bw"], s["bh"]
         label_fg = (26, 26, 26, 255) if _luminance(color) > 150 else (255, 255, 255, 255)
+        pad = max(3, int(line_width) + 1)
+        inner_w = bw - 2 * pad
 
-        if show_text and etype == "text":
-            literal = (el.get("text") or "").strip()
-            if literal and bw > 12 and bh > 12:
-                font = _fit_font(literal.replace("\n", " "), int(bw * 0.92), int(bh * 0.7), True, int(bh * 0.6))
-                tb = draw.multiline_textbbox((0, 0), literal, font=font, align="center")
-                tw = tb[2] - tb[0]
-                th = tb[3] - tb[1]
-                tx = px0 + (bw - tw) / 2 - tb[0]
-                ty = py0 + (bh - th) / 2 - tb[1]
-                draw.multiline_text((tx, ty), literal, font=font, fill=(255, 255, 255, 255),
-                                    align="center", stroke_width=max(1, line_width - 1), stroke_fill=(0, 0, 0, 200))
+        # palette swatches reserved at the bottom
+        palette = [hex_to_rgb(h, (128, 128, 128)) for h in (el.get("palette") or [])][:8]
+        sw_size = 0
+        if palette and inner_w > 10:
+            sw_size = max(6, min(16, int(inner_w / len(palette)) - 2))
 
+        # index badge (top-left, inside the box)
+        header_h = 0
         if show_index:
-            snippet = el.get("text") if etype == "text" else el.get("desc")
-            snippet = (snippet or etype).strip().replace("\n", " ")
-            if len(snippet) > 28:
-                snippet = snippet[:27] + "…"
-            label = f"{s['i'] + 1} {snippet}" if snippet else str(s["i"] + 1)
-            lb = label_font.getbbox(label)
-            lw = lb[2] - lb[0]
-            lh = lb[3] - lb[1]
-            pad = 3
-            bar_h = lh + pad * 2
-            by = py0 - bar_h if py0 - bar_h >= 0 else py0
-            # translucent bar so overlapping boxes still peek through under labels
-            draw.rectangle([px0, by, px0 + lw + pad * 2, by + bar_h], fill=color + (210,))
-            draw.text((px0 + pad, by + pad - lb[1]), label, font=label_font, fill=label_fg)
+            num = str(s["i"] + 1)
+            nb = label_font.getbbox(num)
+            nw, nh = nb[2] - nb[0], nb[3] - nb[1]
+            draw.rectangle([px0, py0, px0 + nw + 7, py0 + nh + 5], fill=color + (225,))
+            draw.text((px0 + 4, py0 + 3 - nb[1]), num, font=label_font, fill=label_fg)
+            header_h = nh + 5
+
+        # wrapped description body (literal text first for text-elements)
+        if show_text and inner_w > 12:
+            parts = []
+            if etype == "text":
+                lit = (el.get("text") or "").strip()
+                if lit:
+                    parts.append("“" + lit + "”")
+            desc = (el.get("desc") or "").strip()
+            if desc:
+                parts.append(desc)
+            lines = []
+            for para in "\n".join(parts).split("\n"):
+                if para:
+                    lines += _wrap(draw, para, body_font, inner_w)
+            top = py0 + header_h + 2
+            bottom = py1 - pad - (sw_size + pad if sw_size else 0)
+            y = top
+            for ln in lines:
+                if y + body_lh > bottom:
+                    break
+                draw.text((px0 + pad, y), ln, font=body_font, fill=(255, 255, 255, 255),
+                          stroke_width=2, stroke_fill=(0, 0, 0, 210))
+                y += body_lh
+
+        # palette swatches along the bottom
+        if sw_size:
+            sx = px0 + pad
+            sy = py1 - pad - sw_size
+            for col in palette:
+                if sx + sw_size > px1 - pad:
+                    break
+                draw.rectangle([sx, sy, sx + sw_size, sy + sw_size], fill=col + (255,), outline=(255, 255, 255, 220))
+                sx += sw_size + 2
+
+    # Global (image-wide) palette in the bottom-left corner.
+    gcols = [hex_to_rgb(h, None) for h in (global_palette or [])]
+    gcols = [c for c in gcols if c][:16]
+    if gcols:
+        gsw = max(12, min(30, width // 36))
+        ggap = max(2, gsw // 6)
+        gpad = max(8, line_width * 2)
+        gx = gpad
+        gy = height - gpad - gsw
+        for c in gcols:
+            if gx + gsw > width - gpad:
+                break
+            draw.rectangle([gx, gy, gx + gsw, gy + gsw], fill=c + (255,), outline=(255, 255, 255, 235), width=2)
+            gx += gsw + ggap
 
     arr = np.asarray(img).astype(np.float32) / 255.0  # H, W, 4
     rgb = np.ascontiguousarray(arr[..., :3])

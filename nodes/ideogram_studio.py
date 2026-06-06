@@ -18,6 +18,7 @@ import json
 
 from .caption import serialize_caption
 from .overlay import render_overlay, hex_to_rgb, OBJ_COLOR, TEXT_COLOR
+from .overrides import apply_override
 
 
 def _draw_items(studio_state, caption_data):
@@ -36,13 +37,15 @@ def _draw_items(studio_state, caption_data):
                 "text": el.get("text", ""),
                 "desc": el.get("desc", ""),
                 "color": hex_to_rgb(el.get("boxColor"), default),
+                "palette": el.get("color_palette") or [],
             })
         return items
     comp = (caption_data or {}).get("compositional_deconstruction", {}) or {}
     return [
         {"bbox": el.get("bbox"), "type": el.get("type", "obj"),
          "text": el.get("text", ""), "desc": el.get("desc", ""),
-         "color": TEXT_COLOR if el.get("type") == "text" else OBJ_COLOR}
+         "color": TEXT_COLOR if el.get("type") == "text" else OBJ_COLOR,
+         "palette": el.get("color_palette") or []}
         for el in (comp.get("elements") or [])
     ]
 
@@ -70,16 +73,21 @@ class IdeogramStudio:
             "required": {
                 "studio": ("IDEOGRAM_STUDIO", {}),
             },
+            "optional": {
+                # Native breakout: a bundle from Ideogram Override / Settings
+                # nodes; non-empty fields override the studio's own values.
+                "overrides": ("IDEOGRAM_OVERRIDE",),
+            },
         }
 
-    RETURN_TYPES = ("STRING", "IMAGE", "MASK")
-    RETURN_NAMES = ("caption", "overlay", "alpha")
+    RETURN_TYPES = ("STRING", "IDEOGRAM_EXTRAS")
+    RETURN_NAMES = ("caption", "extras")
     OUTPUT_NODE = False
     FUNCTION = "run"
     CATEGORY = "Ideogram"
-    DESCRIPTION = "Visually compose an Ideogram 4 JSON caption; also outputs a box+text overlay (at the studio's chosen resolution) to composite over the result."
+    DESCRIPTION = "Visually compose an Ideogram 4 JSON caption. The 'extras' output breaks out (via Ideogram Studio Extras) into overlay / alpha / width / height — keeps the node compact."
 
-    def run(self, studio, **kwargs):
+    def run(self, studio, overrides=None, **kwargs):
         payload = studio
         if isinstance(payload, str):
             try:
@@ -94,14 +102,27 @@ class IdeogramStudio:
             data = {}
         studio_state = payload.get("studio") if isinstance(payload.get("studio"), dict) else {}
 
+        # Apply native overrides (from breakout nodes) over the studio's values.
+        ovr = overrides if isinstance(overrides, dict) else {}
+        if ovr:
+            data = apply_override(data, ovr)
+
         caption_str, warnings = serialize_caption(data)
         for w in warnings:
             print(f"[IdeogramStudio] warning: {w}")
 
-        # Resolution + overlay style come entirely from the studio UI.
+        # Resolution from the studio UI, overridable via a Settings node.
         width = _int(studio_state.get("width"), 1024, 16, 8192)
         height = _int(studio_state.get("height"), 1024, 16, 8192)
+        if ovr.get("width"):
+            width = _int(ovr.get("width"), width, 16, 8192)
+        if ovr.get("height"):
+            height = _int(ovr.get("height"), height, 16, 8192)
         ov = studio_state.get("overlay") if isinstance(studio_state.get("overlay"), dict) else {}
+
+        # Global (image-wide) palette → drawn in the overlay's bottom-left corner.
+        sd = data.get("style_description")
+        global_palette = sd.get("color_palette") if isinstance(sd, dict) and isinstance(sd.get("color_palette"), list) else []
 
         items = _draw_items(studio_state, data)
         overlay, alpha = render_overlay(
@@ -111,9 +132,11 @@ class IdeogramStudio:
             label_size=_int(ov.get("labelSize"), 16, 6, 96),
             show_index=bool(ov.get("showIndex", True)),
             show_text=bool(ov.get("showText", True)),
+            global_palette=global_palette,
         )
 
-        return (caption_str, overlay, alpha)
+        extras = {"overlay": overlay, "alpha": alpha, "width": width, "height": height}
+        return (caption_str, extras)
 
 
 NODE_CLASS_MAPPINGS = {
