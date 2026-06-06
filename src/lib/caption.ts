@@ -50,6 +50,15 @@ export interface OverlaySettings {
   showText: boolean
 }
 
+// Editor UI preferences — persisted with the studio state so they survive a
+// reload (NOT part of the caption; buildCaption ignores them).
+export interface UiPrefs {
+  sync: boolean
+  showLabels: boolean
+  backdropOpacity: number
+  newType: ElementType
+}
+
 export interface CaptionState {
   high_level_description: string
   width: number
@@ -58,6 +67,11 @@ export interface CaptionState {
   background: string
   elements: CaptionElement[]
   overlay: OverlaySettings
+  ui: UiPrefs
+}
+
+export function emptyUi(): UiPrefs {
+  return { sync: false, showLabels: true, backdropOpacity: 0.5, newType: 'obj' }
 }
 
 // Common Ideogram output formats (aspect · pixels).
@@ -108,6 +122,7 @@ export function emptyState(): CaptionState {
     background: '',
     elements: [],
     overlay: emptyOverlay(),
+    ui: emptyUi(),
   }
 }
 

@@ -5,14 +5,32 @@ import { emptyState, newElement, newId, type CaptionElement, type CaptionState, 
 // linked copy keeps its own position.
 export const SHARED_KEYS = ['type', 'desc', 'text', 'color_palette', 'boxColor'] as const
 
+// A link group of one isn't a group — clear the lone member's linkId so it's
+// not left "linked" to nothing after an unlink/delete.
+function _pruneLink(elements: CaptionElement[], groupId: string | null) {
+  if (!groupId) return
+  const members = elements.filter((e) => e.linkId === groupId)
+  if (members.length === 1) members[0].linkId = null
+}
+
+// Mirror an element's bbox across the canvas center on the given axis.
+function _flipBbox(el: CaptionElement, axis: 'h' | 'v') {
+  if (!el.bbox) return
+  const [y0, x0, y1, x1] = el.bbox
+  el.bbox = axis === 'h' ? [y0, 1000 - x1, y1, 1000 - x0] : [1000 - y1, x0, 1000 - y0, x1]
+}
+
 export interface StudioStore {
   state: CaptionState
-  selectedId: string | null
-  select(id: string | null): void
+  selectedIds: string[]
+  selectedId: string | null // primary (last-selected) — what the editor edits
+  isSelected(id: string): boolean
+  select(id: string | null, additive?: boolean): void
   addElement(type: ElementType, bbox?: CaptionElement['bbox']): CaptionElement
   removeElement(id: string): void
   duplicateElement(id: string): void
   toggleEnabled(id: string): void
+  flipAll(axis: 'h' | 'v'): void
   duplicateLinked(id: string): void
   unlink(id: string): void
   linkGroupSize(id: string): number
@@ -38,7 +56,13 @@ const KEY: InjectionKey<StudioStore> = Symbol('ideogram-studio')
 export function createStudioStore(): StudioStore {
   const store = reactive({
     state: emptyState(),
-    selectedId: null as string | null,
+    selectedIds: [] as string[],
+    get selectedId(): string | null {
+      return store.selectedIds.length ? store.selectedIds[store.selectedIds.length - 1] : null
+    },
+    isSelected(id: string) {
+      return store.selectedIds.includes(id)
+    },
 
     // history (snapshots of JSON state)
     _hist: [] as string[],
@@ -63,7 +87,7 @@ export function createStudioStore(): StudioStore {
       store.restoring = true
       const parsed = JSON.parse(snap) as CaptionState
       Object.assign(store.state, emptyState(), parsed)
-      if (store.selectedId && !store.getElement(store.selectedId)) store.selectedId = null
+      store.selectedIds = store.selectedIds.filter((id) => store.getElement(id))
       // allow the deep watcher to flush before re-arming snapshots
       setTimeout(() => {
         store.restoring = false
@@ -84,19 +108,38 @@ export function createStudioStore(): StudioStore {
       store._hi = 0
     },
 
-    select(id: string | null) {
-      store.selectedId = id
+    select(id: string | null, additive = false) {
+      if (id == null) {
+        store.selectedIds = []
+        return
+      }
+      if (additive) {
+        const i = store.selectedIds.indexOf(id)
+        if (i >= 0) store.selectedIds.splice(i, 1) // toggle out
+        else store.selectedIds.push(id) // toggle in (becomes primary)
+      } else {
+        store.selectedIds = [id]
+      }
     },
     addElement(type: ElementType, bbox: CaptionElement['bbox'] = null) {
+      // Default to a visible, centered box (staggered so repeats don't stack)
+      // so a new element actually appears on the canvas — the bbox can be
+      // toggled off in the editor if you want the model to auto-place it.
+      if (!bbox) {
+        const o = (store.state.elements.length % 6) * 30
+        bbox = [220 + o, 220 + o, 520 + o, 520 + o]
+      }
       const el = newElement(type, bbox)
       store.state.elements.push(el)
-      store.selectedId = el.id
+      store.select(el.id)
       return el
     },
     removeElement(id: string) {
+      const gid = store.getElement(id)?.linkId ?? null
       const i = store.state.elements.findIndex((e) => e.id === id)
       if (i >= 0) store.state.elements.splice(i, 1)
-      if (store.selectedId === id) store.selectedId = null
+      store.selectedIds = store.selectedIds.filter((x) => x !== id)
+      _pruneLink(store.state.elements, gid)
     },
     duplicateElement(id: string) {
       const src = store.getElement(id)
@@ -110,11 +153,14 @@ export function createStudioStore(): StudioStore {
         copy.bbox = copy.bbox.map((v, idx) => Math.max(0, Math.min(1000, v + (idx < 2 ? 20 : 20)))) as any
       }
       store.state.elements.push(copy)
-      store.selectedId = copy.id
+      store.select(copy.id)
     },
     toggleEnabled(id: string) {
       const el = store.getElement(id)
       if (el) el.enabled = el.enabled === false
+    },
+    flipAll(axis: 'h' | 'v') {
+      for (const el of store.state.elements) if (el.bbox) _flipBbox(el, axis)
     },
     duplicateLinked(id: string) {
       const src = store.getElement(id)
@@ -131,11 +177,14 @@ export function createStudioStore(): StudioStore {
         copy.bbox = copy.bbox.map((v, idx) => Math.max(0, Math.min(1000, v + (idx < 2 ? 30 : 30)))) as any
       }
       store.state.elements.push(copy)
-      store.selectedId = copy.id
+      store.select(copy.id)
     },
     unlink(id: string) {
       const el = store.getElement(id)
-      if (el) el.linkId = null
+      if (!el?.linkId) return
+      const gid = el.linkId
+      el.linkId = null
+      _pruneLink(store.state.elements, gid) // dissolve a now-lone group
     },
     linkGroupSize(id: string) {
       const el = store.getElement(id)

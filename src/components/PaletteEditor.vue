@@ -48,7 +48,7 @@ function update(i: number, raw: string) {
 .swatch-wrap { position: relative; }
 .swatch {
   display: block; width: 26px; height: 26px; border-radius: 5px;
-  border: 1px solid rgba(255, 255, 255, 0.25); cursor: pointer; overflow: hidden;
+  border: 1px solid var(--st-border); cursor: pointer; overflow: hidden;
 }
 .swatch input { opacity: 0; width: 100%; height: 100%; cursor: pointer; }
 .x {
@@ -58,8 +58,8 @@ function update(i: number, raw: string) {
 }
 .add {
   width: 26px; height: 26px; border-radius: 5px; cursor: pointer;
-  border: 1px dashed rgba(255, 255, 255, 0.35); background: transparent;
-  color: rgba(255, 255, 255, 0.7); font-size: 16px; line-height: 1;
+  border: 1px dashed var(--st-border); background: transparent;
+  color: var(--st-muted); font-size: 16px; line-height: 1;
 }
-.hint { font-size: 10px; color: rgba(255, 255, 255, 0.45); }
+.hint { font-size: 10px; color: var(--st-muted); }
 </style>

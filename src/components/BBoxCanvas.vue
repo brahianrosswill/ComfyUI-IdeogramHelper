@@ -1,13 +1,29 @@
 <template>
   <div class="canvas-wrap">
     <div class="toolbar" @pointerdown.stop>
-      <span class="lbl">new box:</span>
-      <div class="seg">
-        <button :class="{ on: newType === 'obj' }" title="New boxes are objects" @click="newType = 'obj'">obj</button>
-        <button :class="{ on: newType === 'text' }" title="New boxes are text" @click="newType = 'text'">text</button>
+      <div class="seg" title="What new boxes become when you draw">
+        <UiButton :active="newType === 'obj'" @click="newType = 'obj'">obj</UiButton>
+        <UiButton :active="newType === 'text'" @click="newType = 'text'">text</UiButton>
       </div>
+
+      <span class="divider"></span>
+
+      <div class="cluster">
+        <button class="ic" title="Load a reference image to trace over (or drop one on the canvas)" @click="pickImage">🖼</button>
+        <button class="ic sync" :class="{ on: syncRef }" title="Sync: an Ideogram Studio Ref Sync node updates this reference live" @click="toggleSync">{{ syncRef ? '◉ sync' : '○ sync' }}</button>
+        <input v-if="backdropUrl" class="op" type="range" min="0" max="1" step="0.05" v-model.number="backdropOpacity" title="Reference opacity" />
+        <button v-if="backdropUrl" class="ic" title="Remove reference image" @click="backdropUrl = null">✕</button>
+      </div>
+
+      <span class="divider"></span>
+
+      <button class="ic" :class="{ on: showLabels }" title="Toggle labels" @click="showLabels = !showLabels">⌗</button>
+      <button class="ic" title="Mirror the whole scene horizontally" @click="store.flipAll('h')">⇄</button>
+      <button class="ic" title="Mirror the whole scene vertically" @click="store.flipAll('v')">⇅</button>
+
+      <span class="spacer"></span>
       <span class="dims">{{ store.state.width }}×{{ store.state.height }}</span>
-      <button class="ghost" :class="{ on: showLabels }" title="Toggle labels" @click="showLabels = !showLabels">⌗ labels</button>
+      <input ref="fileInput" type="file" accept="image/*" hidden @change="onFile" />
     </div>
 
     <div
@@ -19,15 +35,18 @@
       @pointerup="onPointerUp"
       @pointercancel="onPointerUp"
       @lostpointercapture="onPointerUp"
+      @dragover.prevent
+      @drop="onDrop"
       :style="stageStyle"
     >
+      <img v-if="backdropUrl" class="backdrop" :src="backdropUrl" :style="{ opacity: backdropOpacity }" draggable="false" alt="reference" />
       <div class="grid"></div>
 
       <div
         v-for="(el, i) in boxed"
         :key="el.id"
         class="box"
-        :class="{ sel: el.id === store.selectedId, muted: el.enabled === false }"
+        :class="{ sel: store.isSelected(el.id), primary: el.id === store.selectedId, muted: el.enabled === false }"
         :style="boxStyle(el)"
         :data-box="el.id"
       >
@@ -41,13 +60,14 @@
 
       <div v-if="draft" class="box draft" :style="boxStyle({ bbox: draft, boxColor: '#9ca3af' })"></div>
     </div>
-    <div class="coordhint">{{ hint }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useStudioStore } from '@/lib/store'
+import { refSyncImage, initRefSync } from '@/lib/refSync'
+import UiButton from './ui/UiButton.vue'
 import type { CaptionElement } from '@/lib/caption'
 
 const store = useStudioStore()
@@ -56,11 +76,43 @@ const HANDLES = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'] as const
 type Handle = (typeof HANDLES)[number]
 type Bbox = [number, number, number, number]
 
-const newType = ref<'obj' | 'text'>('obj')
-const showLabels = ref(true)
+// These UI toggles live in the persisted studio state (store.state.ui) so they
+// survive a reload — proxied via computed so the template/usage is unchanged.
+const newType = computed({ get: () => store.state.ui.newType, set: (v) => (store.state.ui.newType = v) })
+const showLabels = computed({ get: () => store.state.ui.showLabels, set: (v) => (store.state.ui.showLabels = v) })
+const backdropOpacity = computed({ get: () => store.state.ui.backdropOpacity, set: (v) => (store.state.ui.backdropOpacity = v) })
+const syncRef = computed({ get: () => store.state.ui.sync, set: (v) => (store.state.ui.sync = v) })
+// The backdrop image itself is client-side only (not saved — temp URLs go stale).
+const backdropUrl = ref<string | null>(null)
+const fileInput = ref<HTMLInputElement | null>(null)
+onMounted(initRefSync)
+watch(refSyncImage, (url) => {
+  if (syncRef.value && url) backdropUrl.value = url
+})
+function toggleSync() {
+  syncRef.value = !syncRef.value
+  if (syncRef.value && refSyncImage.value) backdropUrl.value = refSyncImage.value
+}
+function pickImage() {
+  fileInput.value?.click()
+}
+function readImage(f: File) {
+  const r = new FileReader()
+  r.onload = () => (backdropUrl.value = r.result as string)
+  r.readAsDataURL(f)
+}
+function onFile(e: Event) {
+  const f = (e.target as HTMLInputElement).files?.[0]
+  if (f) readImage(f)
+}
+function onDrop(e: DragEvent) {
+  e.preventDefault()
+  const f = e.dataTransfer?.files?.[0]
+  if (f && f.type.startsWith('image/')) readImage(f)
+}
 const stage = ref<HTMLElement | null>(null)
 const draft = ref<Bbox | null>(null)
-const hint = ref('drag on empty space to add a box · drag a box to move · drag a handle to resize')
+const hint = ref('') // populated with the live bbox readout only during a drag
 
 const boxed = computed(() => store.state.elements.filter((e) => e.bbox))
 
@@ -108,9 +160,10 @@ interface DragSession {
   kind: 'draw' | 'move' | 'resize'
   el?: CaptionElement
   handle?: Handle
-  startBbox?: Bbox
   start: { x: number; y: number }
   moved: boolean
+  moveTargets?: { el: CaptionElement; start: Bbox }[] // for move (1 = single, >1 = group)
+  clickedId?: string
 }
 let drag: DragSession | null = null
 
@@ -137,12 +190,19 @@ function onPointerDown(ev: PointerEvent) {
     }
   }
   if (boxId) {
-    const el = store.getElement(boxId)
-    store.select(boxId)
-    if (el?.bbox) {
-      drag = { kind: 'move', el, start, startBbox: [...el.bbox] as Bbox, moved: false }
+    const additive = ev.shiftKey || ev.ctrlKey || ev.metaKey
+    if (additive) {
+      store.select(boxId, true) // toggle in/out of the selection — no drag
       return
     }
+    if (!store.isSelected(boxId)) store.select(boxId) // fresh single-select
+    // move every selected box together (a single box if only one is selected)
+    const moveTargets = store.selectedIds
+      .map((id) => store.getElement(id))
+      .filter((e): e is CaptionElement => !!e?.bbox)
+      .map((e) => ({ el: e, start: [...e.bbox!] as Bbox }))
+    drag = { kind: 'move', start, moved: false, moveTargets, clickedId: boxId }
+    return
   }
   // empty space → start drawing a new box
   draft.value = [start.y, start.x, start.y, start.x]
@@ -158,17 +218,24 @@ function onPointerMove(ev: PointerEvent) {
   if (drag.kind === 'draw') {
     draft.value = [Math.min(drag.start.y, p.y), Math.min(drag.start.x, p.x), Math.max(drag.start.y, p.y), Math.max(drag.start.x, p.x)]
     hint.value = bboxLabel(draft.value)
-  } else if (drag.kind === 'move' && drag.el && drag.startBbox) {
-    const dy = p.y - drag.start.y
-    const dx = p.x - drag.start.x
-    let [y0, x0, y1, x1] = drag.startBbox
-    const h = y1 - y0
-    const w = x1 - x0
-    y0 = clamp(y0 + dy); x0 = clamp(x0 + dx)
-    if (y0 + h > 1000) y0 = 1000 - h
-    if (x0 + w > 1000) x0 = 1000 - w
-    drag.el.bbox = [y0, x0, y0 + h, x0 + w]
-    hint.value = bboxLabel(drag.el.bbox)
+  } else if (drag.kind === 'move' && drag.moveTargets) {
+    const targets = drag.moveTargets
+    // clamp the delta uniformly so the group moves rigidly and stays in bounds
+    let dx = p.x - drag.start.x
+    let dy = p.y - drag.start.y
+    let loX = -Infinity, hiX = Infinity, loY = -Infinity, hiY = Infinity
+    for (const t of targets) {
+      const [y0, x0, y1, x1] = t.start
+      loX = Math.max(loX, -x0); hiX = Math.min(hiX, 1000 - x1)
+      loY = Math.max(loY, -y0); hiY = Math.min(hiY, 1000 - y1)
+    }
+    dx = Math.max(loX, Math.min(hiX, dx))
+    dy = Math.max(loY, Math.min(hiY, dy))
+    for (const t of targets) {
+      const [y0, x0, y1, x1] = t.start
+      t.el.bbox = [Math.round(y0 + dy), Math.round(x0 + dx), Math.round(y1 + dy), Math.round(x1 + dx)]
+    }
+    if (targets.length === 1) hint.value = bboxLabel(targets[0].el.bbox!)
   } else if (drag.kind === 'resize' && drag.el?.bbox && drag.handle) {
     let [y0, x0, y1, x1] = drag.el.bbox
     if (drag.handle.includes('n')) y0 = Math.min(p.y, y1 - 2)
@@ -195,8 +262,11 @@ function onPointerUp(ev: PointerEvent) {
     } else if (!drag.moved) {
       store.select(null) // a plain click on empty canvas deselects
     }
+  } else if (drag.kind === 'move' && !drag.moved && drag.clickedId && store.selectedIds.length > 1) {
+    store.select(drag.clickedId) // plain click on a box in a group → collapse to it
   }
   drag = null
+  hint.value = '' // clear the live readout once the drag ends
 }
 
 function bboxLabel(b: Bbox) {
@@ -206,39 +276,40 @@ function bboxLabel(b: Bbox) {
 
 <style scoped>
 .canvas-wrap { display: flex; flex-direction: column; gap: 6px; }
-.toolbar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-.lbl { font-size: 11px; color: #999; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
 .seg { display: flex; gap: 2px; }
-.seg button, .ghost {
-  background: #2a2a30; color: #ddd; border: 1px solid #3a3a44; border-radius: 5px;
-  padding: 3px 8px; font-size: 11px; cursor: pointer;
+/* uniform square-ish icon buttons */
+.ic {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 26px; height: 24px; padding: 0 6px; box-sizing: border-box;
+  background: var(--st-btn); color: var(--st-text); border: 1px solid var(--st-border);
+  border-radius: 5px; font-size: 12px; line-height: 1; cursor: pointer;
 }
-.seg button.on { background: #3b82f6; border-color: #3b82f6; color: #fff; }
-.seg button.on.text, .seg button.text.on { background: #f59e0b; border-color: #f59e0b; color: #1a1a1a; }
-.ghost.on { background: #3b82f6; border-color: #3b82f6; color: #fff; }
-.dims { font-size: 11px; color: #888; font-family: monospace; }
+.ic:hover { border-color: var(--st-accent); }
+.ic.on { background: var(--st-accent); border-color: var(--st-accent); color: var(--st-on-accent, #fff); }
+.cluster { display: flex; gap: 4px; align-items: center; }
+.divider { width: 1px; height: 18px; background: var(--st-border); margin: 0 2px; }
+.spacer { flex: 1 1 auto; }
+.dims { font-size: 11px; color: var(--st-muted); font-family: monospace; }
+.op { width: 64px; accent-color: var(--st-accent); }
 
 .stage {
-  position: relative; width: 100%; background: #15151a;
-  border: 1px solid #3a3a44; border-radius: 6px; overflow: hidden;
-  background-image: linear-gradient(45deg, #1d1d22 25%, transparent 25%),
-    linear-gradient(-45deg, #1d1d22 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #1d1d22 75%),
-    linear-gradient(-45deg, transparent 75%, #1d1d22 75%);
-  background-size: 18px 18px;
-  background-position: 0 0, 0 9px, 9px -9px, -9px 0;
+  position: relative; width: 100%; background: var(--st-input);
+  border: 1px solid var(--st-border); border-radius: 6px; overflow: hidden;
   touch-action: none; user-select: none; cursor: crosshair;
 }
 .stage.dragging { cursor: grabbing; }
+.backdrop { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
 .grid {
   position: absolute; inset: 0; pointer-events: none;
-  background-image: linear-gradient(to right, rgba(255,255,255,.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,.06) 1px, transparent 1px);
+  background-image: linear-gradient(to right, rgba(128,128,128,.18) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(128,128,128,.18) 1px, transparent 1px);
   background-size: 10% 10%;
 }
 .box { position: absolute; border: 2px solid; box-sizing: border-box; cursor: move; background: transparent; transition: background .1s; }
 .box:hover { background: var(--fill); }
-.box.sel { background: var(--fill); box-shadow: 0 0 0 1px #fff, 0 0 10px rgba(0,0,0,.6); z-index: 5; }
+.box.sel { background: var(--fill); box-shadow: 0 0 0 1.5px var(--st-accent, #3b82f6); z-index: 4; }
+.box.primary { box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--st-accent, #3b82f6), 0 0 10px rgba(0,0,0,.6); z-index: 5; }
 .box.muted { opacity: 0.32; border-style: dashed; background: transparent !important; }
 .box.muted .tag { opacity: 0.6; }
 .box.draft { border-style: dashed; opacity: 0.8; pointer-events: none; background: rgba(156,163,175,.12); }
@@ -257,5 +328,4 @@ function bboxLabel(b: Bbox) {
 .h-s  { bottom: -6px; left: 50%; margin-left: -5px; cursor: ns-resize; }
 .h-sw { bottom: -6px; left: -6px; cursor: nesw-resize; }
 .h-w  { top: 50%; left: -6px; margin-top: -5px; cursor: ew-resize; }
-.coordhint { font-size: 10px; color: rgba(255,255,255,.45); font-family: monospace; }
 </style>

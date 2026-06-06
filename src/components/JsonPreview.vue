@@ -1,22 +1,24 @@
 <template>
-  <div class="preview">
-    <div class="head">
-      <span>JSON caption</span>
-      <div class="actions">
+  <UiCard>
+    <template #header>
+      <div class="jbar">
+        <slot name="controls" />
+        <span class="jgrow"></span>
+        <span class="jlabel">json</span>
         <span v-if="!editing" class="warns" :class="{ ok: !warnings.length }" :title="warnings.join('\n')">
           {{ warnings.length ? `⚠ ${warnings.length}` : '✓ valid' }}
         </span>
         <span v-else class="warns" :class="{ ok: !parseError }">{{ parseError ? '✗ invalid JSON' : '✓ parses' }}</span>
-        <button v-if="!editing" @click="copy">{{ copied ? 'copied ✓' : 'copy' }}</button>
-        <button v-if="!editing" @click="startEdit">edit / paste</button>
+        <UiButton v-if="!editing" @click="copy">{{ copied ? 'copied ✓' : 'copy' }}</UiButton>
+        <UiButton v-if="!editing" @click="startEdit">edit / paste</UiButton>
         <template v-else>
-          <button @click="tidy" title="Re-indent the JSON">tidy</button>
-          <button class="apply" :disabled="!!parseError" @click="apply">apply →</button>
-          <button @click="cancel">cancel</button>
+          <UiButton title="Re-indent the JSON" @click="tidy">tidy</UiButton>
+          <UiButton variant="primary" :disabled="!!parseError" @click="apply">apply →</UiButton>
+          <UiButton @click="cancel">cancel</UiButton>
         </template>
-        <button v-if="!editing" @click="open = !open">{{ open ? 'hide' : 'show' }}</button>
+        <UiButton v-if="!editing" @click="open = !open">{{ open ? 'hide' : 'show' }}</UiButton>
       </div>
-    </div>
+    </template>
 
     <textarea
       v-if="editing"
@@ -31,13 +33,15 @@
     <ul v-if="!editing && open && warnings.length" class="warnlist">
       <li v-for="(w, i) in warnings" :key="i">{{ w }}</li>
     </ul>
-  </div>
+  </UiCard>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useStudioStore } from '@/lib/store'
 import { serialize, captionToState } from '@/lib/caption'
+import UiCard from './ui/UiCard.vue'
+import UiButton from './ui/UiButton.vue'
 
 const store = useStudioStore()
 const open = ref(true)
@@ -103,17 +107,14 @@ function apply() {
 </script>
 
 <style scoped>
-.preview { display: flex; flex-direction: column; gap: 5px; }
-.head { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #ccc; }
-.actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-.actions button { background: #2a2a30; color: #ccc; border: 1px solid #3a3a44; border-radius: 4px; padding: 2px 8px; font-size: 11px; cursor: pointer; }
-.actions button.apply { background: #2563eb; border-color: #2563eb; color: #fff; }
-.actions button.apply:disabled { opacity: .4; cursor: default; }
+.jbar { display: flex; align-items: center; gap: 5px; width: 100%; flex-wrap: wrap; }
+.jgrow { flex: 1 1 auto; }
+.jlabel { font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--st-muted); }
 .warns { font-size: 11px; color: #f59e0b; cursor: help; }
 .warns.ok { color: #34d399; }
 .json {
-  margin: 0; background: #121216; border: 1px solid #2c2c34; border-radius: 6px; padding: 8px;
-  font-size: 11px; line-height: 1.4; max-height: 220px; overflow: auto; color: #cdd6f4;
+  margin: 0; background: var(--st-input); border: 1px solid var(--st-border); border-radius: 6px; padding: 8px;
+  font-size: 11px; line-height: 1.4; max-height: 220px; overflow: auto; color: var(--st-text);
   white-space: pre; font-family: ui-monospace, monospace;
 }
 .json.edit { width: 100%; box-sizing: border-box; min-height: 160px; resize: vertical; white-space: pre; }

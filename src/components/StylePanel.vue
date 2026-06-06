@@ -1,55 +1,55 @@
 <template>
-  <div class="style">
-    <div class="head">
-      <label class="en"><input type="checkbox" v-model="store.state.style.enabled" /> style_description</label>
-      <div class="seg" v-if="store.state.style.enabled">
-        <button :class="{ on: store.state.style.mode === 'photo' }" @click="store.state.style.mode = 'photo'">photo</button>
-        <button :class="{ on: store.state.style.mode === 'art' }" @click="store.state.style.mode = 'art'">art</button>
+  <UiCard>
+    <template #header>
+      <label class="en"><input type="checkbox" v-model="st.enabled" /> style</label>
+      <div v-if="st.enabled" class="seg">
+        <UiButton :active="st.mode === 'photo'" @click="st.mode = 'photo'">photo</UiButton>
+        <UiButton :active="st.mode === 'art'" @click="st.mode = 'art'">art</UiButton>
       </div>
-    </div>
+    </template>
 
-    <template v-if="store.state.style.enabled">
+    <template v-if="st.enabled">
       <label class="field"><span>aesthetics</span>
-        <input v-model="store.state.style.aesthetics" placeholder="moody, cinematic, desaturated" />
+        <input v-model="st.aesthetics" placeholder="moody, cinematic, desaturated" />
       </label>
       <label class="field"><span>lighting</span>
-        <input v-model="store.state.style.lighting" placeholder="golden hour, rim light, soft shadows" />
+        <input v-model="st.lighting" placeholder="golden hour, rim light, soft shadows" />
       </label>
-
-      <label class="field" v-if="store.state.style.mode === 'photo'"><span>photo (camera/lens)</span>
-        <input v-model="store.state.style.photo" placeholder="35mm, f/1.4, shallow depth of field" />
+      <label v-if="st.mode === 'photo'" class="field"><span>photo (camera/lens)</span>
+        <input v-model="st.photo" placeholder="35mm, f/1.4, shallow depth of field" />
       </label>
       <label class="field"><span>medium</span>
-        <input v-model="store.state.style.medium" :placeholder="store.state.style.mode === 'photo' ? 'photograph' : 'illustration / 3d_render / painting…'" list="media" />
+        <input v-model="st.medium" :placeholder="st.mode === 'photo' ? 'photograph' : 'illustration / 3d_render / painting…'" list="media" />
         <datalist id="media">
           <option>photograph</option><option>illustration</option><option>3d_render</option>
           <option>painting</option><option>graphic_design</option>
         </datalist>
       </label>
-      <label class="field" v-if="store.state.style.mode === 'art'"><span>art_style</span>
-        <input v-model="store.state.style.art_style" placeholder="flat vector illustration, bold outlines" />
+      <label v-if="st.mode === 'art'" class="field"><span>art_style</span>
+        <input v-model="st.art_style" placeholder="flat vector illustration, bold outlines" />
       </label>
-
-      <div class="field"><span>color_palette (max 16)</span>
-        <PaletteEditor v-model="store.state.style.color_palette" :max="16" label="image colors" />
+      <div class="field"><span>color palette (max 16)</span>
+        <PaletteEditor v-model="st.color_palette" :max="16" label="image colors" />
       </div>
     </template>
-  </div>
+  </UiCard>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useStudioStore } from '@/lib/store'
+import UiCard from './ui/UiCard.vue'
+import UiButton from './ui/UiButton.vue'
 import PaletteEditor from './PaletteEditor.vue'
+
 const store = useStudioStore()
+// computed (template auto-unwraps) so it survives store.load() replacing style
+const st = computed(() => store.state.style)
 </script>
 
 <style scoped>
-.style { display: flex; flex-direction: column; gap: 7px; }
-.head { display: flex; justify-content: space-between; align-items: center; }
-.en { font-size: 12px; color: #ccc; display: flex; gap: 5px; align-items: center; font-weight: 600; }
+.en { font-size: 12px; color: var(--st-text); display: flex; gap: 5px; align-items: center; font-weight: 600; }
 .seg { display: flex; gap: 2px; }
-.seg button { background: #2a2a30; color: #ccc; border: 1px solid #3a3a44; border-radius: 4px; padding: 2px 9px; font-size: 11px; cursor: pointer; }
-.seg button.on { background: #8b5cf6; border-color: #8b5cf6; color: #fff; }
-.field { display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: #aaa; }
-.field input { background: #15151a; border: 1px solid #3a3a44; color: #eee; border-radius: 5px; padding: 6px; font-size: 12px; }
+.field { display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: var(--st-muted); }
+.field input { background: var(--st-input); border: 1px solid var(--st-border); color: var(--st-text); border-radius: 5px; padding: 6px; font-size: 12px; }
 </style>
