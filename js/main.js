@@ -1,4 +1,4 @@
-(function(){var s=document.createElement('style');s.setAttribute('data-extension','comfyui-ideogramhelper');s.textContent="\n.ui-btn[data-v-d20cb0e3] {\n  display: inline-flex; align-items: center; justify-content: center; gap: 4px;\n  min-height: 24px; padding: 3px 9px; box-sizing: border-box;\n  background: var(--st-btn); color: var(--st-text); border: 1px solid var(--st-border);\n  border-radius: 5px; font-size: 11px; line-height: 1; cursor: pointer; font-family: inherit;\n  white-space: nowrap; transition: border-color .1s, background .1s;\n}\n.ui-btn.icon[data-v-d20cb0e3] { min-width: 26px; padding: 0 6px; font-size: 12px;\n}\n.ui-btn[data-v-d20cb0e3]:hover { border-color: var(--st-accent);\n}\n.ui-btn[data-v-d20cb0e3]:disabled { opacity: .4; cursor: default;\n}\n.ui-btn[data-v-d20cb0e3]:disabled:hover { border-color: var(--st-border);\n}\n.ui-btn.on[data-v-d20cb0e3],\n.ui-btn.primary[data-v-d20cb0e3] { background: var(--st-accent); border-color: var(--st-accent); color: var(--st-on-accent, #fff);\n}\n.ui-btn.primary[data-v-d20cb0e3]:hover { filter: brightness(1.08);\n}\n\n.ui-pop[data-v-8bd479dc] { position: relative; display: inline-flex;\n}\n.ui-pop-panel[data-v-8bd479dc] {\n  position: absolute; top: calc(100% + 5px); z-index: 50;\n  background: var(--st-panel); border: 1px solid var(--st-border); border-radius: 8px;\n  padding: 10px 12px; min-width: 240px; max-width: 320px; max-height: 360px; overflow-y: auto;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);\n  font-size: 11px; line-height: 1.5; color: var(--st-text); cursor: default;\n}\n.ui-pop-panel.right[data-v-8bd479dc] { right: 0;\n}\n.ui-pop-panel.left[data-v-8bd479dc] { left: 0;\n}\n.ui-pop-panel.up[data-v-8bd479dc] { top: auto; bottom: calc(100% + 5px);\n}\n\n.canvas-wrap[data-v-3dfc1551] { display: flex; flex-direction: column; gap: 6px;\n}\n.toolbar[data-v-3dfc1551] { display: flex; flex-wrap: wrap; gap: 5px; align-items: center;\n}\n.seg[data-v-3dfc1551] { display: flex; gap: 2px;\n}\n/* uniform square-ish icon buttons */\n.ic[data-v-3dfc1551] {\n  display: inline-flex; align-items: center; justify-content: center;\n  min-width: 26px; height: 24px; padding: 0 6px; box-sizing: border-box;\n  background: var(--st-btn); color: var(--st-text); border: 1px solid var(--st-border);\n  border-radius: 5px; font-size: 12px; line-height: 1; cursor: pointer;\n}\n.ic[data-v-3dfc1551]:hover { border-color: var(--st-accent);\n}\n.ic.on[data-v-3dfc1551] { background: var(--st-accent); border-color: var(--st-accent); color: var(--st-on-accent, #fff);\n}\n.cluster[data-v-3dfc1551] { display: flex; gap: 4px; align-items: center;\n}\n.divider[data-v-3dfc1551] { width: 1px; height: 18px; background: var(--st-border); margin: 0 2px;\n}\n.spacer[data-v-3dfc1551] { flex: 1 1 auto;\n}\n.dims[data-v-3dfc1551] { font-size: 11px; color: var(--st-muted); font-family: monospace;\n}\n.op[data-v-3dfc1551] { width: 64px; accent-color: var(--st-accent);\n}\n.stage[data-v-3dfc1551] {\n  position: relative; width: 100%; background: var(--st-input);\n  border: 1px solid var(--st-border); border-radius: 6px; overflow: hidden;\n  touch-action: none; user-select: none; cursor: crosshair;\n}\n.stage.dragging[data-v-3dfc1551] { cursor: grabbing;\n}\n.backdrop[data-v-3dfc1551] { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none;\n}\n.grid[data-v-3dfc1551] {\n  position: absolute; inset: 0; pointer-events: none;\n  background-image: linear-gradient(to right, rgba(128,128,128,.18) 1px, transparent 1px),\n    linear-gradient(to bottom, rgba(128,128,128,.18) 1px, transparent 1px);\n  background-size: 10% 10%;\n}\n.box[data-v-3dfc1551] { position: absolute; border: 2px solid; box-sizing: border-box; cursor: move; background: transparent; transition: background .1s;\n}\n.box[data-v-3dfc1551]:hover { background: var(--fill);\n}\n.box.sel[data-v-3dfc1551] { background: var(--fill); box-shadow: 0 0 0 1.5px var(--st-accent, #3b82f6); z-index: 4;\n}\n.box.primary[data-v-3dfc1551] { box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--st-accent, #3b82f6), 0 0 10px rgba(0,0,0,.6); z-index: 5;\n}\n.box.muted[data-v-3dfc1551] { opacity: 0.32; border-style: dashed; background: transparent !important;\n}\n.box.muted .tag[data-v-3dfc1551] { opacity: 0.6;\n}\n.box.draft[data-v-3dfc1551] { border-style: dashed; opacity: 0.8; pointer-events: none; background: rgba(156,163,175,.12);\n}\n.tag[data-v-3dfc1551] {\n  position: absolute; top: 0; left: 0; transform: translateY(-100%);\n  font-size: 10px; line-height: 1.4; padding: 1px 5px; white-space: nowrap;\n  max-width: 220px; overflow: hidden; text-overflow: ellipsis;\n  border-radius: 3px 3px 0 0; pointer-events: none;\n}\n.h[data-v-3dfc1551] { position: absolute; width: 11px; height: 11px; background: #fff; border: 1px solid #333; border-radius: 2px;\n}\n.h-nw[data-v-3dfc1551] { top: -6px; left: -6px; cursor: nwse-resize;\n}\n.h-n[data-v-3dfc1551]  { top: -6px; left: 50%; margin-left: -5px; cursor: ns-resize;\n}\n.h-ne[data-v-3dfc1551] { top: -6px; right: -6px; cursor: nesw-resize;\n}\n.h-e[data-v-3dfc1551]  { top: 50%; right: -6px; margin-top: -5px; cursor: ew-resize;\n}\n.h-se[data-v-3dfc1551] { bottom: -6px; right: -6px; cursor: nwse-resize;\n}\n.h-s[data-v-3dfc1551]  { bottom: -6px; left: 50%; margin-left: -5px; cursor: ns-resize;\n}\n.h-sw[data-v-3dfc1551] { bottom: -6px; left: -6px; cursor: nesw-resize;\n}\n.h-w[data-v-3dfc1551]  { top: 50%; left: -6px; margin-top: -5px; cursor: ew-resize;\n}\n\n.ui-card[data-v-df502338] {\n  background: var(--st-panel); border: 1px solid var(--st-border); border-radius: 7px;\n  padding: 8px; display: flex; flex-direction: column; gap: 7px;\n}\n.ui-card-head[data-v-df502338] { display: flex; align-items: center; justify-content: space-between; gap: 8px;\n}\n.ui-card-title[data-v-df502338] { font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--st-muted);\n}\n\n.palette[data-v-c5766e79] { display: flex; flex-direction: column; gap: 4px;\n}\n.swatches[data-v-c5766e79] { display: flex; flex-wrap: wrap; gap: 6px; align-items: center;\n}\n.swatch-wrap[data-v-c5766e79] { position: relative;\n}\n.swatch[data-v-c5766e79] {\n  display: block; width: 26px; height: 26px; border-radius: 5px;\n  border: 1px solid var(--st-border); cursor: pointer; overflow: hidden;\n}\n.swatch input[data-v-c5766e79] { opacity: 0; width: 100%; height: 100%; cursor: pointer;\n}\n.x[data-v-c5766e79] {\n  position: absolute; top: -6px; right: -6px; width: 15px; height: 15px;\n  border-radius: 50%; border: none; background: #b23; color: #fff;\n  font-size: 11px; line-height: 11px; cursor: pointer; padding: 0;\n}\n.add[data-v-c5766e79] {\n  width: 26px; height: 26px; border-radius: 5px; cursor: pointer;\n  border: 1px dashed var(--st-border); background: transparent;\n  color: var(--st-muted); font-size: 16px; line-height: 1;\n}\n.hint[data-v-c5766e79] { font-size: 10px; color: var(--st-muted);\n}\n\n.en[data-v-5abfc9b1] { font-size: 12px; color: var(--st-text); display: flex; gap: 5px; align-items: center; font-weight: 600;\n}\n.seg[data-v-5abfc9b1] { display: flex; gap: 2px;\n}\n.field[data-v-5abfc9b1] { display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: var(--st-muted);\n}\n.field input[data-v-5abfc9b1] { background: var(--st-input); border: 1px solid var(--st-border); color: var(--st-text); border-radius: 5px; padding: 6px; font-size: 12px;\n}\n\n.adds[data-v-69998aac] { display: flex; gap: 4px;\n}\nul[data-v-69998aac] { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; flex: 1 1 auto; min-height: 80px; overflow-y: auto;\n}\nli[data-v-69998aac] {\n  display: flex; align-items: center; gap: 6px; padding: 4px 6px; border-radius: 5px;\n  background: var(--st-input); border: 1px solid transparent; cursor: pointer; font-size: 12px; color: var(--st-text);\n}\nli[data-v-69998aac]:hover { border-color: var(--st-border);\n}\nli.sel[data-v-69998aac] { border-color: var(--st-accent);\n}\nli.muted .snip[data-v-69998aac] { opacity: .45; text-decoration: line-through;\n}\n.eye[data-v-69998aac] { background: none; border: none; cursor: pointer; padding: 0; font-size: 11px; flex: none; line-height: 1; filter: grayscale(.3);\n}\n.dot[data-v-69998aac] { width: 9px; height: 9px; border-radius: 2px; flex: none;\n}\n.idx[data-v-69998aac] { color: var(--st-muted); width: 14px; flex: none;\n}\n.link[data-v-69998aac] { flex: none; font-size: 10px;\n}\n.snip[data-v-69998aac] { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;\n}\n.bb[data-v-69998aac] { color: var(--st-muted); flex: none;\n}\n.ops[data-v-69998aac] { display: flex; gap: 1px; opacity: 0; transition: opacity .12s;\n}\nli:hover .ops[data-v-69998aac], li.sel .ops[data-v-69998aac] { opacity: 1;\n}\n.ops button[data-v-69998aac] { background: var(--st-btn); border: 1px solid var(--st-border); color: var(--st-muted); border-radius: 3px; width: 18px; height: 18px; font-size: 11px; cursor: pointer; padding: 0;\n}\n.ops button[data-v-69998aac]:hover { color: var(--st-text); border-color: var(--st-accent);\n}\n.ops button.del[data-v-69998aac]:hover { color: #fff; background: #b91c1c; border-color: #b91c1c;\n}\n.empty[data-v-69998aac] { font-size: 11px; color: var(--st-muted); margin: 2px 0;\n}\n\n.ehead[data-v-dbc34765] { display: flex; align-items: center; gap: 8px; width: 100%;\n}\n.grow[data-v-dbc34765] { flex: 1 1 auto;\n}\n.color[data-v-dbc34765] { position: relative; width: 22px; height: 22px; cursor: pointer; flex: none;\n}\n.color .chip[data-v-dbc34765] { display: block; width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--st-border);\n}\n.color input[data-v-dbc34765] { position: absolute; inset: 0; opacity: 0; cursor: pointer;\n}\n.lbl[data-v-dbc34765] { font-size: 12px; color: var(--st-text); font-weight: 600;\n}\n.seg[data-v-dbc34765] { display: flex; gap: 2px;\n}\n/* icon-sized to match UiButton.icon, with green/red state the shared button can't express */\n.mute[data-v-dbc34765] {\n  display: inline-flex; align-items: center; justify-content: center; flex: none;\n  min-width: 26px; height: 24px; padding: 0 6px; box-sizing: border-box;\n  background: var(--st-btn); color: #34d399; border: 1px solid var(--st-border);\n  border-radius: 5px; font-size: 12px; cursor: pointer;\n}\n.mute[data-v-dbc34765]:hover { border-color: var(--st-accent);\n}\n.mute.off[data-v-dbc34765] { color: #f87171;\n}\n.erow[data-v-dbc34765] { display: flex; align-items: center; gap: 8px; flex-wrap: wrap;\n}\n.bbtoggle[data-v-dbc34765] { font-size: 11px; color: var(--st-muted); display: flex; gap: 4px; align-items: center;\n}\n.coords[data-v-dbc34765] { display: inline-flex; gap: 4px;\n}\n.coords input[data-v-dbc34765] { width: 46px; background: var(--st-input); border: 1px solid var(--st-border); color: var(--st-text); border-radius: 4px; padding: 3px; font-size: 11px;\n}\n.autohint[data-v-dbc34765] { font-size: 10px; color: var(--st-muted); font-style: italic;\n}\n\n/* label left, control fills right — keeps each field to one tidy line */\n.filine[data-v-dbc34765] { display: flex; gap: 8px; align-items: flex-start; font-size: 11px; color: var(--st-muted);\n}\n.filine > span[data-v-dbc34765] { width: 54px; flex: none; padding-top: 5px; text-align: right;\n}\n.filine input[type='text'][data-v-dbc34765], .filine textarea[data-v-dbc34765] {\n  flex: 1; background: var(--st-input); border: 1px solid var(--st-border); color: var(--st-text);\n  border-radius: 5px; padding: 6px; font-size: 12px; resize: vertical; font-family: inherit;\n}\n.filine[data-v-dbc34765] .palette { flex: 1;\n}\n\n.jbar[data-v-c507b982] { display: flex; align-items: center; gap: 5px; width: 100%; flex-wrap: wrap;\n}\n.jgrow[data-v-c507b982] { flex: 1 1 auto;\n}\n.jlabel[data-v-c507b982] { font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--st-muted);\n}\n.warns[data-v-c507b982] { font-size: 11px; color: #f59e0b; cursor: help;\n}\n.warns.ok[data-v-c507b982] { color: #34d399;\n}\n.json[data-v-c507b982] {\n  margin: 0; background: var(--st-input); border: 1px solid var(--st-border); border-radius: 6px; padding: 8px;\n  font-size: 11px; line-height: 1.4; max-height: 220px; overflow: auto; color: var(--st-text);\n  white-space: pre; font-family: ui-monospace, monospace;\n}\n.json.edit[data-v-c507b982] { width: 100%; box-sizing: border-box; min-height: 160px; resize: vertical; white-space: pre;\n}\n.parseerr[data-v-c507b982] { font-size: 10px; color: #f87171; font-family: ui-monospace, monospace;\n}\n.warnlist[data-v-c507b982] { margin: 0; padding-left: 16px; font-size: 10px; color: #f59e0b; max-height: 90px; overflow: auto;\n}\n\n/* Theme tokens — map ComfyUI's theme-aware CSS vars to our semantic names,\n   with the old dark values as fallbacks. They inherit into child components. */\n.studio[data-v-c60f8c80] {\n  --st-bg: var(--comfy-menu-bg, #1a1a1f);\n  --st-panel: var(--comfy-menu-secondary-bg, #202026);\n  --st-input: var(--comfy-input-bg, #15151a);\n  --st-btn: var(--comfy-input-bg, #2a2a30);\n  --st-text: var(--input-text, #e5e5ea);\n  --st-muted: var(--descrip-text, #9aa0aa);\n  --st-border: var(--border-color, #3a3a44);\n  --st-accent: var(--p-primary-color, #3b82f6);\n  --st-on-accent: #fff;\n\n  display: flex; flex-direction: column; gap: 9px; padding: 10px;\n  font-family: var(--p-font-family, -apple-system, system-ui, sans-serif); color: var(--st-text);\n  /* transparent so the node's own body colour shows through the gaps between\n     cards (cards keep their --st-panel bg); feels more integrated with the node */\n  background: transparent; box-sizing: border-box;\n  /* definite height so inner flex areas (list/JSON) scroll instead of\n     overflowing; overflow-y:auto is the safety net so when the node is too\n     small to fit everything, the whole studio scrolls and nothing (incl. the\n     background resize grip) gets clipped. */\n  width: 100%; height: 100%; overflow-y: auto;\n}\n.help .h[data-v-c60f8c80] { margin: 8px 0 3px; font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--st-accent); font-weight: 700;\n}\n.help .h[data-v-c60f8c80]:first-child { margin-top: 0;\n}\n.help dl[data-v-c60f8c80] { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 8px;\n}\n.help dt[data-v-c60f8c80] { color: var(--st-text); font-weight: 600; white-space: nowrap;\n}\n.help dd[data-v-c60f8c80] { margin: 0; color: var(--st-muted);\n}\n.help .tip[data-v-c60f8c80] { margin: 9px 0 0; color: var(--st-muted); border-top: 1px solid var(--st-border); padding-top: 7px;\n}\n.help .credit[data-v-c60f8c80] { margin: 9px 0 0; font-size: 10px; color: var(--st-muted); line-height: 1.6;\n}\n.help .credit a[data-v-c60f8c80] { color: var(--st-accent); text-decoration: none;\n}\n.help .credit a[data-v-c60f8c80]:hover { text-decoration: underline;\n}\n/* resolution picker (aspect × megapixels — matches core ResolutionSelector) */\n.resmenu[data-v-c60f8c80] { display: flex; flex-direction: column; gap: 7px; width: 230px;\n}\n.resmenu .rrow[data-v-c60f8c80] { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 11px; color: var(--st-muted);\n}\n.resmenu select[data-v-c60f8c80], .resmenu input[data-v-c60f8c80] { background: var(--st-input); border: 1px solid var(--st-border); color: var(--st-text); border-radius: 4px; padding: 4px; font-size: 11px;\n}\n.resmenu input[data-v-c60f8c80] { width: 64px;\n}\n.resmenu .rdiv[data-v-c60f8c80] { border-top: 1px solid var(--st-border); margin: 1px 0;\n}\n/* overlay settings (⚙) */\n.adv[data-v-c60f8c80] { display: flex; flex-direction: column; gap: 7px; font-size: 11px; color: var(--st-muted); width: 200px;\n}\n.adv .gh[data-v-c60f8c80] { font-size: 10px; text-transform: uppercase; letter-spacing: .4px; color: var(--st-muted);\n}\n.adv .orow[data-v-c60f8c80] { display: flex; align-items: center; justify-content: space-between; gap: 8px;\n}\n.adv .ochecks[data-v-c60f8c80] { display: flex; gap: 12px;\n}\n.adv input[type='number'][data-v-c60f8c80] { width: 60px; background: var(--st-input); border: 1px solid var(--st-border); color: var(--st-text); border-radius: 4px; padding: 3px; font-size: 11px;\n}\n.adv input[type='range'][data-v-c60f8c80] { width: 100px; accent-color: var(--st-accent);\n}\n.adv .ck[data-v-c60f8c80] { display: flex; align-items: center; gap: 4px;\n}\n/* collapsible \"prompt\" card holding summary + background */\n.acc[data-v-c60f8c80] { display: flex; align-items: center; justify-content: space-between; width: 100%; background: none; border: none; cursor: pointer; color: var(--st-muted); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; padding: 0;\n}\n.acc[data-v-c60f8c80]:hover { color: var(--st-text);\n}\n.acc .chev[data-v-c60f8c80] { font-size: 12px;\n}\n.pfield[data-v-c60f8c80] { display: flex; flex-direction: column; gap: 3px; font-size: 10px; color: var(--st-muted);\n}\n.pfield textarea[data-v-c60f8c80] {\n  background: var(--st-input); border: 1px solid var(--st-border); color: var(--st-text); border-radius: 6px;\n  padding: 7px; font-size: 12px; resize: vertical; font-family: inherit; line-height: 1.4;\n}\n/* grow to fill a tall node, but never shrink below content (shrink:0) — on a\n   small node the studio scrolls rather than squeezing/clipping the canvas. */\n.main[data-v-c60f8c80] { display: grid; grid-template-columns: minmax(280px, 1.4fr) minmax(220px, 1fr); gap: 12px; align-items: stretch; flex: 1 0 auto;\n}\n/* center the canvas vertically so spare height splits above/below it instead\n   of pooling under it when the elements list makes the right column taller */\n.left[data-v-c60f8c80] { display: flex; flex-direction: column; gap: 8px; min-width: 0; align-self: center;\n}\n.right[data-v-c60f8c80] { display: flex; flex-direction: column; gap: 8px; min-width: 0; min-height: 0;\n}\n@media (max-width: 520px) {\n.main[data-v-c60f8c80] { grid-template-columns: 1fr;\n}\n}\n";document.head.appendChild(s);})();import { app } from "../../../scripts/app.js";
+(function(){var s=document.createElement('style');s.setAttribute('data-extension','comfyui-ideogramhelper');s.textContent="\n.ui-btn[data-v-417623a2] {\n  display: inline-flex; align-items: center; justify-content: center; gap: 4px;\n  min-height: 24px; padding: 3px 9px; box-sizing: border-box;\n  background: var(--st-btn); color: var(--st-text); border: 1px solid var(--st-border);\n  border-radius: 5px; font-size: 11px; line-height: 1; cursor: pointer; font-family: inherit;\n  white-space: nowrap; transition: border-color .1s, background .1s;\n}\n.ui-btn.icon[data-v-417623a2] { min-width: 26px; padding: 0 6px; font-size: 12px;\n}\n.ui-btn[data-v-417623a2] .mdi { font-size: 15px; line-height: 1;\n}\n.ui-btn[data-v-417623a2]:hover { border-color: var(--st-accent);\n}\n.ui-btn[data-v-417623a2]:disabled { opacity: .4; cursor: default;\n}\n.ui-btn[data-v-417623a2]:disabled:hover { border-color: var(--st-border);\n}\n.ui-btn.on[data-v-417623a2],\n.ui-btn.primary[data-v-417623a2] { background: var(--st-accent); border-color: var(--st-accent); color: var(--st-on-accent, #fff);\n}\n.ui-btn.primary[data-v-417623a2]:hover { filter: brightness(1.08);\n}\n\n.ui-pop[data-v-d1483ac5] { position: relative; display: inline-flex;\n}\n.ui-pop-panel[data-v-d1483ac5] {\n  position: absolute; top: calc(100% + 5px); z-index: 50;\n  background: var(--st-panel); border: 1px solid var(--st-border); border-radius: 8px;\n  padding: 10px 12px; min-width: 240px; max-width: 320px; max-height: 360px; overflow-y: auto;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);\n  font-size: 11px; line-height: 1.5; color: var(--st-text); cursor: default;\n}\n.ui-pop-panel.right[data-v-d1483ac5] { right: 0;\n}\n.ui-pop-panel.left[data-v-d1483ac5] { left: 0;\n}\n.ui-pop-panel.up[data-v-d1483ac5] { top: auto; bottom: calc(100% + 5px);\n}\n\n.canvas-wrap[data-v-f9e2f262] { display: flex; flex-direction: column; gap: 6px;\n}\n.toolbar[data-v-f9e2f262] { display: flex; flex-wrap: wrap; gap: 5px; align-items: center;\n}\n.mdi[data-v-f9e2f262] { font-size: 15px; line-height: 1;\n}\n.tag .mdi[data-v-f9e2f262] { font-size: 1em;\n}\n.seg[data-v-f9e2f262] { display: flex; gap: 2px;\n}\n/* uniform square-ish icon buttons */\n.ic[data-v-f9e2f262] {\n  display: inline-flex; align-items: center; justify-content: center;\n  min-width: 26px; height: 24px; padding: 0 6px; box-sizing: border-box;\n  background: var(--st-btn); color: var(--st-text); border: 1px solid var(--st-border);\n  border-radius: 5px; font-size: 12px; line-height: 1; cursor: pointer;\n}\n.ic[data-v-f9e2f262]:hover { border-color: var(--st-accent);\n}\n.ic.on[data-v-f9e2f262] { background: var(--st-accent); border-color: var(--st-accent); color: var(--st-on-accent, #fff);\n}\n.divider[data-v-f9e2f262] { width: 1px; height: 18px; background: var(--st-border); margin: 0 2px;\n}\n.spacer[data-v-f9e2f262] { flex: 1 1 auto;\n}\n/* compact ref / view dropdown menus */\n.cmenu[data-v-f9e2f262] { display: flex; flex-direction: column; gap: 5px; min-width: 170px;\n}\n.citem[data-v-f9e2f262] { display: flex; align-items: center; gap: 6px; text-align: left; background: var(--st-btn); border: 1px solid var(--st-border); color: var(--st-text); border-radius: 5px; padding: 5px 8px; font-size: 11px; cursor: pointer;\n}\n.citem[data-v-f9e2f262]:hover { border-color: var(--st-accent);\n}\n.citem.on[data-v-f9e2f262] { background: var(--st-accent); border-color: var(--st-accent); color: var(--st-on-accent, #fff);\n}\n.crow[data-v-f9e2f262] { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--st-muted);\n}\n.crow input[type='range'][data-v-f9e2f262] { flex: 1; accent-color: var(--st-accent);\n}\n.crow input[type='number'][data-v-f9e2f262] { width: 54px; background: var(--st-input); border: 1px solid var(--st-border); color: var(--st-text); border-radius: 4px; padding: 3px; font-size: 11px;\n}\n.ckrow[data-v-f9e2f262] { gap: 12px;\n}\n.cdiv[data-v-f9e2f262] { border-top: 1px solid var(--st-border); margin: 3px 0;\n}\n.cgroup[data-v-f9e2f262] { font-size: 9px; text-transform: uppercase; letter-spacing: .5px; color: var(--st-muted);\n}\n.chint[data-v-f9e2f262] { margin: 2px 0 0; font-size: 10px; line-height: 1.4; color: var(--st-muted);\n}\n.cic[data-v-f9e2f262] { display: inline-flex; align-items: center; justify-content: center; background: var(--st-btn); border: 1px solid var(--st-border); color: var(--st-text); border-radius: 4px; width: 26px; height: 24px; cursor: pointer;\n}\n.cic[data-v-f9e2f262]:hover { border-color: var(--st-accent);\n}\n.stage[data-v-f9e2f262] {\n  position: relative; width: 100%; background: var(--st-input);\n  border: 1px solid var(--st-border); border-radius: 6px; overflow: hidden;\n  touch-action: none; user-select: none; cursor: crosshair;\n}\n.stage.dragging[data-v-f9e2f262] { cursor: grabbing;\n}\n.stage[data-v-f9e2f262]:focus { outline: none;\n}\n.backdrop[data-v-f9e2f262] { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none;\n}\n.grid[data-v-f9e2f262] {\n  position: absolute; inset: 0; pointer-events: none;\n  background-image: linear-gradient(to right, rgba(128,128,128,.18) 1px, transparent 1px),\n    linear-gradient(to bottom, rgba(128,128,128,.18) 1px, transparent 1px);\n  background-size: 10% 10%;\n}\n.box[data-v-f9e2f262] { position: absolute; border: 2px solid; box-sizing: border-box; cursor: move; background: transparent; transition: background .1s;\n}\n.box[data-v-f9e2f262]:hover { background: var(--fill);\n}\n.box.sel[data-v-f9e2f262] { background: var(--fill); box-shadow: 0 0 0 1.5px var(--st-accent, #3b82f6); z-index: 4;\n}\n.box.primary[data-v-f9e2f262] { box-shadow: 0 0 0 1px #fff, 0 0 0 2px var(--st-accent, #3b82f6), 0 0 10px rgba(0,0,0,.6); z-index: 5;\n}\n.box.muted[data-v-f9e2f262] { opacity: 0.32; border-style: dashed; background: transparent !important;\n}\n.box.muted .tag[data-v-f9e2f262] { opacity: 0.6;\n}\n.box.draft[data-v-f9e2f262] { border-style: dashed; opacity: 0.8; pointer-events: none; background: rgba(156,163,175,.12);\n}\n.tag[data-v-f9e2f262] {\n  position: absolute; top: 0; left: 0; transform: translateY(-100%);\n  font-size: 10px; line-height: 1.4; padding: 1px 5px; white-space: nowrap;\n  max-width: 220px; overflow: hidden; text-overflow: ellipsis;\n  border-radius: 3px 3px 0 0; pointer-events: none;\n}\n.h[data-v-f9e2f262] { position: absolute; width: 11px; height: 11px; background: #fff; border: 1px solid #333; border-radius: 2px;\n}\n.h-nw[data-v-f9e2f262] { top: -6px; left: -6px; cursor: nwse-resize;\n}\n.h-n[data-v-f9e2f262]  { top: -6px; left: 50%; margin-left: -5px; cursor: ns-resize;\n}\n.h-ne[data-v-f9e2f262] { top: -6px; right: -6px; cursor: nesw-resize;\n}\n.h-e[data-v-f9e2f262]  { top: 50%; right: -6px; margin-top: -5px; cursor: ew-resize;\n}\n.h-se[data-v-f9e2f262] { bottom: -6px; right: -6px; cursor: nwse-resize;\n}\n.h-s[data-v-f9e2f262]  { bottom: -6px; left: 50%; margin-left: -5px; cursor: ns-resize;\n}\n.h-sw[data-v-f9e2f262] { bottom: -6px; left: -6px; cursor: nesw-resize;\n}\n.h-w[data-v-f9e2f262]  { top: 50%; left: -6px; margin-top: -5px; cursor: ew-resize;\n}\n\n.ui-card[data-v-df502338] {\n  background: var(--st-panel); border: 1px solid var(--st-border); border-radius: 7px;\n  padding: 8px; display: flex; flex-direction: column; gap: 7px;\n}\n.ui-card-head[data-v-df502338] { display: flex; align-items: center; justify-content: space-between; gap: 8px;\n}\n.ui-card-title[data-v-df502338] { font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--st-muted);\n}\n\n.palette[data-v-c5766e79] { display: flex; flex-direction: column; gap: 4px;\n}\n.swatches[data-v-c5766e79] { display: flex; flex-wrap: wrap; gap: 6px; align-items: center;\n}\n.swatch-wrap[data-v-c5766e79] { position: relative;\n}\n.swatch[data-v-c5766e79] {\n  display: block; width: 26px; height: 26px; border-radius: 5px;\n  border: 1px solid var(--st-border); cursor: pointer; overflow: hidden;\n}\n.swatch input[data-v-c5766e79] { opacity: 0; width: 100%; height: 100%; cursor: pointer;\n}\n.x[data-v-c5766e79] {\n  position: absolute; top: -6px; right: -6px; width: 15px; height: 15px;\n  border-radius: 50%; border: none; background: #b23; color: #fff;\n  font-size: 11px; line-height: 11px; cursor: pointer; padding: 0;\n}\n.add[data-v-c5766e79] {\n  width: 26px; height: 26px; border-radius: 5px; cursor: pointer;\n  border: 1px dashed var(--st-border); background: transparent;\n  color: var(--st-muted); font-size: 16px; line-height: 1;\n}\n.hint[data-v-c5766e79] { font-size: 10px; color: var(--st-muted);\n}\n\n.combo[data-v-dbd9a642] { display: flex; gap: 4px;\n}\n.combo input[data-v-dbd9a642] { flex: 1; min-width: 0; background: var(--st-input); border: 1px solid var(--st-border); color: var(--st-text); border-radius: 5px; padding: 6px; font-size: 12px;\n}\n.cpick[data-v-dbd9a642] { flex: none; width: 74px; background: var(--st-btn); border: 1px solid var(--st-border); color: var(--st-muted); border-radius: 5px; cursor: pointer; font-size: 11px; padding: 0 2px;\n}\n.cpick[data-v-dbd9a642]:hover { border-color: var(--st-accent);\n}\n.cpick[data-v-dbd9a642]:hover { border-color: var(--st-accent);\n}\n\n.en[data-v-21ab2cd1] { font-size: 12px; color: var(--st-text); display: flex; gap: 5px; align-items: center; font-weight: 600;\n}\n.hgroup[data-v-21ab2cd1] { display: flex; gap: 6px; align-items: center;\n}\n.seg[data-v-21ab2cd1] { display: flex; gap: 2px;\n}\n.field[data-v-21ab2cd1] { display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: var(--st-muted);\n}\n.field input[data-v-21ab2cd1] { background: var(--st-input); border: 1px solid var(--st-border); color: var(--st-text); border-radius: 5px; padding: 6px; font-size: 12px;\n}\n\n.adds[data-v-d59a72ab] { display: flex; gap: 4px;\n}\nul[data-v-d59a72ab] { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; flex: 1 1 auto; min-height: 80px; overflow-y: auto;\n}\nli[data-v-d59a72ab] {\n  display: flex; align-items: center; gap: 6px; padding: 4px 6px; border-radius: 5px;\n  background: var(--st-input); border: 1px solid transparent; cursor: pointer; font-size: 12px; color: var(--st-text);\n}\nli[data-v-d59a72ab]:hover { border-color: var(--st-border);\n}\nli.sel[data-v-d59a72ab] { border-color: var(--st-accent);\n}\nli.muted .snip[data-v-d59a72ab] { opacity: .45; text-decoration: line-through;\n}\n.eye[data-v-d59a72ab] { background: none; border: none; cursor: pointer; padding: 0; color: var(--st-muted); flex: none; line-height: 1; display: inline-flex;\n}\n.eye .mdi[data-v-d59a72ab] { font-size: 15px;\n}\n.dot[data-v-d59a72ab] { width: 9px; height: 9px; border-radius: 2px; flex: none;\n}\n.idx[data-v-d59a72ab] { color: var(--st-muted); width: 14px; flex: none;\n}\n.link[data-v-d59a72ab] { flex: none; font-size: 13px; color: var(--st-muted);\n}\n.snip[data-v-d59a72ab] { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;\n}\n.typ[data-v-d59a72ab] { color: var(--st-muted); flex: none; font-size: 14px;\n}\n.ops[data-v-d59a72ab] { display: flex; gap: 1px; opacity: 0; transition: opacity .12s;\n}\nli:hover .ops[data-v-d59a72ab], li.sel .ops[data-v-d59a72ab] { opacity: 1;\n}\n.ops button[data-v-d59a72ab] { display: inline-flex; align-items: center; justify-content: center; background: var(--st-btn); border: 1px solid var(--st-border); color: var(--st-muted); border-radius: 3px; width: 18px; height: 18px; font-size: 11px; cursor: pointer; padding: 0;\n}\n.ops button .mdi[data-v-d59a72ab] { font-size: 13px;\n}\n.ops button[data-v-d59a72ab]:hover { color: var(--st-text); border-color: var(--st-accent);\n}\n.ops button.del[data-v-d59a72ab]:hover { color: #fff; background: #b91c1c; border-color: #b91c1c;\n}\n.empty[data-v-d59a72ab] { font-size: 11px; color: var(--st-muted); margin: 2px 0;\n}\n\n.jctrl[data-v-00094c24] { display: flex; align-items: center; gap: 5px; flex-wrap: wrap;\n}\n.jlabel[data-v-00094c24] { font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--st-muted);\n}\n.grow[data-v-00094c24] { flex: 1 1 auto;\n}\n.warns[data-v-00094c24] { font-size: 11px; color: #f59e0b; cursor: help;\n}\n.warns.ok[data-v-00094c24] { color: #34d399;\n}\n.syncerr[data-v-00094c24] { font-size: 11px; color: #f87171; cursor: help;\n}\n\n.ehead[data-v-35a7d802] { display: flex; align-items: center; gap: 8px; width: 100%;\n}\n.grow[data-v-35a7d802] { flex: 1 1 auto;\n}\n.color[data-v-35a7d802] { position: relative; width: 22px; height: 22px; cursor: pointer; flex: none;\n}\n.color .chip[data-v-35a7d802] { display: block; width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--st-border);\n}\n.color input[data-v-35a7d802] { position: absolute; inset: 0; opacity: 0; cursor: pointer;\n}\n.lbl[data-v-35a7d802] { font-size: 12px; color: var(--st-text); font-weight: 600;\n}\n.seg[data-v-35a7d802] { display: flex; gap: 2px;\n}\n/* icon-sized to match UiButton.icon, with green/red state the shared button can't express */\n.mute[data-v-35a7d802] {\n  display: inline-flex; align-items: center; justify-content: center; flex: none;\n  min-width: 26px; height: 24px; padding: 0 6px; box-sizing: border-box;\n  background: var(--st-btn); color: #34d399; border: 1px solid var(--st-border);\n  border-radius: 5px; font-size: 12px; cursor: pointer;\n}\n.mute[data-v-35a7d802]:hover { border-color: var(--st-accent);\n}\n.mute.off[data-v-35a7d802] { color: #f87171;\n}\n.mute .mdi[data-v-35a7d802] { font-size: 15px; line-height: 1;\n}\n.erow[data-v-35a7d802] { display: flex; align-items: center; gap: 8px; flex-wrap: wrap;\n}\n.bbtoggle[data-v-35a7d802] { font-size: 11px; color: var(--st-muted); display: flex; gap: 4px; align-items: center;\n}\n.coords[data-v-35a7d802] { display: inline-flex; gap: 4px;\n}\n.coords input[data-v-35a7d802] { width: 46px; background: var(--st-input); border: 1px solid var(--st-border); color: var(--st-text); border-radius: 4px; padding: 3px; font-size: 11px;\n}\n.autohint[data-v-35a7d802] { font-size: 10px; color: var(--st-muted); font-style: italic;\n}\n\n/* label left, control fills right — keeps each field to one tidy line */\n.filine[data-v-35a7d802] { display: flex; gap: 8px; align-items: flex-start; font-size: 11px; color: var(--st-muted);\n}\n.filine > span[data-v-35a7d802] { width: 54px; flex: none; padding-top: 5px; text-align: right;\n}\n.filine input[type='text'][data-v-35a7d802], .filine textarea[data-v-35a7d802] {\n  flex: 1; background: var(--st-input); border: 1px solid var(--st-border); color: var(--st-text);\n  border-radius: 5px; padding: 6px; font-size: 12px; resize: vertical; font-family: inherit;\n}\n.filine[data-v-35a7d802] .palette { flex: 1;\n}\n\n.json[data-v-2bc670fb] {\n  margin: 0; background: var(--st-input); border: 1px solid var(--st-border); border-radius: 6px; padding: 8px;\n  font-size: 11px; line-height: 1.4; max-height: 320px; overflow: auto; color: var(--st-text);\n  white-space: pre; font-family: ui-monospace, monospace;\n}\n.json.edit[data-v-2bc670fb] { width: 100%; box-sizing: border-box; min-height: 160px; max-height: 360px; resize: vertical; white-space: pre;\n}\n.json.edit.bad[data-v-2bc670fb] { border-color: #f87171;\n}\n.errhead[data-v-2bc670fb] { display: flex; align-items: center; gap: 8px; font-size: 10px; color: #f87171; font-family: ui-monospace, monospace;\n}\n.errhead .msg[data-v-2bc670fb] { flex: 1;\n}\n.ebtn[data-v-2bc670fb] { flex: none; background: var(--st-btn); border: 1px solid var(--st-border); color: var(--st-muted); border-radius: 3px; font-size: 10px; padding: 1px 6px; cursor: pointer;\n}\n.ebtn[data-v-2bc670fb]:hover { color: var(--st-text); border-color: var(--st-accent);\n}\n.errframe[data-v-2bc670fb] { margin: 4px 0 0; padding: 6px 8px; background: var(--st-input); border: 1px solid var(--st-border); border-radius: 4px; font: 11px/1.5 ui-monospace, monospace; color: var(--st-text); white-space: pre; overflow-x: auto; cursor: pointer;\n}\n.errframe[data-v-2bc670fb]:hover { border-color: var(--st-accent);\n}\n.warnlist[data-v-2bc670fb] { margin: 0; padding-left: 16px; font-size: 10px; color: #f59e0b; max-height: 90px; overflow: auto;\n}\n\n/* Theme tokens — map ComfyUI's theme-aware CSS vars to our semantic names,\n   with the old dark values as fallbacks. They inherit into child components. */\n.studio[data-v-211a2a9d] {\n  --st-bg: var(--comfy-menu-bg, #1a1a1f);\n  --st-panel: var(--comfy-menu-secondary-bg, #202026);\n  --st-input: var(--comfy-input-bg, #15151a);\n  --st-btn: var(--comfy-input-bg, #2a2a30);\n  --st-text: var(--input-text, #e5e5ea);\n  --st-muted: var(--descrip-text, #9aa0aa);\n  --st-border: var(--border-color, #3a3a44);\n  --st-accent: var(--p-primary-color, #3b82f6);\n  --st-on-accent: #fff;\n\n  display: flex; flex-direction: column; gap: 9px; padding: 10px;\n  font-family: var(--p-font-family, -apple-system, system-ui, sans-serif); color: var(--st-text);\n  /* transparent so the node's own body colour shows through the gaps between\n     cards (cards keep their --st-panel bg); feels more integrated with the node */\n  background: transparent; box-sizing: border-box;\n  /* definite height so inner flex areas (list/JSON) scroll instead of\n     overflowing; overflow-y:auto is the safety net so when the node is too\n     small to fit everything, the whole studio scrolls and nothing (incl. the\n     background resize grip) gets clipped. */\n  width: 100%; height: 100%; overflow-y: auto;\n}\n/* divider used inside the canvas-toolbar lead slot (IdeogramStudio scope) */\n.divider[data-v-211a2a9d] { width: 1px; height: 18px; background: var(--st-border); margin: 0 2px;\n}\n.help .h[data-v-211a2a9d] { margin: 8px 0 3px; font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--st-accent); font-weight: 700;\n}\n.help .h[data-v-211a2a9d]:first-child { margin-top: 0;\n}\n.help dl[data-v-211a2a9d] { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 8px;\n}\n.help dt[data-v-211a2a9d] { color: var(--st-text); font-weight: 600; white-space: nowrap;\n}\n.help dt .mdi[data-v-211a2a9d] { font-size: 13px; color: var(--st-muted);\n}\n.help dd[data-v-211a2a9d] { margin: 0; color: var(--st-muted);\n}\n.help .tip[data-v-211a2a9d] { margin: 9px 0 0; color: var(--st-muted); border-top: 1px solid var(--st-border); padding-top: 7px;\n}\n.help .credit[data-v-211a2a9d] { margin: 9px 0 0; font-size: 10px; color: var(--st-muted); line-height: 1.6;\n}\n.help .credit a[data-v-211a2a9d] { color: var(--st-accent); text-decoration: none;\n}\n.help .credit a[data-v-211a2a9d]:hover { text-decoration: underline;\n}\n/* resolution picker (aspect × megapixels — matches core ResolutionSelector) */\n.resmenu[data-v-211a2a9d] { display: flex; flex-direction: column; gap: 7px; width: 230px;\n}\n.resmenu .rrow[data-v-211a2a9d] { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 11px; color: var(--st-muted);\n}\n.resmenu select[data-v-211a2a9d], .resmenu input[data-v-211a2a9d] { background: var(--st-input); border: 1px solid var(--st-border); color: var(--st-text); border-radius: 4px; padding: 4px; font-size: 11px;\n}\n.resmenu input[data-v-211a2a9d] { width: 64px;\n}\n.resmenu .rdiv[data-v-211a2a9d] { border-top: 1px solid var(--st-border); margin: 1px 0;\n}\n/* overlay settings (⚙) */\n.adv[data-v-211a2a9d] { display: flex; flex-direction: column; gap: 7px; font-size: 11px; color: var(--st-muted); width: 220px;\n}\n.adv .ahint[data-v-211a2a9d] { margin: 0; font-size: 10px; line-height: 1.45; color: var(--st-muted);\n}\n.adv .gh[data-v-211a2a9d] { font-size: 10px; text-transform: uppercase; letter-spacing: .4px; color: var(--st-muted);\n}\n.adv .orow[data-v-211a2a9d] { display: flex; align-items: center; justify-content: space-between; gap: 8px;\n}\n.adv .ochecks[data-v-211a2a9d] { display: flex; gap: 12px;\n}\n.adv input[type='number'][data-v-211a2a9d] { width: 60px; background: var(--st-input); border: 1px solid var(--st-border); color: var(--st-text); border-radius: 4px; padding: 3px; font-size: 11px;\n}\n.adv input[type='range'][data-v-211a2a9d] { width: 100px; accent-color: var(--st-accent);\n}\n.adv .ck[data-v-211a2a9d] { display: flex; align-items: center; gap: 4px;\n}\n/* collapsible \"prompt\" card holding summary + background */\n.acc[data-v-211a2a9d] { display: flex; align-items: center; justify-content: space-between; width: 100%; background: none; border: none; cursor: pointer; color: var(--st-muted); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; padding: 0;\n}\n.acc[data-v-211a2a9d]:hover { color: var(--st-text);\n}\n.acc .chev[data-v-211a2a9d] { font-size: 12px;\n}\n.pfield[data-v-211a2a9d] { display: flex; flex-direction: column; gap: 3px; font-size: 10px; color: var(--st-muted);\n}\n.pfield textarea[data-v-211a2a9d] {\n  background: var(--st-input); border: 1px solid var(--st-border); color: var(--st-text); border-radius: 6px;\n  padding: 7px; font-size: 12px; resize: vertical; font-family: inherit; line-height: 1.4;\n}\n/* grow to fill a tall node, but never shrink below content (shrink:0) — on a\n   small node the studio scrolls rather than squeezing/clipping the canvas. */\n/* sidebar is capped so the canvas column soaks up the rest — much better for\n   wide/landscape canvases (and you can drag the node wider to grow it more). */\n.main[data-v-211a2a9d] { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 300px); gap: 12px; align-items: stretch; flex: 1 0 auto;\n}\n/* center the canvas vertically so spare height splits above/below it instead\n   of pooling under it when the elements list makes the right column taller */\n.left[data-v-211a2a9d] { display: flex; flex-direction: column; gap: 8px; min-width: 0; align-self: center;\n}\n.right[data-v-211a2a9d] { display: flex; flex-direction: column; gap: 8px; min-width: 0; min-height: 0;\n}\n@media (max-width: 520px) {\n.main[data-v-211a2a9d] { grid-template-columns: 1fr;\n}\n}\n";document.head.appendChild(s);})();import { app } from "../../../scripts/app.js";
 import { api } from "../../../scripts/api.js";
 /**
 * @vue/shared v3.5.35
@@ -6718,7 +6718,7 @@ function nextBoxColor() {
   return c;
 }
 function emptyUi() {
-  return { sync: false, showLabels: true, backdropOpacity: 0.5, newType: "obj" };
+  return { sync: true, showLabels: true, backdropOpacity: 0.5, newType: "obj", jsonOpen: false, promptOpen: true, showPresets: false, jsonSync: false };
 }
 function emptyOverlay() {
   return { lineWidth: 3, fillAlpha: 0.18, labelSize: 16, showIndex: true, showText: true };
@@ -7044,6 +7044,41 @@ function createStudioStore() {
     },
     load(s) {
       Object.assign(store.state, emptyState(), s);
+      store.state.ui = { ...emptyUi(), ...s.ui || {} };
+    },
+    json: { editing: false, draft: "", syncError: "" },
+    jsonStartEdit() {
+      store.json.draft = serialize(store.state).pretty;
+      store.json.editing = true;
+      store.state.ui.jsonOpen = true;
+    },
+    jsonCancel() {
+      store.json.editing = false;
+    },
+    jsonTidy() {
+      try {
+        store.json.draft = JSON.stringify(JSON.parse(store.json.draft), null, 2);
+      } catch {
+      }
+    },
+    jsonApply() {
+      if (store.importCaptionJson(store.json.draft).ok) store.json.editing = false;
+    },
+    importCaptionJson(text) {
+      let obj;
+      try {
+        obj = JSON.parse(text);
+      } catch (e) {
+        return { ok: false, error: String(e?.message || e) };
+      }
+      const parts = captionToState(obj);
+      store.state.high_level_description = parts.high_level_description;
+      store.state.style = parts.style;
+      store.state.background = parts.background;
+      store.state.elements = parts.elements;
+      store.select(null);
+      store.snapshot();
+      return { ok: true };
     }
   });
   return store;
@@ -7056,7 +7091,34 @@ function useStudioStore() {
   if (!s) throw new Error("StudioStore not provided");
   return s;
 }
-const _sfc_main$9 = /* @__PURE__ */ defineComponent({
+const refSyncImage = /* @__PURE__ */ ref(null);
+const jsonSyncCaption = /* @__PURE__ */ ref({ json: "", n: 0 });
+let inited = false;
+function initRefSync() {
+  if (inited) return;
+  inited = true;
+  try {
+    ;
+    api.addEventListener("ideogram-studio.ref-sync", (e) => {
+      const d = e && e.detail || {};
+      if (!d.filename) return;
+      const p2 = new URLSearchParams({
+        filename: d.filename,
+        subfolder: d.subfolder || "",
+        type: d.type || "temp"
+      });
+      refSyncImage.value = `/view?${p2.toString()}&r=${Date.now()}`;
+    });
+    api.addEventListener("ideogram-studio.json-sync", (e) => {
+      const d = e && e.detail || {};
+      if (typeof d.json !== "string") return;
+      jsonSyncCaption.value = { json: d.json, n: jsonSyncCaption.value.n + 1 };
+    });
+  } catch (err) {
+    console.warn("[IdeogramStudio] sync listener failed to register", err);
+  }
+}
+const _sfc_main$b = /* @__PURE__ */ defineComponent({
   __name: "UiButton",
   props: {
     variant: { default: "default" },
@@ -7080,8 +7142,8 @@ const _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const UiButton = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["__scopeId", "data-v-d20cb0e3"]]);
-const _sfc_main$8 = /* @__PURE__ */ defineComponent({
+const UiButton = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["__scopeId", "data-v-417623a2"]]);
+const _sfc_main$a = /* @__PURE__ */ defineComponent({
   __name: "UiPopover",
   props: {
     align: { default: "right" },
@@ -7097,11 +7159,11 @@ const _sfc_main$8 = /* @__PURE__ */ defineComponent({
       if (e.key === "Escape") close();
     }
     function bind() {
-      document.addEventListener("mousedown", onDoc, true);
+      document.addEventListener("pointerdown", onDoc, true);
       document.addEventListener("keydown", onKey);
     }
     function unbind() {
-      document.removeEventListener("mousedown", onDoc, true);
+      document.removeEventListener("pointerdown", onDoc, true);
       document.removeEventListener("keydown", onKey);
     }
     function close() {
@@ -7137,39 +7199,29 @@ const _sfc_main$8 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const UiPopover = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["__scopeId", "data-v-8bd479dc"]]);
-const refSyncImage = /* @__PURE__ */ ref(null);
-let inited = false;
-function initRefSync() {
-  if (inited) return;
-  inited = true;
-  try {
-    ;
-    api.addEventListener("ideogram-studio.ref-sync", (e) => {
-      const d = e && e.detail || {};
-      if (!d.filename) return;
-      const p2 = new URLSearchParams({
-        filename: d.filename,
-        subfolder: d.subfolder || "",
-        type: d.type || "temp"
-      });
-      refSyncImage.value = `/view?${p2.toString()}&r=${Date.now()}`;
-    });
-  } catch (err) {
-    console.warn("[IdeogramStudio] ref-sync listener failed to register", err);
-  }
-}
-const _hoisted_1$7 = { class: "canvas-wrap" };
-const _hoisted_2$7 = {
+const UiPopover = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["__scopeId", "data-v-d1483ac5"]]);
+const _hoisted_1$9 = { class: "canvas-wrap" };
+const _hoisted_2$9 = {
+  key: 0,
+  class: "divider"
+};
+const _hoisted_3$9 = {
   class: "seg",
   title: "What new boxes become when you draw"
 };
-const _hoisted_3$7 = { class: "cluster" };
-const _hoisted_4$6 = { class: "dims" };
-const _hoisted_5$6 = ["src"];
-const _hoisted_6$5 = ["data-box"];
-const _hoisted_7$4 = ["data-handle"];
-const _sfc_main$7 = /* @__PURE__ */ defineComponent({
+const _hoisted_4$6 = { class: "cmenu" };
+const _hoisted_5$6 = { class: "crow" };
+const _hoisted_6$5 = { class: "cmenu" };
+const _hoisted_7$4 = { class: "crow" };
+const _hoisted_8$4 = { class: "crow" };
+const _hoisted_9$4 = { class: "crow" };
+const _hoisted_10$3 = { class: "crow" };
+const _hoisted_11$3 = { class: "crow" };
+const _hoisted_12$3 = { class: "crow ckrow" };
+const _hoisted_13$3 = ["src"];
+const _hoisted_14$2 = ["data-box"];
+const _hoisted_15$2 = ["data-handle"];
+const _sfc_main$9 = /* @__PURE__ */ defineComponent({
   __name: "BBoxCanvas",
   setup(__props) {
     const store = useStudioStore();
@@ -7244,6 +7296,9 @@ const _sfc_main$7 = /* @__PURE__ */ defineComponent({
       };
     }
     let drag = null;
+    function boxesUnder(p2) {
+      return store.state.elements.filter((el) => el.bbox && el.enabled !== false && p2.x >= el.bbox[1] && p2.x <= el.bbox[3] && p2.y >= el.bbox[0] && p2.y <= el.bbox[2]).map((el) => el.id);
+    }
     function onPointerDown(ev) {
       ev.preventDefault();
       ev.stopPropagation();
@@ -7251,6 +7306,7 @@ const _sfc_main$7 = /* @__PURE__ */ defineComponent({
         stage.value.setPointerCapture(ev.pointerId);
       } catch {
       }
+      stage.value?.focus({ preventScroll: true });
       const target = ev.target;
       const handle = target.dataset.handle;
       const boxId = target.closest("[data-box]")?.getAttribute("data-box") ?? void 0;
@@ -7268,9 +7324,10 @@ const _sfc_main$7 = /* @__PURE__ */ defineComponent({
           store.select(boxId, true);
           return;
         }
+        const wasPrimary = store.selectedIds.length === 1 && store.selectedId === boxId;
         if (!store.isSelected(boxId)) store.select(boxId);
         const moveTargets = store.selectedIds.map((id) => store.getElement(id)).filter((e) => !!e?.bbox).map((e) => ({ el: e, start: [...e.bbox] }));
-        drag = { kind: "move", start, moved: false, moveTargets, clickedId: boxId };
+        drag = { kind: "move", start, moved: false, moveTargets, clickedId: boxId, wasPrimary };
         return;
       }
       draft.value = [start.y, start.x, start.y, start.x];
@@ -7327,96 +7384,245 @@ const _sfc_main$7 = /* @__PURE__ */ defineComponent({
         } else if (!drag.moved) {
           store.select(null);
         }
-      } else if (drag.kind === "move" && !drag.moved && drag.clickedId && store.selectedIds.length > 1) {
-        store.select(drag.clickedId);
+      } else if (drag.kind === "move" && !drag.moved && drag.clickedId) {
+        if (store.selectedIds.length > 1) {
+          store.select(drag.clickedId);
+        } else if (drag.wasPrimary) {
+          const ids = boxesUnder(drag.start);
+          if (ids.length > 1) {
+            const ci = ids.indexOf(drag.clickedId);
+            store.select(ids[ci === -1 ? 0 : (ci + 1) % ids.length]);
+          }
+        }
       }
       drag = null;
       hint.value = "";
+    }
+    function onKeyDown(ev) {
+      if (ev.key !== "Delete" && ev.key !== "Backspace") return;
+      if (!store.selectedIds.length) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      for (const id of [...store.selectedIds]) store.removeElement(id);
+      store.snapshot();
     }
     function bboxLabel(b) {
       return `bbox [y${b[0]} x${b[1]} y${b[2]} x${b[3]}]  ·  ${b[3] - b[1]}×${b[2] - b[0]}`;
     }
     return (_ctx, _cache) => {
-      return openBlock(), createElementBlock("div", _hoisted_1$7, [
+      return openBlock(), createElementBlock("div", _hoisted_1$9, [
         createBaseVNode("div", {
           class: "toolbar",
-          onPointerdown: _cache[7] || (_cache[7] = withModifiers(() => {
+          onPointerdown: _cache[12] || (_cache[12] = withModifiers(() => {
           }, ["stop"]))
         }, [
-          createBaseVNode("div", _hoisted_2$7, [
+          renderSlot(_ctx.$slots, "lead", {}, void 0),
+          _ctx.$slots.lead ? (openBlock(), createElementBlock("span", _hoisted_2$9)) : createCommentVNode("", true),
+          createBaseVNode("div", _hoisted_3$9, [
             createVNode(UiButton, {
+              icon: "",
               active: newType.value === "obj",
+              title: "New boxes are objects",
               onClick: _cache[0] || (_cache[0] = ($event) => newType.value = "obj")
             }, {
-              default: withCtx(() => [..._cache[9] || (_cache[9] = [
-                createTextVNode("obj", -1)
+              default: withCtx(() => [..._cache[14] || (_cache[14] = [
+                createBaseVNode("i", { class: "mdi mdi-shape-outline" }, null, -1)
               ])]),
               _: 1
             }, 8, ["active"]),
             createVNode(UiButton, {
+              icon: "",
               active: newType.value === "text",
+              title: "New boxes are text",
               onClick: _cache[1] || (_cache[1] = ($event) => newType.value = "text")
             }, {
-              default: withCtx(() => [..._cache[10] || (_cache[10] = [
-                createTextVNode("text", -1)
+              default: withCtx(() => [..._cache[15] || (_cache[15] = [
+                createBaseVNode("i", { class: "mdi mdi-format-text" }, null, -1)
               ])]),
               _: 1
             }, 8, ["active"])
           ]),
-          _cache[11] || (_cache[11] = createBaseVNode("span", { class: "divider" }, null, -1)),
-          createBaseVNode("div", _hoisted_3$7, [
-            createBaseVNode("button", {
-              class: "ic",
-              title: "Load a reference image to trace over (or drop one on the canvas)",
-              onClick: pickImage
-            }, "🖼"),
-            createBaseVNode("button", {
-              class: normalizeClass(["ic sync", { on: syncRef.value }]),
-              title: "Sync: an Ideogram Studio Ref Sync node updates this reference live",
-              onClick: toggleSync
-            }, toDisplayString(syncRef.value ? "◉ sync" : "○ sync"), 3),
-            backdropUrl.value ? withDirectives((openBlock(), createElementBlock("input", {
-              key: 0,
-              class: "op",
-              type: "range",
-              min: "0",
-              max: "1",
-              step: "0.05",
-              "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => backdropOpacity.value = $event),
-              title: "Reference opacity"
-            }, null, 512)), [
-              [
-                vModelText,
-                backdropOpacity.value,
-                void 0,
-                { number: true }
-              ]
-            ]) : createCommentVNode("", true),
-            backdropUrl.value ? (openBlock(), createElementBlock("button", {
-              key: 1,
-              class: "ic",
-              title: "Remove reference image",
-              onClick: _cache[3] || (_cache[3] = ($event) => backdropUrl.value = null)
-            }, "✕")) : createCommentVNode("", true)
-          ]),
-          _cache[12] || (_cache[12] = createBaseVNode("span", { class: "divider" }, null, -1)),
-          createBaseVNode("button", {
-            class: normalizeClass(["ic", { on: showLabels.value }]),
-            title: "Toggle labels",
-            onClick: _cache[4] || (_cache[4] = ($event) => showLabels.value = !showLabels.value)
-          }, "⌗", 2),
-          createBaseVNode("button", {
-            class: "ic",
-            title: "Mirror the whole scene horizontally",
-            onClick: _cache[5] || (_cache[5] = ($event) => unref(store).flipAll("h"))
-          }, "⇄"),
-          createBaseVNode("button", {
-            class: "ic",
-            title: "Mirror the whole scene vertically",
-            onClick: _cache[6] || (_cache[6] = ($event) => unref(store).flipAll("v"))
-          }, "⇅"),
-          _cache[13] || (_cache[13] = createBaseVNode("span", { class: "spacer" }, null, -1)),
-          createBaseVNode("span", _hoisted_4$6, toDisplayString(unref(store).state.width) + "×" + toDisplayString(unref(store).state.height), 1),
+          _cache[34] || (_cache[34] = createBaseVNode("span", { class: "divider" }, null, -1)),
+          createVNode(UiPopover, { align: "left" }, {
+            trigger: withCtx(() => [
+              createVNode(UiButton, {
+                icon: "",
+                active: !!backdropUrl.value || syncRef.value,
+                title: "Reference / trace image"
+              }, {
+                default: withCtx(() => [..._cache[16] || (_cache[16] = [
+                  createBaseVNode("i", { class: "mdi mdi-image-outline" }, null, -1)
+                ])]),
+                _: 1
+              }, 8, ["active"])
+            ]),
+            default: withCtx(() => [
+              createBaseVNode("div", _hoisted_4$6, [
+                createBaseVNode("button", {
+                  class: "citem",
+                  onClick: pickImage
+                }, [..._cache[17] || (_cache[17] = [
+                  createBaseVNode("i", { class: "mdi mdi-folder-image" }, null, -1),
+                  createTextVNode(" load image…", -1)
+                ])]),
+                createBaseVNode("button", {
+                  class: normalizeClass(["citem", { on: syncRef.value }]),
+                  title: "Update from an Ideogram Studio Ref Sync node",
+                  onClick: toggleSync
+                }, [
+                  createBaseVNode("i", {
+                    class: normalizeClass(["mdi", syncRef.value ? "mdi-sync" : "mdi-sync-off"])
+                  }, null, 2),
+                  _cache[18] || (_cache[18] = createTextVNode(" live sync", -1))
+                ], 2),
+                createBaseVNode("label", _hoisted_5$6, [
+                  _cache[19] || (_cache[19] = createTextVNode("opacity ", -1)),
+                  withDirectives(createBaseVNode("input", {
+                    type: "range",
+                    min: "0",
+                    max: "1",
+                    step: "0.05",
+                    "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => backdropOpacity.value = $event)
+                  }, null, 512), [
+                    [
+                      vModelText,
+                      backdropOpacity.value,
+                      void 0,
+                      { number: true }
+                    ]
+                  ])
+                ]),
+                backdropUrl.value ? (openBlock(), createElementBlock("button", {
+                  key: 0,
+                  class: "citem",
+                  onClick: _cache[3] || (_cache[3] = ($event) => backdropUrl.value = null)
+                }, [..._cache[20] || (_cache[20] = [
+                  createBaseVNode("i", { class: "mdi mdi-close" }, null, -1),
+                  createTextVNode(" remove reference", -1)
+                ])])) : createCommentVNode("", true)
+              ])
+            ]),
+            _: 1
+          }),
+          _cache[35] || (_cache[35] = createBaseVNode("span", { class: "divider" }, null, -1)),
+          createVNode(UiPopover, { align: "left" }, {
+            trigger: withCtx(() => [
+              createVNode(UiButton, {
+                icon: "",
+                title: "View & overlay settings"
+              }, {
+                default: withCtx(() => [..._cache[21] || (_cache[21] = [
+                  createBaseVNode("i", { class: "mdi mdi-tune-variant" }, null, -1)
+                ])]),
+                _: 1
+              })
+            ]),
+            default: withCtx(() => [
+              createBaseVNode("div", _hoisted_6$5, [
+                createBaseVNode("label", _hoisted_7$4, [
+                  withDirectives(createBaseVNode("input", {
+                    type: "checkbox",
+                    "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => showLabels.value = $event)
+                  }, null, 512), [
+                    [vModelCheckbox, showLabels.value]
+                  ]),
+                  _cache[22] || (_cache[22] = createTextVNode(" show box labels", -1))
+                ]),
+                createBaseVNode("div", _hoisted_8$4, [
+                  _cache[25] || (_cache[25] = createTextVNode("mirror scene ", -1)),
+                  createBaseVNode("button", {
+                    class: "cic",
+                    title: "Mirror horizontally",
+                    onClick: _cache[5] || (_cache[5] = ($event) => unref(store).flipAll("h"))
+                  }, [..._cache[23] || (_cache[23] = [
+                    createBaseVNode("i", { class: "mdi mdi-flip-horizontal" }, null, -1)
+                  ])]),
+                  createBaseVNode("button", {
+                    class: "cic",
+                    title: "Mirror vertically",
+                    onClick: _cache[6] || (_cache[6] = ($event) => unref(store).flipAll("v"))
+                  }, [..._cache[24] || (_cache[24] = [
+                    createBaseVNode("i", { class: "mdi mdi-flip-vertical" }, null, -1)
+                  ])])
+                ]),
+                _cache[31] || (_cache[31] = createBaseVNode("div", { class: "cdiv" }, null, -1)),
+                _cache[32] || (_cache[32] = createBaseVNode("div", { class: "cgroup" }, "overlay output", -1)),
+                createBaseVNode("label", _hoisted_9$4, [
+                  _cache[26] || (_cache[26] = createTextVNode("line ", -1)),
+                  withDirectives(createBaseVNode("input", {
+                    type: "number",
+                    min: "1",
+                    max: "40",
+                    "onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => unref(store).state.overlay.lineWidth = $event)
+                  }, null, 512), [
+                    [
+                      vModelText,
+                      unref(store).state.overlay.lineWidth,
+                      void 0,
+                      { number: true }
+                    ]
+                  ])
+                ]),
+                createBaseVNode("label", _hoisted_10$3, [
+                  _cache[27] || (_cache[27] = createTextVNode("fill ", -1)),
+                  withDirectives(createBaseVNode("input", {
+                    type: "range",
+                    min: "0",
+                    max: "1",
+                    step: "0.02",
+                    "onUpdate:modelValue": _cache[8] || (_cache[8] = ($event) => unref(store).state.overlay.fillAlpha = $event)
+                  }, null, 512), [
+                    [
+                      vModelText,
+                      unref(store).state.overlay.fillAlpha,
+                      void 0,
+                      { number: true }
+                    ]
+                  ])
+                ]),
+                createBaseVNode("label", _hoisted_11$3, [
+                  _cache[28] || (_cache[28] = createTextVNode("label size ", -1)),
+                  withDirectives(createBaseVNode("input", {
+                    type: "number",
+                    min: "6",
+                    max: "96",
+                    "onUpdate:modelValue": _cache[9] || (_cache[9] = ($event) => unref(store).state.overlay.labelSize = $event)
+                  }, null, 512), [
+                    [
+                      vModelText,
+                      unref(store).state.overlay.labelSize,
+                      void 0,
+                      { number: true }
+                    ]
+                  ])
+                ]),
+                createBaseVNode("div", _hoisted_12$3, [
+                  createBaseVNode("label", null, [
+                    withDirectives(createBaseVNode("input", {
+                      type: "checkbox",
+                      "onUpdate:modelValue": _cache[10] || (_cache[10] = ($event) => unref(store).state.overlay.showIndex = $event)
+                    }, null, 512), [
+                      [vModelCheckbox, unref(store).state.overlay.showIndex]
+                    ]),
+                    _cache[29] || (_cache[29] = createTextVNode(" index", -1))
+                  ]),
+                  createBaseVNode("label", null, [
+                    withDirectives(createBaseVNode("input", {
+                      type: "checkbox",
+                      "onUpdate:modelValue": _cache[11] || (_cache[11] = ($event) => unref(store).state.overlay.showText = $event)
+                    }, null, 512), [
+                      [vModelCheckbox, unref(store).state.overlay.showText]
+                    ]),
+                    _cache[30] || (_cache[30] = createTextVNode(" text", -1))
+                  ])
+                ]),
+                _cache[33] || (_cache[33] = createBaseVNode("p", { class: "chint" }, "styles the overlay output (Extras node), not the reference", -1))
+              ])
+            ]),
+            _: 1
+          }),
+          _cache[36] || (_cache[36] = createBaseVNode("span", { class: "spacer" }, null, -1)),
+          renderSlot(_ctx.$slots, "trail", {}, void 0),
           createBaseVNode("input", {
             ref_key: "fileInput",
             ref: fileInput,
@@ -7430,12 +7636,14 @@ const _sfc_main$7 = /* @__PURE__ */ defineComponent({
           ref_key: "stage",
           ref: stage,
           class: normalizeClass(["stage", { dragging: !!unref(drag) }]),
+          tabindex: "0",
           onPointerdown: onPointerDown,
           onPointermove: onPointerMove,
           onPointerup: onPointerUp,
           onPointercancel: onPointerUp,
           onLostpointercapture: onPointerUp,
-          onDragover: _cache[8] || (_cache[8] = withModifiers(() => {
+          onKeydown: onKeyDown,
+          onDragover: _cache[13] || (_cache[13] = withModifiers(() => {
           }, ["prevent"])),
           onDrop,
           style: normalizeStyle(stageStyle.value)
@@ -7447,8 +7655,8 @@ const _sfc_main$7 = /* @__PURE__ */ defineComponent({
             style: normalizeStyle({ opacity: backdropOpacity.value }),
             draggable: "false",
             alt: "reference"
-          }, null, 12, _hoisted_5$6)) : createCommentVNode("", true),
-          _cache[14] || (_cache[14] = createBaseVNode("div", { class: "grid" }, null, -1)),
+          }, null, 12, _hoisted_13$3)) : createCommentVNode("", true),
+          _cache[37] || (_cache[37] = createBaseVNode("div", { class: "grid" }, null, -1)),
           (openBlock(true), createElementBlock(Fragment, null, renderList(boxed.value, (el, i) => {
             return openBlock(), createElementBlock("div", {
               key: el.id,
@@ -7460,15 +7668,20 @@ const _sfc_main$7 = /* @__PURE__ */ defineComponent({
                 key: 0,
                 class: "tag",
                 style: normalizeStyle(tagStyle(el))
-              }, toDisplayString(el.linkId ? "🔗" : el.type === "text" ? "T" : "▣") + " " + toDisplayString(i + 1) + " · " + toDisplayString(el.type === "text" ? el.text || "text" : el.desc || "obj"), 5)) : createCommentVNode("", true),
+              }, [
+                createBaseVNode("i", {
+                  class: normalizeClass(["mdi", el.linkId ? "mdi-link-variant" : el.type === "text" ? "mdi-format-text" : "mdi-vector-square"])
+                }, null, 2),
+                createTextVNode(" " + toDisplayString(i + 1) + " · " + toDisplayString(el.type === "text" ? el.text || "text" : el.desc || "obj"), 1)
+              ], 4)) : createCommentVNode("", true),
               el.id === unref(store).selectedId ? (openBlock(), createElementBlock(Fragment, { key: 1 }, renderList(HANDLES, (hdl) => {
                 return createBaseVNode("i", {
                   key: hdl,
                   class: normalizeClass(["h", "h-" + hdl]),
                   "data-handle": hdl
-                }, null, 10, _hoisted_7$4);
+                }, null, 10, _hoisted_15$2);
               }), 64)) : createCommentVNode("", true)
-            ], 14, _hoisted_6$5);
+            ], 14, _hoisted_14$2);
           }), 128)),
           draft.value ? (openBlock(), createElementBlock("div", {
             key: 1,
@@ -7480,26 +7693,26 @@ const _sfc_main$7 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const BBoxCanvas = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["__scopeId", "data-v-3dfc1551"]]);
-const _hoisted_1$6 = { class: "ui-card" };
-const _hoisted_2$6 = {
+const BBoxCanvas = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["__scopeId", "data-v-f9e2f262"]]);
+const _hoisted_1$8 = { class: "ui-card" };
+const _hoisted_2$8 = {
   key: 0,
   class: "ui-card-head"
 };
-const _hoisted_3$6 = {
+const _hoisted_3$8 = {
   key: 0,
   class: "ui-card-title"
 };
-const _sfc_main$6 = /* @__PURE__ */ defineComponent({
+const _sfc_main$8 = /* @__PURE__ */ defineComponent({
   __name: "UiCard",
   props: {
     title: {}
   },
   setup(__props) {
     return (_ctx, _cache) => {
-      return openBlock(), createElementBlock("div", _hoisted_1$6, [
-        __props.title || _ctx.$slots.header ? (openBlock(), createElementBlock("div", _hoisted_2$6, [
-          __props.title ? (openBlock(), createElementBlock("span", _hoisted_3$6, toDisplayString(__props.title), 1)) : createCommentVNode("", true),
+      return openBlock(), createElementBlock("div", _hoisted_1$8, [
+        __props.title || _ctx.$slots.header ? (openBlock(), createElementBlock("div", _hoisted_2$8, [
+          __props.title ? (openBlock(), createElementBlock("span", _hoisted_3$8, toDisplayString(__props.title), 1)) : createCommentVNode("", true),
           renderSlot(_ctx.$slots, "header", {}, void 0)
         ])) : createCommentVNode("", true),
         renderSlot(_ctx.$slots, "default", {}, void 0)
@@ -7507,14 +7720,14 @@ const _sfc_main$6 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const UiCard = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["__scopeId", "data-v-df502338"]]);
-const _hoisted_1$5 = { class: "palette" };
-const _hoisted_2$5 = { class: "swatches" };
-const _hoisted_3$5 = ["title"];
+const UiCard = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["__scopeId", "data-v-df502338"]]);
+const _hoisted_1$7 = { class: "palette" };
+const _hoisted_2$7 = { class: "swatches" };
+const _hoisted_3$7 = ["title"];
 const _hoisted_4$5 = ["value", "onInput"];
 const _hoisted_5$5 = ["onClick"];
 const _hoisted_6$4 = { class: "hint" };
-const _sfc_main$5 = /* @__PURE__ */ defineComponent({
+const _sfc_main$7 = /* @__PURE__ */ defineComponent({
   __name: "PaletteEditor",
   props: {
     modelValue: {},
@@ -7540,8 +7753,8 @@ const _sfc_main$5 = /* @__PURE__ */ defineComponent({
       emit2("update:modelValue", next);
     }
     return (_ctx, _cache) => {
-      return openBlock(), createElementBlock("div", _hoisted_1$5, [
-        createBaseVNode("div", _hoisted_2$5, [
+      return openBlock(), createElementBlock("div", _hoisted_1$7, [
+        createBaseVNode("div", _hoisted_2$7, [
           (openBlock(true), createElementBlock(Fragment, null, renderList(__props.modelValue, (c, i) => {
             return openBlock(), createElementBlock("div", {
               key: i,
@@ -7557,7 +7770,7 @@ const _sfc_main$5 = /* @__PURE__ */ defineComponent({
                   value: c,
                   onInput: ($event) => update(i, $event.target.value)
                 }, null, 40, _hoisted_4$5)
-              ], 12, _hoisted_3$5),
+              ], 12, _hoisted_3$7),
               createBaseVNode("button", {
                 class: "x",
                 title: "Remove",
@@ -7577,58 +7790,181 @@ const _sfc_main$5 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const PaletteEditor = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["__scopeId", "data-v-c5766e79"]]);
-const _hoisted_1$4 = { class: "en" };
-const _hoisted_2$4 = {
-  key: 0,
-  class: "seg"
+const PaletteEditor = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["__scopeId", "data-v-c5766e79"]]);
+const _hoisted_1$6 = { class: "combo" };
+const _hoisted_2$6 = ["value", "placeholder"];
+const _hoisted_3$6 = ["value"];
+const _sfc_main$6 = /* @__PURE__ */ defineComponent({
+  __name: "ComboInput",
+  props: {
+    modelValue: {},
+    options: { default: () => [] },
+    placeholder: { default: "" }
+  },
+  emits: ["update:modelValue"],
+  setup(__props, { emit: __emit }) {
+    const emit2 = __emit;
+    function pick(e) {
+      const sel = e.target;
+      if (sel.value) emit2("update:modelValue", sel.value);
+      sel.value = "";
+    }
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock("div", _hoisted_1$6, [
+        createBaseVNode("input", {
+          value: __props.modelValue,
+          placeholder: __props.placeholder,
+          onInput: _cache[0] || (_cache[0] = ($event) => emit2("update:modelValue", $event.target.value))
+        }, null, 40, _hoisted_2$6),
+        __props.options.length ? (openBlock(), createElementBlock("select", {
+          key: 0,
+          class: "cpick",
+          title: "Pick a preset",
+          onChange: pick
+        }, [
+          _cache[1] || (_cache[1] = createBaseVNode("option", {
+            value: "",
+            disabled: "",
+            selected: "",
+            hidden: ""
+          }, "presets…", -1)),
+          (openBlock(true), createElementBlock(Fragment, null, renderList(__props.options, (p2) => {
+            return openBlock(), createElementBlock("option", {
+              key: p2,
+              value: p2
+            }, toDisplayString(p2), 9, _hoisted_3$6);
+          }), 128))
+        ], 32)) : createCommentVNode("", true)
+      ]);
+    };
+  }
+});
+const ComboInput = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["__scopeId", "data-v-dbd9a642"]]);
+const PRESETS = {
+  // photo (camera / lens)
+  camera: [
+    "35mm, f/1.8, shallow depth of field",
+    "50mm, f/1.4, natural perspective",
+    "85mm portrait, f/2, creamy bokeh",
+    "24mm wide-angle, deep focus",
+    "100mm macro, extreme close-up",
+    "200mm telephoto, compressed background",
+    "full-frame DSLR, crisp detail",
+    "phone camera, casual snapshot",
+    "cinematic, anamorphic widescreen"
+  ],
+  lighting: [
+    "golden hour, warm side light",
+    "blue hour, cool ambient",
+    "soft diffused daylight",
+    "hard midday sun, strong shadows",
+    "rim light, backlit silhouette",
+    "studio softbox, even lighting",
+    "dramatic chiaroscuro, single source",
+    "neon, colourful city glow",
+    "candlelight, warm flicker",
+    "overcast, flat soft light",
+    "low-key, moody darkness",
+    "high-key, bright and airy"
+  ],
+  aesthetics: [
+    "moody, cinematic, desaturated",
+    "vibrant, high contrast, punchy",
+    "soft, dreamy, pastel",
+    "gritty, raw, documentary",
+    "clean, minimal, modern",
+    "vintage film, grainy, faded",
+    "epic, dramatic, grand scale",
+    "cozy, warm, intimate",
+    "ethereal, glowing, surreal"
+  ],
+  medium: [
+    "photograph",
+    "illustration",
+    "3d_render",
+    "painting",
+    "digital_art",
+    "watercolor",
+    "oil_painting",
+    "anime",
+    "concept_art"
+  ],
+  artStyle: [
+    "watercolour painting, soft washes",
+    "oil painting, visible brushstrokes",
+    "anime, cel-shaded",
+    "comic book, bold ink",
+    "pencil sketch, cross-hatching",
+    "concept art, painterly"
+  ]
 };
-const _hoisted_3$4 = { class: "field" };
+const _hoisted_1$5 = { class: "en" };
+const _hoisted_2$5 = {
+  key: 0,
+  class: "hgroup"
+};
+const _hoisted_3$5 = { class: "seg" };
 const _hoisted_4$4 = { class: "field" };
-const _hoisted_5$4 = {
+const _hoisted_5$4 = { class: "field" };
+const _hoisted_6$3 = {
   key: 0,
   class: "field"
 };
-const _hoisted_6$3 = { class: "field" };
-const _hoisted_7$3 = ["placeholder"];
+const _hoisted_7$3 = { class: "field" };
 const _hoisted_8$3 = {
   key: 1,
   class: "field"
 };
 const _hoisted_9$3 = { class: "field" };
-const _sfc_main$4 = /* @__PURE__ */ defineComponent({
+const _sfc_main$5 = /* @__PURE__ */ defineComponent({
   __name: "StylePanel",
   setup(__props) {
     const store = useStudioStore();
     const st = computed(() => store.state.style);
+    const ui = computed(() => store.state.ui);
+    const showPresets = computed(() => store.state.ui.showPresets);
+    const opts = (list) => showPresets.value ? list : [];
     return (_ctx, _cache) => {
       return openBlock(), createBlock(UiCard, null, {
         header: withCtx(() => [
-          createBaseVNode("label", _hoisted_1$4, [
+          createBaseVNode("label", _hoisted_1$5, [
             withDirectives(createBaseVNode("input", {
               type: "checkbox",
               "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => st.value.enabled = $event)
             }, null, 512), [
               [vModelCheckbox, st.value.enabled]
             ]),
-            _cache[9] || (_cache[9] = createTextVNode(" style", -1))
+            _cache[10] || (_cache[10] = createTextVNode(" style", -1))
           ]),
-          st.value.enabled ? (openBlock(), createElementBlock("div", _hoisted_2$4, [
+          st.value.enabled ? (openBlock(), createElementBlock("div", _hoisted_2$5, [
+            createBaseVNode("div", _hoisted_3$5, [
+              createVNode(UiButton, {
+                active: st.value.mode === "photo",
+                onClick: _cache[1] || (_cache[1] = ($event) => st.value.mode = "photo")
+              }, {
+                default: withCtx(() => [..._cache[11] || (_cache[11] = [
+                  createTextVNode("photo", -1)
+                ])]),
+                _: 1
+              }, 8, ["active"]),
+              createVNode(UiButton, {
+                active: st.value.mode === "art",
+                onClick: _cache[2] || (_cache[2] = ($event) => st.value.mode = "art")
+              }, {
+                default: withCtx(() => [..._cache[12] || (_cache[12] = [
+                  createTextVNode("art", -1)
+                ])]),
+                _: 1
+              }, 8, ["active"])
+            ]),
             createVNode(UiButton, {
-              active: st.value.mode === "photo",
-              onClick: _cache[1] || (_cache[1] = ($event) => st.value.mode = "photo")
+              icon: "",
+              active: showPresets.value,
+              title: "Show preset pickers",
+              onClick: _cache[3] || (_cache[3] = ($event) => ui.value.showPresets = !ui.value.showPresets)
             }, {
-              default: withCtx(() => [..._cache[10] || (_cache[10] = [
-                createTextVNode("photo", -1)
-              ])]),
-              _: 1
-            }, 8, ["active"]),
-            createVNode(UiButton, {
-              active: st.value.mode === "art",
-              onClick: _cache[2] || (_cache[2] = ($event) => st.value.mode = "art")
-            }, {
-              default: withCtx(() => [..._cache[11] || (_cache[11] = [
-                createTextVNode("art", -1)
+              default: withCtx(() => [..._cache[13] || (_cache[13] = [
+                createBaseVNode("i", { class: "mdi mdi-lightbulb-on-outline" }, null, -1)
               ])]),
               _: 1
             }, 8, ["active"])
@@ -7636,64 +7972,56 @@ const _sfc_main$4 = /* @__PURE__ */ defineComponent({
         ]),
         default: withCtx(() => [
           st.value.enabled ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [
-            createBaseVNode("label", _hoisted_3$4, [
-              _cache[12] || (_cache[12] = createBaseVNode("span", null, "aesthetics", -1)),
-              withDirectives(createBaseVNode("input", {
-                "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => st.value.aesthetics = $event),
+            createBaseVNode("div", _hoisted_4$4, [
+              _cache[14] || (_cache[14] = createBaseVNode("span", null, "aesthetics", -1)),
+              createVNode(ComboInput, {
+                modelValue: st.value.aesthetics,
+                "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => st.value.aesthetics = $event),
+                options: opts(unref(PRESETS).aesthetics),
                 placeholder: "moody, cinematic, desaturated"
-              }, null, 512), [
-                [vModelText, st.value.aesthetics]
-              ])
+              }, null, 8, ["modelValue", "options"])
             ]),
-            createBaseVNode("label", _hoisted_4$4, [
-              _cache[13] || (_cache[13] = createBaseVNode("span", null, "lighting", -1)),
-              withDirectives(createBaseVNode("input", {
-                "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => st.value.lighting = $event),
+            createBaseVNode("div", _hoisted_5$4, [
+              _cache[15] || (_cache[15] = createBaseVNode("span", null, "lighting", -1)),
+              createVNode(ComboInput, {
+                modelValue: st.value.lighting,
+                "onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => st.value.lighting = $event),
+                options: opts(unref(PRESETS).lighting),
                 placeholder: "golden hour, rim light, soft shadows"
-              }, null, 512), [
-                [vModelText, st.value.lighting]
-              ])
+              }, null, 8, ["modelValue", "options"])
             ]),
-            st.value.mode === "photo" ? (openBlock(), createElementBlock("label", _hoisted_5$4, [
-              _cache[14] || (_cache[14] = createBaseVNode("span", null, "photo (camera/lens)", -1)),
-              withDirectives(createBaseVNode("input", {
-                "onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => st.value.photo = $event),
+            st.value.mode === "photo" ? (openBlock(), createElementBlock("div", _hoisted_6$3, [
+              _cache[16] || (_cache[16] = createBaseVNode("span", null, "photo (camera / lens)", -1)),
+              createVNode(ComboInput, {
+                modelValue: st.value.photo,
+                "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => st.value.photo = $event),
+                options: opts(unref(PRESETS).camera),
                 placeholder: "35mm, f/1.4, shallow depth of field"
-              }, null, 512), [
-                [vModelText, st.value.photo]
-              ])
+              }, null, 8, ["modelValue", "options"])
             ])) : createCommentVNode("", true),
-            createBaseVNode("label", _hoisted_6$3, [
-              _cache[15] || (_cache[15] = createBaseVNode("span", null, "medium", -1)),
-              withDirectives(createBaseVNode("input", {
-                "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => st.value.medium = $event),
-                placeholder: st.value.mode === "photo" ? "photograph" : "illustration / 3d_render / painting…",
-                list: "media"
-              }, null, 8, _hoisted_7$3), [
-                [vModelText, st.value.medium]
-              ]),
-              _cache[16] || (_cache[16] = createBaseVNode("datalist", { id: "media" }, [
-                createBaseVNode("option", null, "photograph"),
-                createBaseVNode("option", null, "illustration"),
-                createBaseVNode("option", null, "3d_render"),
-                createBaseVNode("option", null, "painting"),
-                createBaseVNode("option", null, "graphic_design")
-              ], -1))
+            createBaseVNode("div", _hoisted_7$3, [
+              _cache[17] || (_cache[17] = createBaseVNode("span", null, "medium", -1)),
+              createVNode(ComboInput, {
+                modelValue: st.value.medium,
+                "onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => st.value.medium = $event),
+                options: opts(unref(PRESETS).medium),
+                placeholder: st.value.mode === "photo" ? "photograph" : "illustration / 3d_render / painting…"
+              }, null, 8, ["modelValue", "options", "placeholder"])
             ]),
-            st.value.mode === "art" ? (openBlock(), createElementBlock("label", _hoisted_8$3, [
-              _cache[17] || (_cache[17] = createBaseVNode("span", null, "art_style", -1)),
-              withDirectives(createBaseVNode("input", {
-                "onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => st.value.art_style = $event),
+            st.value.mode === "art" ? (openBlock(), createElementBlock("div", _hoisted_8$3, [
+              _cache[18] || (_cache[18] = createBaseVNode("span", null, "art_style", -1)),
+              createVNode(ComboInput, {
+                modelValue: st.value.art_style,
+                "onUpdate:modelValue": _cache[8] || (_cache[8] = ($event) => st.value.art_style = $event),
+                options: opts(unref(PRESETS).artStyle),
                 placeholder: "flat vector illustration, bold outlines"
-              }, null, 512), [
-                [vModelText, st.value.art_style]
-              ])
+              }, null, 8, ["modelValue", "options"])
             ])) : createCommentVNode("", true),
             createBaseVNode("div", _hoisted_9$3, [
-              _cache[18] || (_cache[18] = createBaseVNode("span", null, "color palette (max 16)", -1)),
+              _cache[19] || (_cache[19] = createBaseVNode("span", null, "color palette (max 16)", -1)),
               createVNode(PaletteEditor, {
                 modelValue: st.value.color_palette,
-                "onUpdate:modelValue": _cache[8] || (_cache[8] = ($event) => st.value.color_palette = $event),
+                "onUpdate:modelValue": _cache[9] || (_cache[9] = ($event) => st.value.color_palette = $event),
                 max: 16,
                 label: "image colors"
               }, null, 8, ["modelValue"])
@@ -7705,10 +8033,10 @@ const _sfc_main$4 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const StylePanel = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["__scopeId", "data-v-5abfc9b1"]]);
-const _hoisted_1$3 = { class: "adds" };
-const _hoisted_2$3 = { key: 0 };
-const _hoisted_3$3 = ["onClick"];
+const StylePanel = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["__scopeId", "data-v-21ab2cd1"]]);
+const _hoisted_1$4 = { class: "adds" };
+const _hoisted_2$4 = { key: 0 };
+const _hoisted_3$4 = ["onClick"];
 const _hoisted_4$3 = ["title", "onClick"];
 const _hoisted_5$3 = { class: "idx" };
 const _hoisted_6$2 = ["title"];
@@ -7719,12 +8047,12 @@ const _hoisted_10$2 = ["onClick"];
 const _hoisted_11$2 = ["onClick"];
 const _hoisted_12$2 = ["onClick"];
 const _hoisted_13$2 = ["onClick"];
-const _hoisted_14$2 = ["onClick"];
-const _hoisted_15$2 = {
+const _hoisted_14$1 = ["onClick"];
+const _hoisted_15$1 = {
   key: 1,
   class: "empty"
 };
-const _sfc_main$3 = /* @__PURE__ */ defineComponent({
+const _sfc_main$4 = /* @__PURE__ */ defineComponent({
   __name: "ElementList",
   setup(__props) {
     const store = useStudioStore();
@@ -7742,13 +8070,14 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
         style: { "flex": "1 1 auto", "min-height": "0" }
       }, {
         header: withCtx(() => [
-          createBaseVNode("div", _hoisted_1$3, [
+          createBaseVNode("div", _hoisted_1$4, [
             createVNode(UiButton, {
               title: "Add an object box",
               onClick: _cache[0] || (_cache[0] = ($event) => unref(store).addElement("obj"))
             }, {
               default: withCtx(() => [..._cache[2] || (_cache[2] = [
-                createTextVNode("＋ obj", -1)
+                createBaseVNode("i", { class: "mdi mdi-plus" }, null, -1),
+                createTextVNode(" obj", -1)
               ])]),
               _: 1
             }),
@@ -7757,14 +8086,15 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
               onClick: _cache[1] || (_cache[1] = ($event) => unref(store).addElement("text"))
             }, {
               default: withCtx(() => [..._cache[3] || (_cache[3] = [
-                createTextVNode("＋ text", -1)
+                createBaseVNode("i", { class: "mdi mdi-plus" }, null, -1),
+                createTextVNode(" text", -1)
               ])]),
               _: 1
             })
           ])
         ]),
         default: withCtx(() => [
-          unref(store).state.elements.length ? (openBlock(), createElementBlock("ul", _hoisted_2$3, [
+          unref(store).state.elements.length ? (openBlock(), createElementBlock("ul", _hoisted_2$4, [
             (openBlock(true), createElementBlock(Fragment, null, renderList(unref(store).state.elements, (el, i) => {
               return openBlock(), createElementBlock("li", {
                 key: el.id,
@@ -7775,55 +8105,186 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
                   class: "eye",
                   title: el.enabled === false ? "Muted — click to enable" : "Mute (keep, exclude from output)",
                   onClick: withModifiers(($event) => unref(store).toggleEnabled(el.id), ["stop"])
-                }, toDisplayString(el.enabled === false ? "🚫" : "👁"), 9, _hoisted_4$3),
+                }, [
+                  createBaseVNode("i", {
+                    class: normalizeClass(["mdi", el.enabled === false ? "mdi-eye-off-outline" : "mdi-eye-outline"])
+                  }, null, 2)
+                ], 8, _hoisted_4$3),
                 createBaseVNode("span", {
                   class: "dot",
                   style: normalizeStyle({ background: el.boxColor })
                 }, null, 4),
                 createBaseVNode("span", _hoisted_5$3, toDisplayString(i + 1), 1),
-                el.linkId ? (openBlock(), createElementBlock("span", {
+                el.linkId ? (openBlock(), createElementBlock("i", {
                   key: 0,
-                  class: "link",
+                  class: "mdi mdi-link-variant link",
                   title: "Linked ×" + unref(store).linkGroupSize(el.id)
-                }, "🔗", 8, _hoisted_6$2)) : createCommentVNode("", true),
+                }, null, 8, _hoisted_6$2)) : createCommentVNode("", true),
                 createBaseVNode("span", _hoisted_7$2, toDisplayString(el.type === "text" ? "“" + (el.text || "…") + "”" : el.desc || "object…"), 1),
-                createBaseVNode("span", {
-                  class: "bb",
-                  title: el.bbox ? "has bbox" : "no bbox (model auto-places)"
-                }, toDisplayString(el.bbox ? "▣" : "◌"), 9, _hoisted_8$2),
+                createBaseVNode("i", {
+                  class: normalizeClass(["mdi typ", el.type === "text" ? "mdi-format-text" : "mdi-shape-outline"]),
+                  title: el.type === "text" ? "text element" : "object element"
+                }, null, 10, _hoisted_8$2),
                 createBaseVNode("span", _hoisted_9$2, [
                   createBaseVNode("button", {
                     title: "Move up",
                     onClick: withModifiers(($event) => unref(store).moveElement(el.id, -1), ["stop"])
-                  }, "↑", 8, _hoisted_10$2),
+                  }, [..._cache[4] || (_cache[4] = [
+                    createBaseVNode("i", { class: "mdi mdi-chevron-up" }, null, -1)
+                  ])], 8, _hoisted_10$2),
                   createBaseVNode("button", {
                     title: "Move down",
                     onClick: withModifiers(($event) => unref(store).moveElement(el.id, 1), ["stop"])
-                  }, "↓", 8, _hoisted_11$2),
+                  }, [..._cache[5] || (_cache[5] = [
+                    createBaseVNode("i", { class: "mdi mdi-chevron-down" }, null, -1)
+                  ])], 8, _hoisted_11$2),
                   createBaseVNode("button", {
                     title: "Linked copy (shares prompt, own position)",
                     onClick: withModifiers(($event) => unref(store).duplicateLinked(el.id), ["stop"])
-                  }, "🔗", 8, _hoisted_12$2),
+                  }, [..._cache[6] || (_cache[6] = [
+                    createBaseVNode("i", { class: "mdi mdi-link-variant-plus" }, null, -1)
+                  ])], 8, _hoisted_12$2),
                   createBaseVNode("button", {
                     title: "Duplicate",
                     onClick: withModifiers(($event) => unref(store).duplicateElement(el.id), ["stop"])
-                  }, "⧉", 8, _hoisted_13$2),
+                  }, [..._cache[7] || (_cache[7] = [
+                    createBaseVNode("i", { class: "mdi mdi-content-copy" }, null, -1)
+                  ])], 8, _hoisted_13$2),
                   createBaseVNode("button", {
                     class: "del",
                     title: "Delete",
                     onClick: withModifiers(($event) => unref(store).removeElement(el.id), ["stop"])
-                  }, "🗑", 8, _hoisted_14$2)
+                  }, [..._cache[8] || (_cache[8] = [
+                    createBaseVNode("i", { class: "mdi mdi-delete-outline" }, null, -1)
+                  ])], 8, _hoisted_14$1)
                 ])
-              ], 10, _hoisted_3$3);
+              ], 10, _hoisted_3$4);
             }), 128))
-          ])) : (openBlock(), createElementBlock("p", _hoisted_15$2, "No elements yet — draw a box on the canvas, or use ＋ obj / ＋ text."))
+          ])) : (openBlock(), createElementBlock("p", _hoisted_15$1, "No elements yet — draw a box on the canvas, or use + obj / + text."))
         ]),
         _: 1
       }, 8, ["title"]);
     };
   }
 });
-const ElementList = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["__scopeId", "data-v-69998aac"]]);
+const ElementList = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["__scopeId", "data-v-d59a72ab"]]);
+const _hoisted_1$3 = { class: "jctrl" };
+const _hoisted_2$3 = ["title"];
+const _hoisted_3$3 = ["title"];
+const _sfc_main$3 = /* @__PURE__ */ defineComponent({
+  __name: "JsonControls",
+  setup(__props) {
+    const store = useStudioStore();
+    const j = store.json;
+    const copied = /* @__PURE__ */ ref(false);
+    const warnings = computed(() => serialize(store.state).warnings);
+    const parseError = computed(() => {
+      if (!j.editing || !j.draft.trim()) return "";
+      try {
+        JSON.parse(j.draft);
+        return "";
+      } catch (e) {
+        return String(e?.message || e);
+      }
+    });
+    function toggleSync() {
+      store.state.ui.jsonSync = !store.state.ui.jsonSync;
+      if (!store.state.ui.jsonSync) j.syncError = "";
+    }
+    async function copy() {
+      try {
+        await navigator.clipboard.writeText(serialize(store.state).pretty);
+        copied.value = true;
+        setTimeout(() => copied.value = false, 1200);
+      } catch {
+      }
+    }
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock("div", _hoisted_1$3, [
+        _cache[10] || (_cache[10] = createBaseVNode("span", { class: "jlabel" }, "json", -1)),
+        !unref(j).editing ? (openBlock(), createElementBlock("span", {
+          key: 0,
+          class: normalizeClass(["warns", { ok: !warnings.value.length }]),
+          title: warnings.value.join("\n")
+        }, toDisplayString(warnings.value.length ? `⚠ ${warnings.value.length}` : "✓ valid"), 11, _hoisted_2$3)) : (openBlock(), createElementBlock("span", {
+          key: 1,
+          class: normalizeClass(["warns", { ok: !parseError.value }])
+        }, toDisplayString(parseError.value ? "✗ invalid" : "✓ parses"), 3)),
+        unref(j).syncError ? (openBlock(), createElementBlock("span", {
+          key: 2,
+          class: "syncerr",
+          title: unref(j).syncError
+        }, "⚠ sync failed", 8, _hoisted_3$3)) : createCommentVNode("", true),
+        _cache[11] || (_cache[11] = createBaseVNode("span", { class: "grow" }, null, -1)),
+        !unref(j).editing ? (openBlock(), createElementBlock(Fragment, { key: 3 }, [
+          createVNode(UiButton, {
+            icon: "",
+            active: unref(store).state.ui.jsonSync,
+            title: "Live-import captions from an Ideogram Studio JSON Sync node",
+            onClick: toggleSync
+          }, {
+            default: withCtx(() => [..._cache[5] || (_cache[5] = [
+              createBaseVNode("i", { class: "mdi mdi-sync" }, null, -1)
+            ])]),
+            _: 1
+          }, 8, ["active"]),
+          createVNode(UiButton, { onClick: copy }, {
+            default: withCtx(() => [
+              createTextVNode(toDisplayString(copied.value ? "copied ✓" : "copy"), 1)
+            ]),
+            _: 1
+          }),
+          createVNode(UiButton, {
+            onClick: _cache[0] || (_cache[0] = ($event) => unref(store).jsonStartEdit())
+          }, {
+            default: withCtx(() => [..._cache[6] || (_cache[6] = [
+              createTextVNode("edit / paste", -1)
+            ])]),
+            _: 1
+          }),
+          createVNode(UiButton, {
+            active: unref(store).state.ui.jsonOpen,
+            onClick: _cache[1] || (_cache[1] = ($event) => unref(store).state.ui.jsonOpen = !unref(store).state.ui.jsonOpen)
+          }, {
+            default: withCtx(() => [
+              createTextVNode(toDisplayString(unref(store).state.ui.jsonOpen ? "hide" : "show"), 1)
+            ]),
+            _: 1
+          }, 8, ["active"])
+        ], 64)) : (openBlock(), createElementBlock(Fragment, { key: 4 }, [
+          createVNode(UiButton, {
+            title: "Re-indent the JSON",
+            onClick: _cache[2] || (_cache[2] = ($event) => unref(store).jsonTidy())
+          }, {
+            default: withCtx(() => [..._cache[7] || (_cache[7] = [
+              createTextVNode("tidy", -1)
+            ])]),
+            _: 1
+          }),
+          createVNode(UiButton, {
+            variant: "primary",
+            disabled: !!parseError.value,
+            onClick: _cache[3] || (_cache[3] = ($event) => unref(store).jsonApply())
+          }, {
+            default: withCtx(() => [..._cache[8] || (_cache[8] = [
+              createTextVNode("apply →", -1)
+            ])]),
+            _: 1
+          }, 8, ["disabled"]),
+          createVNode(UiButton, {
+            onClick: _cache[4] || (_cache[4] = ($event) => unref(store).jsonCancel())
+          }, {
+            default: withCtx(() => [..._cache[9] || (_cache[9] = [
+              createTextVNode("cancel", -1)
+            ])]),
+            _: 1
+          })
+        ], 64))
+      ]);
+    };
+  }
+});
+const JsonControls = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["__scopeId", "data-v-00094c24"]]);
 const _hoisted_1$2 = { class: "ehead" };
 const _hoisted_2$2 = ["title"];
 const _hoisted_3$2 = ["value"];
@@ -7846,10 +8307,10 @@ const _hoisted_13$1 = {
   key: 0,
   class: "filine"
 };
-const _hoisted_14$1 = ["value"];
-const _hoisted_15$1 = { class: "filine" };
-const _hoisted_16$1 = ["value", "placeholder"];
-const _hoisted_17$1 = { class: "filine" };
+const _hoisted_14 = ["value"];
+const _hoisted_15 = { class: "filine" };
+const _hoisted_16 = ["value", "placeholder"];
+const _hoisted_17 = { class: "filine" };
 const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   __name: "ElementEditor",
   setup(__props) {
@@ -7887,35 +8348,39 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
                 onInput: _cache[0] || (_cache[0] = ($event) => setShared("boxColor", $event.target.value))
               }, null, 40, _hoisted_3$2)
             ], 8, _hoisted_2$2),
-            createBaseVNode("span", _hoisted_4$2, "#" + toDisplayString(index.value + 1), 1),
+            createBaseVNode("span", _hoisted_4$2, toDisplayString(index.value + 1), 1),
             createBaseVNode("div", _hoisted_5$2, [
               createVNode(UiButton, {
+                icon: "",
                 active: el.value.type === "obj",
+                title: "Object",
                 onClick: _cache[1] || (_cache[1] = ($event) => setShared("type", "obj"))
               }, {
                 default: withCtx(() => [..._cache[9] || (_cache[9] = [
-                  createTextVNode("object", -1)
+                  createBaseVNode("i", { class: "mdi mdi-shape-outline" }, null, -1)
                 ])]),
                 _: 1
               }, 8, ["active"]),
               createVNode(UiButton, {
+                icon: "",
                 active: el.value.type === "text",
+                title: "Text",
                 onClick: _cache[2] || (_cache[2] = ($event) => setShared("type", "text"))
               }, {
                 default: withCtx(() => [..._cache[10] || (_cache[10] = [
-                  createTextVNode("text", -1)
+                  createBaseVNode("i", { class: "mdi mdi-format-text" }, null, -1)
                 ])]),
                 _: 1
               }, 8, ["active"])
             ]),
-            _cache[12] || (_cache[12] = createBaseVNode("span", { class: "grow" }, null, -1)),
+            _cache[13] || (_cache[13] = createBaseVNode("span", { class: "grow" }, null, -1)),
             createVNode(UiButton, {
               icon: "",
               title: "Linked copy — shares prompt, keeps its own position",
               onClick: _cache[3] || (_cache[3] = ($event) => unref(store).duplicateLinked(el.value.id))
             }, {
               default: withCtx(() => [..._cache[11] || (_cache[11] = [
-                createTextVNode("🔗", -1)
+                createBaseVNode("i", { class: "mdi mdi-link-variant-plus" }, null, -1)
               ])]),
               _: 1
             }),
@@ -7925,7 +8390,8 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
               onClick: _cache[4] || (_cache[4] = ($event) => unref(store).unlink(el.value.id))
             }, {
               default: withCtx(() => [
-                createTextVNode("unlink ×" + toDisplayString(groupSize.value), 1)
+                _cache[12] || (_cache[12] = createBaseVNode("i", { class: "mdi mdi-link-variant-off" }, null, -1)),
+                createTextVNode(" ×" + toDisplayString(groupSize.value), 1)
               ]),
               _: 1
             })) : createCommentVNode("", true),
@@ -7933,7 +8399,11 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
               class: normalizeClass(["mute", { off: el.value.enabled === false }]),
               title: el.value.enabled === false ? "Muted — excluded from output. Click to enable." : "Mute (keep but exclude from output)",
               onClick: _cache[5] || (_cache[5] = ($event) => unref(store).toggleEnabled(el.value.id))
-            }, toDisplayString(el.value.enabled === false ? "🚫" : "👁"), 11, _hoisted_6$1)
+            }, [
+              createBaseVNode("i", {
+                class: normalizeClass(["mdi", el.value.enabled === false ? "mdi-eye-off-outline" : "mdi-eye-outline"])
+              }, null, 2)
+            ], 10, _hoisted_6$1)
           ])
         ]),
         default: withCtx(() => [
@@ -7947,7 +8417,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
                 checked: !!el.value.bbox,
                 onChange: toggleBbox
               }, null, 40, _hoisted_9$1),
-              _cache[13] || (_cache[13] = createTextVNode(" bbox ", -1))
+              _cache[14] || (_cache[14] = createTextVNode(" bbox ", -1))
             ], 8, _hoisted_8$1),
             el.value.bbox ? (openBlock(), createElementBlock("span", _hoisted_10$1, [
               (openBlock(), createElementBlock(Fragment, null, renderList(["y₀", "x₀", "y₁", "x₁"], (k, i) => {
@@ -7964,25 +8434,25 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
             ])) : (openBlock(), createElementBlock("span", _hoisted_12$1, "model auto-places it"))
           ]),
           el.value.type === "text" ? (openBlock(), createElementBlock("label", _hoisted_13$1, [
-            _cache[14] || (_cache[14] = createBaseVNode("span", null, "text", -1)),
+            _cache[15] || (_cache[15] = createBaseVNode("span", null, "text", -1)),
             createBaseVNode("input", {
               value: el.value.text,
               type: "text",
               placeholder: "literal text the model should draw",
               onInput: _cache[6] || (_cache[6] = ($event) => setShared("text", $event.target.value))
-            }, null, 40, _hoisted_14$1)
+            }, null, 40, _hoisted_14)
           ])) : createCommentVNode("", true),
-          createBaseVNode("label", _hoisted_15$1, [
-            _cache[15] || (_cache[15] = createBaseVNode("span", null, "desc", -1)),
+          createBaseVNode("label", _hoisted_15, [
+            _cache[16] || (_cache[16] = createBaseVNode("span", null, "desc", -1)),
             createBaseVNode("textarea", {
               value: el.value.desc,
               rows: "2",
               placeholder: el.value.type === "text" ? "how the text looks (font, colour, placement)" : "detailed description of this object",
               onInput: _cache[7] || (_cache[7] = ($event) => setShared("desc", $event.target.value))
-            }, null, 40, _hoisted_16$1)
+            }, null, 40, _hoisted_16)
           ]),
-          createBaseVNode("div", _hoisted_17$1, [
-            _cache[16] || (_cache[16] = createBaseVNode("span", null, "colours", -1)),
+          createBaseVNode("div", _hoisted_17, [
+            _cache[17] || (_cache[17] = createBaseVNode("span", null, "colours", -1)),
             createVNode(PaletteEditor, {
               modelValue: el.value.color_palette,
               max: 5,
@@ -7996,17 +8466,17 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const ElementEditor = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__scopeId", "data-v-dbc34765"]]);
-const _hoisted_1$1 = { class: "jbar" };
-const _hoisted_2$1 = ["title"];
-const _hoisted_3$1 = {
+const ElementEditor = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__scopeId", "data-v-35a7d802"]]);
+const _hoisted_1$1 = {
   key: 1,
   class: "json"
 };
-const _hoisted_4$1 = {
+const _hoisted_2$1 = {
   key: 2,
   class: "parseerr"
 };
+const _hoisted_3$1 = { class: "errhead" };
+const _hoisted_4$1 = { class: "msg" };
 const _hoisted_5$1 = {
   key: 3,
   class: "warnlist"
@@ -8015,179 +8485,148 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
   __name: "JsonPreview",
   setup(__props) {
     const store = useStudioStore();
-    const open = /* @__PURE__ */ ref(true);
-    const copied = /* @__PURE__ */ ref(false);
-    const editing = /* @__PURE__ */ ref(false);
-    const draft = /* @__PURE__ */ ref("");
+    const j = store.json;
+    const taEl = /* @__PURE__ */ ref(null);
+    const copiedErr = /* @__PURE__ */ ref(false);
     const result = computed(() => serialize(store.state));
     const pretty = computed(() => result.value.pretty);
     const warnings = computed(() => result.value.warnings);
-    const parseError = computed(() => {
-      if (!editing.value || !draft.value.trim()) return "";
+    const parseInfo = computed(() => {
+      if (!j.editing || !j.draft.trim()) return { error: "", line: null, col: null };
       try {
-        JSON.parse(draft.value);
-        return "";
+        JSON.parse(j.draft);
+        return { error: "", line: null, col: null };
       } catch (e) {
-        return String(e?.message || e);
+        const msg = String(e?.message || e);
+        let line = null;
+        let col = null;
+        const pos = msg.match(/position (\d+)/);
+        if (pos) {
+          const i = Number(pos[1]);
+          const upto = j.draft.slice(0, i);
+          line = upto.split("\n").length;
+          col = i - upto.lastIndexOf("\n");
+        } else {
+          const lc = msg.match(/line (\d+) column (\d+)/);
+          if (lc) {
+            line = Number(lc[1]);
+            col = Number(lc[2]);
+          }
+        }
+        return { error: msg, line, col };
       }
     });
-    async function copy() {
+    const parseError = computed(() => parseInfo.value.error);
+    const parseMsg = computed(() => {
+      const { error, line, col } = parseInfo.value;
+      if (!error) return "";
+      const short = error.replace(/^JSON\.parse: /, "").replace(/ in JSON at position \d+.*/i, "").replace(/ at line \d+ column \d+.*/i, "");
+      return line ? `Line ${line}, column ${col}: ${short}` : short;
+    });
+    const parseFrame = computed(() => {
+      const { line, col } = parseInfo.value;
+      if (!line) return "";
+      const lines = j.draft.split("\n");
+      const w = String(line).length;
+      const rows = [];
+      if (line - 2 >= 0) rows.push(`${String(line - 1).padStart(w)} | ${lines[line - 2]}`);
+      rows.push(`${String(line).padStart(w)} | ${lines[line - 1] ?? ""}`);
+      rows.push(`${" ".repeat(w)} | ${" ".repeat(Math.max(0, (col ?? 1) - 1))}^`);
+      return rows.join("\n");
+    });
+    function jumpToError() {
+      const ta = taEl.value;
+      const { line } = parseInfo.value;
+      if (!ta || !line) return;
+      const lines = j.draft.split("\n");
+      let start = 0;
+      for (let i = 0; i < line - 1; i++) start += lines[i].length + 1;
+      const end = start + (lines[line - 1]?.length ?? 0);
+      ta.focus();
+      ta.setSelectionRange(start, end);
+      const lh = parseFloat(getComputedStyle(ta).lineHeight) || 16;
+      ta.scrollTop = Math.max(0, (line - 1) * lh - ta.clientHeight / 2);
+    }
+    async function copyError() {
+      const text = parseFrame.value ? `${parseMsg.value}
+${parseFrame.value}` : parseMsg.value;
       try {
-        await navigator.clipboard.writeText(result.value.pretty);
-        copied.value = true;
-        setTimeout(() => copied.value = false, 1200);
+        await navigator.clipboard.writeText(text);
+        copiedErr.value = true;
+        setTimeout(() => copiedErr.value = false, 1200);
       } catch {
       }
-    }
-    function startEdit() {
-      draft.value = result.value.pretty;
-      editing.value = true;
-    }
-    function cancel() {
-      editing.value = false;
-    }
-    function tidy() {
-      try {
-        draft.value = JSON.stringify(JSON.parse(draft.value), null, 2);
-      } catch {
-      }
-    }
-    function apply2() {
-      let obj;
-      try {
-        obj = JSON.parse(draft.value);
-      } catch {
-        return;
-      }
-      const parts = captionToState(obj);
-      store.state.high_level_description = parts.high_level_description;
-      store.state.style = parts.style;
-      store.state.background = parts.background;
-      store.state.elements = parts.elements;
-      store.select(null);
-      store.snapshot();
-      editing.value = false;
     }
     return (_ctx, _cache) => {
-      return openBlock(), createBlock(UiCard, null, {
-        header: withCtx(() => [
-          createBaseVNode("div", _hoisted_1$1, [
-            renderSlot(_ctx.$slots, "controls", {}, void 0, true),
-            _cache[6] || (_cache[6] = createBaseVNode("span", { class: "jgrow" }, null, -1)),
-            _cache[7] || (_cache[7] = createBaseVNode("span", { class: "jlabel" }, "json", -1)),
-            !editing.value ? (openBlock(), createElementBlock("span", {
-              key: 0,
-              class: normalizeClass(["warns", { ok: !warnings.value.length }]),
-              title: warnings.value.join("\n")
-            }, toDisplayString(warnings.value.length ? `⚠ ${warnings.value.length}` : "✓ valid"), 11, _hoisted_2$1)) : (openBlock(), createElementBlock("span", {
-              key: 1,
-              class: normalizeClass(["warns", { ok: !parseError.value }])
-            }, toDisplayString(parseError.value ? "✗ invalid JSON" : "✓ parses"), 3)),
-            !editing.value ? (openBlock(), createBlock(UiButton, {
-              key: 2,
-              onClick: copy
-            }, {
-              default: withCtx(() => [
-                createTextVNode(toDisplayString(copied.value ? "copied ✓" : "copy"), 1)
-              ]),
-              _: 1
-            })) : createCommentVNode("", true),
-            !editing.value ? (openBlock(), createBlock(UiButton, {
-              key: 3,
-              onClick: startEdit
-            }, {
-              default: withCtx(() => [..._cache[2] || (_cache[2] = [
-                createTextVNode("edit / paste", -1)
-              ])]),
-              _: 1
-            })) : (openBlock(), createElementBlock(Fragment, { key: 4 }, [
-              createVNode(UiButton, {
-                title: "Re-indent the JSON",
-                onClick: tidy
-              }, {
-                default: withCtx(() => [..._cache[3] || (_cache[3] = [
-                  createTextVNode("tidy", -1)
-                ])]),
-                _: 1
-              }),
-              createVNode(UiButton, {
-                variant: "primary",
-                disabled: !!parseError.value,
-                onClick: apply2
-              }, {
-                default: withCtx(() => [..._cache[4] || (_cache[4] = [
-                  createTextVNode("apply →", -1)
-                ])]),
-                _: 1
-              }, 8, ["disabled"]),
-              createVNode(UiButton, { onClick: cancel }, {
-                default: withCtx(() => [..._cache[5] || (_cache[5] = [
-                  createTextVNode("cancel", -1)
-                ])]),
-                _: 1
-              })
-            ], 64)),
-            !editing.value ? (openBlock(), createBlock(UiButton, {
-              key: 5,
-              onClick: _cache[0] || (_cache[0] = ($event) => open.value = !open.value)
-            }, {
-              default: withCtx(() => [
-                createTextVNode(toDisplayString(open.value ? "hide" : "show"), 1)
-              ]),
-              _: 1
-            })) : createCommentVNode("", true)
-          ])
-        ]),
+      return unref(store).state.ui.jsonOpen ? (openBlock(), createBlock(UiCard, {
+        key: 0,
+        class: "jcard"
+      }, {
         default: withCtx(() => [
-          editing.value ? withDirectives((openBlock(), createElementBlock("textarea", {
+          unref(j).editing ? withDirectives((openBlock(), createElementBlock("textarea", {
             key: 0,
-            "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => draft.value = $event),
-            class: "json edit",
+            ref_key: "taEl",
+            ref: taEl,
+            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => unref(j).draft = $event),
+            class: normalizeClass(["json edit", { bad: !!parseError.value }]),
             spellcheck: "false",
             placeholder: "Paste an Ideogram JSON caption here, then Apply to load it into the studio."
-          }, null, 512)), [
-            [vModelText, draft.value]
-          ]) : open.value ? (openBlock(), createElementBlock("pre", _hoisted_3$1, toDisplayString(pretty.value), 1)) : createCommentVNode("", true),
-          editing.value && parseError.value ? (openBlock(), createElementBlock("div", _hoisted_4$1, toDisplayString(parseError.value), 1)) : createCommentVNode("", true),
-          !editing.value && open.value && warnings.value.length ? (openBlock(), createElementBlock("ul", _hoisted_5$1, [
+          }, null, 2)), [
+            [vModelText, unref(j).draft]
+          ]) : (openBlock(), createElementBlock("pre", _hoisted_1$1, toDisplayString(pretty.value), 1)),
+          unref(j).editing && parseError.value ? (openBlock(), createElementBlock("div", _hoisted_2$1, [
+            createBaseVNode("div", _hoisted_3$1, [
+              createBaseVNode("span", _hoisted_4$1, "⚠ " + toDisplayString(parseMsg.value), 1),
+              parseInfo.value.line ? (openBlock(), createElementBlock("button", {
+                key: 0,
+                class: "ebtn",
+                title: "Jump to this line in the editor",
+                onClick: jumpToError
+              }, "go to →")) : createCommentVNode("", true),
+              createBaseVNode("button", {
+                class: "ebtn",
+                title: "Copy the error",
+                onClick: copyError
+              }, toDisplayString(copiedErr.value ? "copied ✓" : "copy"), 1)
+            ]),
+            parseFrame.value ? (openBlock(), createElementBlock("pre", {
+              key: 0,
+              class: "errframe",
+              title: "Jump to this line",
+              onClick: jumpToError
+            }, toDisplayString(parseFrame.value), 1)) : createCommentVNode("", true)
+          ])) : createCommentVNode("", true),
+          !unref(j).editing && warnings.value.length ? (openBlock(), createElementBlock("ul", _hoisted_5$1, [
             (openBlock(true), createElementBlock(Fragment, null, renderList(warnings.value, (w, i) => {
               return openBlock(), createElementBlock("li", { key: i }, toDisplayString(w), 1);
             }), 128))
           ])) : createCommentVNode("", true)
         ]),
-        _: 3
-      });
+        _: 1
+      })) : createCommentVNode("", true);
     };
   }
 });
-const JsonPreview = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["__scopeId", "data-v-c507b982"]]);
-const _hoisted_1 = { class: "studio" };
-const _hoisted_2 = { class: "main" };
-const _hoisted_3 = { class: "left" };
-const _hoisted_4 = { class: "right" };
-const _hoisted_5 = ["title"];
-const _hoisted_6 = { class: "chev" };
-const _hoisted_7 = {
+const JsonPreview = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["__scopeId", "data-v-2bc670fb"]]);
+const _hoisted_1 = { class: "main" };
+const _hoisted_2 = { class: "left" };
+const _hoisted_3 = { class: "resmenu" };
+const _hoisted_4 = { class: "rrow" };
+const _hoisted_5 = ["value"];
+const _hoisted_6 = { class: "rrow" };
+const _hoisted_7 = { class: "rrow" };
+const _hoisted_8 = { class: "rrow" };
+const _hoisted_9 = { class: "right" };
+const _hoisted_10 = ["title"];
+const _hoisted_11 = { class: "chev" };
+const _hoisted_12 = {
   class: "pfield",
   title: "high_level_description — a one or two sentence summary"
 };
-const _hoisted_8 = {
+const _hoisted_13 = {
   class: "pfield",
   title: "compositional_deconstruction.background"
 };
-const _hoisted_9 = { class: "resmenu" };
-const _hoisted_10 = { class: "rrow" };
-const _hoisted_11 = ["value"];
-const _hoisted_12 = { class: "rrow" };
-const _hoisted_13 = { class: "rrow" };
-const _hoisted_14 = { class: "rrow" };
-const _hoisted_15 = { class: "adv" };
-const _hoisted_16 = { class: "orow" };
-const _hoisted_17 = { class: "orow" };
-const _hoisted_18 = { class: "orow" };
-const _hoisted_19 = { class: "ochecks" };
-const _hoisted_20 = { class: "ck" };
-const _hoisted_21 = { class: "ck" };
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "IdeogramStudio",
   props: {
@@ -8198,7 +8637,36 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const props = __props;
     const store = createStudioStore();
     provideStudioStore(store);
-    const promptOpen = /* @__PURE__ */ ref(true);
+    const rootEl = /* @__PURE__ */ ref(null);
+    function onUndoKey(e) {
+      if (!(e.ctrlKey || e.metaKey)) return;
+      const k = e.key.toLowerCase();
+      if (k !== "z" && k !== "y") return;
+      const root = rootEl.value;
+      const ae = document.activeElement;
+      if (!root || !ae || !root.contains(ae)) return;
+      const tag = ae.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || ae.isContentEditable) return;
+      const redo = k === "y" || k === "z" && e.shiftKey;
+      if (redo) store.redo();
+      else store.undo();
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+    onMounted(() => document.addEventListener("keydown", onUndoKey, true));
+    onBeforeUnmount(() => document.removeEventListener("keydown", onUndoKey, true));
+    watch(
+      () => jsonSyncCaption.value.n,
+      () => {
+        if (!store.state.ui.jsonSync) return;
+        const res = store.importCaptionJson(jsonSyncCaption.value.json);
+        store.json.syncError = res.ok ? "" : `JSON sync: ${res.error || "invalid JSON"}`;
+      }
+    );
+    const promptOpen = computed({
+      get: () => store.state.ui.promptOpen,
+      set: (v) => store.state.ui.promptOpen = v
+    });
     const CORE_ASPECTS = [
       { label: "1:1", name: "square", w: 1, h: 1 },
       { label: "3:2", name: "photo", w: 3, h: 2 },
@@ -8265,39 +8733,253 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     });
     return (_ctx, _cache) => {
       const _component_UiCard = resolveComponent("UiCard");
-      return openBlock(), createElementBlock("div", _hoisted_1, [
-        createBaseVNode("div", _hoisted_2, [
-          createBaseVNode("div", _hoisted_3, [
-            createVNode(BBoxCanvas)
+      return openBlock(), createElementBlock("div", {
+        class: "studio",
+        ref_key: "rootEl",
+        ref: rootEl
+      }, [
+        createBaseVNode("div", _hoisted_1, [
+          createBaseVNode("div", _hoisted_2, [
+            createVNode(BBoxCanvas, null, {
+              lead: withCtx(() => [
+                createVNode(UiButton, {
+                  icon: "",
+                  disabled: !unref(store).canUndo,
+                  title: "Undo (Ctrl+Z)",
+                  onClick: _cache[0] || (_cache[0] = ($event) => unref(store).undo())
+                }, {
+                  default: withCtx(() => [..._cache[11] || (_cache[11] = [
+                    createBaseVNode("i", { class: "mdi mdi-undo" }, null, -1)
+                  ])]),
+                  _: 1
+                }, 8, ["disabled"]),
+                createVNode(UiButton, {
+                  icon: "",
+                  disabled: !unref(store).canRedo,
+                  title: "Redo (Ctrl+Shift+Z)",
+                  onClick: _cache[1] || (_cache[1] = ($event) => unref(store).redo())
+                }, {
+                  default: withCtx(() => [..._cache[12] || (_cache[12] = [
+                    createBaseVNode("i", { class: "mdi mdi-redo" }, null, -1)
+                  ])]),
+                  _: 1
+                }, 8, ["disabled"]),
+                _cache[18] || (_cache[18] = createBaseVNode("span", { class: "divider" }, null, -1)),
+                createVNode(UiPopover, { align: "left" }, {
+                  trigger: withCtx(() => [
+                    createVNode(UiButton, { title: "Resolution — aspect ratio × megapixels" }, {
+                      default: withCtx(() => [
+                        createTextVNode(toDisplayString(unref(store).state.width) + "×" + toDisplayString(unref(store).state.height) + " ▾", 1)
+                      ]),
+                      _: 1
+                    })
+                  ]),
+                  default: withCtx(() => [
+                    createBaseVNode("div", _hoisted_3, [
+                      createBaseVNode("label", _hoisted_4, [
+                        _cache[13] || (_cache[13] = createBaseVNode("span", null, "aspect ratio", -1)),
+                        withDirectives(createBaseVNode("select", {
+                          "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => aspect.value = $event),
+                          onChange: applyRes
+                        }, [
+                          (openBlock(), createElementBlock(Fragment, null, renderList(CORE_ASPECTS, (a) => {
+                            return createBaseVNode("option", {
+                              key: a.label,
+                              value: a.label
+                            }, toDisplayString(a.label) + " · " + toDisplayString(a.name), 9, _hoisted_5);
+                          }), 64))
+                        ], 544), [
+                          [vModelSelect, aspect.value]
+                        ])
+                      ]),
+                      createBaseVNode("label", _hoisted_6, [
+                        _cache[14] || (_cache[14] = createBaseVNode("span", null, "megapixels", -1)),
+                        withDirectives(createBaseVNode("input", {
+                          type: "number",
+                          min: "0.1",
+                          max: "16",
+                          step: "0.1",
+                          "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => mp.value = $event),
+                          onInput: applyRes
+                        }, null, 544), [
+                          [
+                            vModelText,
+                            mp.value,
+                            void 0,
+                            { number: true }
+                          ]
+                        ])
+                      ]),
+                      _cache[17] || (_cache[17] = createBaseVNode("div", { class: "rdiv" }, null, -1)),
+                      createBaseVNode("label", _hoisted_7, [
+                        _cache[15] || (_cache[15] = createBaseVNode("span", null, "width", -1)),
+                        withDirectives(createBaseVNode("input", {
+                          type: "number",
+                          min: "16",
+                          max: "8192",
+                          step: "16",
+                          "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => unref(store).state.width = $event),
+                          onChange: _cache[5] || (_cache[5] = ($event) => unref(store).state.width = snapRes(unref(store).state.width))
+                        }, null, 544), [
+                          [
+                            vModelText,
+                            unref(store).state.width,
+                            void 0,
+                            { number: true }
+                          ]
+                        ])
+                      ]),
+                      createBaseVNode("label", _hoisted_8, [
+                        _cache[16] || (_cache[16] = createBaseVNode("span", null, "height", -1)),
+                        withDirectives(createBaseVNode("input", {
+                          type: "number",
+                          min: "16",
+                          max: "8192",
+                          step: "16",
+                          "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => unref(store).state.height = $event),
+                          onChange: _cache[7] || (_cache[7] = ($event) => unref(store).state.height = snapRes(unref(store).state.height))
+                        }, null, 544), [
+                          [
+                            vModelText,
+                            unref(store).state.height,
+                            void 0,
+                            { number: true }
+                          ]
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _: 1
+                })
+              ]),
+              trail: withCtx(() => [
+                createVNode(UiPopover, { align: "right" }, {
+                  trigger: withCtx(() => [
+                    createVNode(UiButton, {
+                      icon: "",
+                      title: "Help"
+                    }, {
+                      default: withCtx(() => [..._cache[19] || (_cache[19] = [
+                        createBaseVNode("i", { class: "mdi mdi-help-circle-outline" }, null, -1)
+                      ])]),
+                      _: 1
+                    })
+                  ]),
+                  default: withCtx(() => [
+                    _cache[20] || (_cache[20] = createBaseVNode("div", { class: "help" }, [
+                      createBaseVNode("p", { class: "h" }, "Canvas"),
+                      createBaseVNode("dl", null, [
+                        createBaseVNode("dt", null, "drag empty space"),
+                        createBaseVNode("dd", null, "add a box"),
+                        createBaseVNode("dt", null, "drag a box"),
+                        createBaseVNode("dd", null, "move it"),
+                        createBaseVNode("dt", null, "drag a handle"),
+                        createBaseVNode("dd", null, "resize"),
+                        createBaseVNode("dt", null, "Delete / Backspace"),
+                        createBaseVNode("dd", null, "remove the selected box(es)")
+                      ]),
+                      createBaseVNode("p", { class: "h" }, "Boxes"),
+                      createBaseVNode("dl", null, [
+                        createBaseVNode("dt", null, [
+                          createBaseVNode("i", { class: "mdi mdi-eye-outline" }),
+                          createTextVNode(" mute")
+                        ]),
+                        createBaseVNode("dd", null, "keep a box but exclude it from the output"),
+                        createBaseVNode("dt", null, [
+                          createBaseVNode("i", { class: "mdi mdi-link-variant-plus" }),
+                          createTextVNode(" linked copy")
+                        ]),
+                        createBaseVNode("dd", null, "shares the prompt across copies; each keeps its own position"),
+                        createBaseVNode("dt", null, "ctrl / shift click"),
+                        createBaseVNode("dd", null, "multi-select; drag to move them together"),
+                        createBaseVNode("dt", null, "click again"),
+                        createBaseVNode("dd", null, "cycle through stacked/overlapping boxes")
+                      ]),
+                      createBaseVNode("p", { class: "h" }, "Reference"),
+                      createBaseVNode("dl", null, [
+                        createBaseVNode("dt", null, [
+                          createBaseVNode("i", { class: "mdi mdi-image-outline" }),
+                          createTextVNode(" image")
+                        ]),
+                        createBaseVNode("dd", null, "load an image to trace over (or drop one on the canvas)"),
+                        createBaseVNode("dt", null, [
+                          createBaseVNode("i", { class: "mdi mdi-sync" }),
+                          createTextVNode(" sync")
+                        ]),
+                        createBaseVNode("dd", null, [
+                          createTextVNode("auto-update the reference from an "),
+                          createBaseVNode("b", null, "Ideogram Studio Ref Sync"),
+                          createTextVNode(" node")
+                        ])
+                      ]),
+                      createBaseVNode("p", { class: "h" }, "Outputs"),
+                      createBaseVNode("dl", null, [
+                        createBaseVNode("dt", null, "caption"),
+                        createBaseVNode("dd", null, "JSON prompt → your Ideogram sampler"),
+                        createBaseVNode("dt", null, "extras"),
+                        createBaseVNode("dd", null, [
+                          createTextVNode("→ "),
+                          createBaseVNode("b", null, "Studio Extras"),
+                          createTextVNode(" node for overlay / alpha / width / height")
+                        ])
+                      ]),
+                      createBaseVNode("p", { class: "tip" }, "Tip: open the JSON card and paste a caption to import it."),
+                      createBaseVNode("p", { class: "credit" }, [
+                        createTextVNode(" made by "),
+                        createBaseVNode("b", null, "nynxz"),
+                        createTextVNode(" · ideas & inspiration from the community"),
+                        createBaseVNode("br"),
+                        createBaseVNode("a", {
+                          href: "https://github.com/nynxz/ComfyUI-IdeogramHelper/issues",
+                          target: "_blank",
+                          rel: "noopener noreferrer"
+                        }, "report a bug / suggest a feature ↗")
+                      ])
+                    ], -1))
+                  ]),
+                  _: 1
+                }),
+                createVNode(UiButton, {
+                  title: "Clear everything",
+                  onClick: resetAll
+                }, {
+                  default: withCtx(() => [..._cache[21] || (_cache[21] = [
+                    createTextVNode("reset", -1)
+                  ])]),
+                  _: 1
+                })
+              ]),
+              _: 1
+            })
           ]),
-          createBaseVNode("div", _hoisted_4, [
+          createBaseVNode("div", _hoisted_9, [
             createVNode(_component_UiCard, null, {
               header: withCtx(() => [
                 createBaseVNode("button", {
                   class: "acc",
                   title: promptOpen.value ? "Collapse" : "Expand",
-                  onClick: _cache[0] || (_cache[0] = ($event) => promptOpen.value = !promptOpen.value)
+                  onClick: _cache[8] || (_cache[8] = ($event) => promptOpen.value = !promptOpen.value)
                 }, [
-                  _cache[16] || (_cache[16] = createBaseVNode("span", null, "prompt", -1)),
-                  createBaseVNode("span", _hoisted_6, toDisplayString(promptOpen.value ? "▾" : "▸"), 1)
-                ], 8, _hoisted_5)
+                  _cache[22] || (_cache[22] = createBaseVNode("span", null, "prompt", -1)),
+                  createBaseVNode("span", _hoisted_11, toDisplayString(promptOpen.value ? "▾" : "▸"), 1)
+                ], 8, _hoisted_10)
               ]),
               default: withCtx(() => [
                 promptOpen.value ? (openBlock(), createElementBlock(Fragment, { key: 0 }, [
-                  createBaseVNode("label", _hoisted_7, [
-                    _cache[17] || (_cache[17] = createBaseVNode("span", null, "summary", -1)),
+                  createBaseVNode("label", _hoisted_12, [
+                    _cache[23] || (_cache[23] = createBaseVNode("span", null, "summary", -1)),
                     withDirectives(createBaseVNode("textarea", {
-                      "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => unref(store).state.high_level_description = $event),
+                      "onUpdate:modelValue": _cache[9] || (_cache[9] = ($event) => unref(store).state.high_level_description = $event),
                       rows: "2",
                       placeholder: "one or two sentences summarizing the whole image"
                     }, null, 512), [
                       [vModelText, unref(store).state.high_level_description]
                     ])
                   ]),
-                  createBaseVNode("label", _hoisted_8, [
-                    _cache[18] || (_cache[18] = createBaseVNode("span", null, "background", -1)),
+                  createBaseVNode("label", _hoisted_13, [
+                    _cache[24] || (_cache[24] = createBaseVNode("span", null, "background", -1)),
                     withDirectives(createBaseVNode("textarea", {
-                      "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => unref(store).state.background = $event),
+                      "onUpdate:modelValue": _cache[10] || (_cache[10] = ($event) => unref(store).state.background = $event),
                       rows: "2",
                       placeholder: "describe the background / environment"
                     }, null, 512), [
@@ -8309,306 +8991,17 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
               _: 1
             }),
             createVNode(StylePanel),
-            createVNode(ElementList)
+            createVNode(ElementList),
+            createVNode(JsonControls)
           ])
         ]),
         createVNode(ElementEditor),
-        createVNode(JsonPreview, null, {
-          controls: withCtx(() => [
-            createVNode(UiButton, {
-              icon: "",
-              disabled: !unref(store).canUndo,
-              title: "Undo",
-              onClick: _cache[3] || (_cache[3] = ($event) => unref(store).undo())
-            }, {
-              default: withCtx(() => [..._cache[19] || (_cache[19] = [
-                createTextVNode("↶", -1)
-              ])]),
-              _: 1
-            }, 8, ["disabled"]),
-            createVNode(UiButton, {
-              icon: "",
-              disabled: !unref(store).canRedo,
-              title: "Redo",
-              onClick: _cache[4] || (_cache[4] = ($event) => unref(store).redo())
-            }, {
-              default: withCtx(() => [..._cache[20] || (_cache[20] = [
-                createTextVNode("↷", -1)
-              ])]),
-              _: 1
-            }, 8, ["disabled"]),
-            createVNode(UiPopover, {
-              align: "left",
-              up: ""
-            }, {
-              trigger: withCtx(() => [
-                createVNode(UiButton, { title: "Resolution — aspect ratio × megapixels" }, {
-                  default: withCtx(() => [
-                    createTextVNode(toDisplayString(unref(store).state.width) + "×" + toDisplayString(unref(store).state.height) + " ▾", 1)
-                  ]),
-                  _: 1
-                })
-              ]),
-              default: withCtx(() => [
-                createBaseVNode("div", _hoisted_9, [
-                  createBaseVNode("label", _hoisted_10, [
-                    _cache[21] || (_cache[21] = createBaseVNode("span", null, "aspect ratio", -1)),
-                    withDirectives(createBaseVNode("select", {
-                      "onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => aspect.value = $event),
-                      onChange: applyRes
-                    }, [
-                      (openBlock(), createElementBlock(Fragment, null, renderList(CORE_ASPECTS, (a) => {
-                        return createBaseVNode("option", {
-                          key: a.label,
-                          value: a.label
-                        }, toDisplayString(a.label) + " · " + toDisplayString(a.name), 9, _hoisted_11);
-                      }), 64))
-                    ], 544), [
-                      [vModelSelect, aspect.value]
-                    ])
-                  ]),
-                  createBaseVNode("label", _hoisted_12, [
-                    _cache[22] || (_cache[22] = createBaseVNode("span", null, "megapixels", -1)),
-                    withDirectives(createBaseVNode("input", {
-                      type: "number",
-                      min: "0.1",
-                      max: "16",
-                      step: "0.1",
-                      "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => mp.value = $event),
-                      onInput: applyRes
-                    }, null, 544), [
-                      [
-                        vModelText,
-                        mp.value,
-                        void 0,
-                        { number: true }
-                      ]
-                    ])
-                  ]),
-                  _cache[25] || (_cache[25] = createBaseVNode("div", { class: "rdiv" }, null, -1)),
-                  createBaseVNode("label", _hoisted_13, [
-                    _cache[23] || (_cache[23] = createBaseVNode("span", null, "width", -1)),
-                    withDirectives(createBaseVNode("input", {
-                      type: "number",
-                      min: "16",
-                      max: "8192",
-                      step: "16",
-                      "onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => unref(store).state.width = $event),
-                      onChange: _cache[8] || (_cache[8] = ($event) => unref(store).state.width = snapRes(unref(store).state.width))
-                    }, null, 544), [
-                      [
-                        vModelText,
-                        unref(store).state.width,
-                        void 0,
-                        { number: true }
-                      ]
-                    ])
-                  ]),
-                  createBaseVNode("label", _hoisted_14, [
-                    _cache[24] || (_cache[24] = createBaseVNode("span", null, "height", -1)),
-                    withDirectives(createBaseVNode("input", {
-                      type: "number",
-                      min: "16",
-                      max: "8192",
-                      step: "16",
-                      "onUpdate:modelValue": _cache[9] || (_cache[9] = ($event) => unref(store).state.height = $event),
-                      onChange: _cache[10] || (_cache[10] = ($event) => unref(store).state.height = snapRes(unref(store).state.height))
-                    }, null, 544), [
-                      [
-                        vModelText,
-                        unref(store).state.height,
-                        void 0,
-                        { number: true }
-                      ]
-                    ])
-                  ])
-                ])
-              ]),
-              _: 1
-            }),
-            createVNode(UiPopover, {
-              align: "left",
-              up: ""
-            }, {
-              trigger: withCtx(() => [
-                createVNode(UiButton, {
-                  icon: "",
-                  title: "Overlay settings"
-                }, {
-                  default: withCtx(() => [..._cache[26] || (_cache[26] = [
-                    createTextVNode("⚙", -1)
-                  ])]),
-                  _: 1
-                })
-              ]),
-              default: withCtx(() => [
-                createBaseVNode("div", _hoisted_15, [
-                  _cache[32] || (_cache[32] = createBaseVNode("span", { class: "gh" }, "overlay", -1)),
-                  createBaseVNode("label", _hoisted_16, [
-                    _cache[27] || (_cache[27] = createTextVNode("line ", -1)),
-                    withDirectives(createBaseVNode("input", {
-                      type: "number",
-                      min: "1",
-                      max: "40",
-                      "onUpdate:modelValue": _cache[11] || (_cache[11] = ($event) => unref(store).state.overlay.lineWidth = $event)
-                    }, null, 512), [
-                      [
-                        vModelText,
-                        unref(store).state.overlay.lineWidth,
-                        void 0,
-                        { number: true }
-                      ]
-                    ])
-                  ]),
-                  createBaseVNode("label", _hoisted_17, [
-                    _cache[28] || (_cache[28] = createTextVNode("fill ", -1)),
-                    withDirectives(createBaseVNode("input", {
-                      type: "range",
-                      min: "0",
-                      max: "1",
-                      step: "0.02",
-                      "onUpdate:modelValue": _cache[12] || (_cache[12] = ($event) => unref(store).state.overlay.fillAlpha = $event)
-                    }, null, 512), [
-                      [
-                        vModelText,
-                        unref(store).state.overlay.fillAlpha,
-                        void 0,
-                        { number: true }
-                      ]
-                    ])
-                  ]),
-                  createBaseVNode("label", _hoisted_18, [
-                    _cache[29] || (_cache[29] = createTextVNode("label ", -1)),
-                    withDirectives(createBaseVNode("input", {
-                      type: "number",
-                      min: "6",
-                      max: "96",
-                      "onUpdate:modelValue": _cache[13] || (_cache[13] = ($event) => unref(store).state.overlay.labelSize = $event)
-                    }, null, 512), [
-                      [
-                        vModelText,
-                        unref(store).state.overlay.labelSize,
-                        void 0,
-                        { number: true }
-                      ]
-                    ])
-                  ]),
-                  createBaseVNode("div", _hoisted_19, [
-                    createBaseVNode("label", _hoisted_20, [
-                      withDirectives(createBaseVNode("input", {
-                        type: "checkbox",
-                        "onUpdate:modelValue": _cache[14] || (_cache[14] = ($event) => unref(store).state.overlay.showIndex = $event)
-                      }, null, 512), [
-                        [vModelCheckbox, unref(store).state.overlay.showIndex]
-                      ]),
-                      _cache[30] || (_cache[30] = createTextVNode(" index", -1))
-                    ]),
-                    createBaseVNode("label", _hoisted_21, [
-                      withDirectives(createBaseVNode("input", {
-                        type: "checkbox",
-                        "onUpdate:modelValue": _cache[15] || (_cache[15] = ($event) => unref(store).state.overlay.showText = $event)
-                      }, null, 512), [
-                        [vModelCheckbox, unref(store).state.overlay.showText]
-                      ]),
-                      _cache[31] || (_cache[31] = createTextVNode(" text", -1))
-                    ])
-                  ])
-                ])
-              ]),
-              _: 1
-            }),
-            createVNode(UiPopover, {
-              align: "left",
-              up: ""
-            }, {
-              trigger: withCtx(() => [
-                createVNode(UiButton, {
-                  icon: "",
-                  title: "Help"
-                }, {
-                  default: withCtx(() => [..._cache[33] || (_cache[33] = [
-                    createTextVNode("?", -1)
-                  ])]),
-                  _: 1
-                })
-              ]),
-              default: withCtx(() => [
-                _cache[34] || (_cache[34] = createBaseVNode("div", { class: "help" }, [
-                  createBaseVNode("p", { class: "h" }, "Canvas"),
-                  createBaseVNode("dl", null, [
-                    createBaseVNode("dt", null, "drag empty space"),
-                    createBaseVNode("dd", null, "add a box"),
-                    createBaseVNode("dt", null, "drag a box"),
-                    createBaseVNode("dd", null, "move it"),
-                    createBaseVNode("dt", null, "drag a handle"),
-                    createBaseVNode("dd", null, "resize"),
-                    createBaseVNode("dt", null, "obj / text"),
-                    createBaseVNode("dd", null, "what new boxes become (text boxes carry literal text)")
-                  ]),
-                  createBaseVNode("p", { class: "h" }, "Boxes"),
-                  createBaseVNode("dl", null, [
-                    createBaseVNode("dt", null, "👁 / 🚫"),
-                    createBaseVNode("dd", null, "mute — keep a box but exclude it from the output"),
-                    createBaseVNode("dt", null, "🔗 linked copy"),
-                    createBaseVNode("dd", null, "shares the prompt across copies; each keeps its own position"),
-                    createBaseVNode("dt", null, "color chip"),
-                    createBaseVNode("dd", null, "recolor a box (editor only — not in the caption)")
-                  ]),
-                  createBaseVNode("p", { class: "h" }, "Reference"),
-                  createBaseVNode("dl", null, [
-                    createBaseVNode("dt", null, "🖼"),
-                    createBaseVNode("dd", null, "load an image to trace over (or drop one on the canvas)"),
-                    createBaseVNode("dt", null, "⟳ sync"),
-                    createBaseVNode("dd", null, [
-                      createTextVNode("auto-update the reference from an "),
-                      createBaseVNode("b", null, "Ideogram Studio Ref Sync"),
-                      createTextVNode(" node")
-                    ])
-                  ]),
-                  createBaseVNode("p", { class: "h" }, "Outputs"),
-                  createBaseVNode("dl", null, [
-                    createBaseVNode("dt", null, "caption"),
-                    createBaseVNode("dd", null, "JSON prompt → your Ideogram sampler"),
-                    createBaseVNode("dt", null, "extras"),
-                    createBaseVNode("dd", null, [
-                      createTextVNode("→ "),
-                      createBaseVNode("b", null, "Studio Extras"),
-                      createTextVNode(" node for overlay / alpha / width / height")
-                    ])
-                  ]),
-                  createBaseVNode("p", { class: "tip" }, "Tip: paste JSON in the preview to import an existing caption."),
-                  createBaseVNode("p", { class: "credit" }, [
-                    createTextVNode(" made by "),
-                    createBaseVNode("b", null, "nynxz"),
-                    createTextVNode(" · ideas & inspiration from the community"),
-                    createBaseVNode("br"),
-                    createBaseVNode("a", {
-                      href: "https://github.com/nynxz/ComfyUI-IdeogramHelper/issues",
-                      target: "_blank",
-                      rel: "noopener noreferrer"
-                    }, "report a bug / suggest a feature ↗")
-                  ])
-                ], -1))
-              ]),
-              _: 1
-            }),
-            createVNode(UiButton, {
-              title: "Clear everything",
-              onClick: resetAll
-            }, {
-              default: withCtx(() => [..._cache[35] || (_cache[35] = [
-                createTextVNode("reset", -1)
-              ])]),
-              _: 1
-            })
-          ]),
-          _: 1
-        })
-      ]);
+        createVNode(JsonPreview)
+      ], 512);
     };
   }
 });
-const IdeogramStudio = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-c60f8c80"]]);
+const IdeogramStudio = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-211a2a9d"]]);
 const SEL = "[data-ideogram]";
 function inWidget(e) {
   const t = e.target;
@@ -8677,6 +9070,47 @@ app.registerExtension({
       await new Promise((r) => setTimeout(r, 250));
     }
     console.warn("[IdeogramStudio] could not patch canvas wheel; relying on document capture listener");
+  }
+});
+const TYPE = "IDEOGRAM_OVERRIDE";
+const NAME = /^overrides_(\d+)$/;
+function syncInputs(node) {
+  const inputs = node.inputs;
+  if (!inputs) return;
+  for (let i = inputs.length - 1; i >= 0; i--) {
+    const inp = inputs[i];
+    if (inp && NAME.test(inp.name) && inp.link == null) node.removeInput(i);
+  }
+  let max = 0;
+  for (const inp of node.inputs ?? []) {
+    const m = inp?.name?.match(NAME);
+    if (m) max = Math.max(max, Number(m[1]));
+  }
+  node.addInput(`overrides_${max + 1}`, TYPE);
+  node.setDirtyCanvas?.(true, true);
+}
+function scheduleSync(node) {
+  if (node.__ovSync) return;
+  node.__ovSync = true;
+  setTimeout(() => {
+    node.__ovSync = false;
+    syncInputs(node);
+  }, 0);
+}
+app.registerExtension({
+  name: "nynxz.ideogram-override-list",
+  beforeRegisterNodeDef(nodeType, nodeData) {
+    if (nodeData?.name !== "IdeogramOverrideList") return;
+    const onCreated = nodeType.prototype.onNodeCreated;
+    nodeType.prototype.onNodeCreated = function() {
+      onCreated?.apply(this);
+      scheduleSync(this);
+    };
+    const onConn = nodeType.prototype.onConnectionsChange;
+    nodeType.prototype.onConnectionsChange = function(...args) {
+      onConn?.apply(this, args);
+      scheduleSync(this);
+    };
   }
 });
 console.log("[IdeogramStudio] main.js loaded — registering extension");
