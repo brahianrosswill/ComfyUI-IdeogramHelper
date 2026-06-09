@@ -9,14 +9,13 @@
 </template>
 
 <script setup lang="ts">
-// Consistent section panel. Pass `title` for a plain header, or use the
-// #header slot for header-aligned controls (toggles, add buttons, etc.).
+// title = plain header; #header slot = header-aligned controls.
 defineProps<{ title?: string }>()
 </script>
 
 <style scoped>
 .ui-card {
-  background: var(--st-panel); border: 1px solid var(--st-border); border-radius: 7px;
+  background: var(--st-panel); border: 1px solid var(--st-border); border-radius: var(--st-radius, 6px);
   padding: 8px; display: flex; flex-direction: column; gap: 7px;
 }
 .ui-card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }

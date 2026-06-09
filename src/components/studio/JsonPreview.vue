@@ -28,8 +28,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useStudioStore } from '@/lib/store'
-import { serialize } from '@/lib/caption'
-import UiCard from './ui/UiCard.vue'
+import { serialize, parseCaptionLoose } from '@/lib/caption'
+import UiCard from '../ui/UiCard.vue'
 
 const store = useStudioStore()
 const j = store.json
@@ -40,10 +40,11 @@ const result = computed(() => serialize(store.state))
 const pretty = computed(() => result.value.pretty)
 const warnings = computed(() => result.value.warnings)
 
-// Parse the draft and, on failure, pin down the line/column (V8 reports a
-// character "position"; Firefox reports "line/column").
+// On parse failure pin down line/column (V8 reports "position", Firefox "line/column").
 const parseInfo = computed<{ error: string; line: number | null; col: number | null }>(() => {
   if (!j.editing || !j.draft.trim()) return { error: '', line: null, col: null }
+  // accept anything parseCaptionLoose can recover; only report a position when nothing parses
+  if (parseCaptionLoose(j.draft).ok) return { error: '', line: null, col: null }
   try {
     JSON.parse(j.draft)
     return { error: '', line: null, col: null }
@@ -77,7 +78,7 @@ const parseMsg = computed(() => {
     .replace(/ at line \d+ column \d+.*/i, '')
   return line ? `Line ${line}, column ${col}: ${short}` : short
 })
-// compiler-style code frame: offending line (+ the one before) with a caret
+// code frame: offending line (+ the one before) with a caret
 const parseFrame = computed(() => {
   const { line, col } = parseInfo.value
   if (!line) return ''

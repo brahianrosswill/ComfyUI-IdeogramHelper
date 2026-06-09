@@ -1,15 +1,7 @@
-/**
- * Scroll fix for the Ideogram Studio widget (adapted from ComfyUI-ETK).
- *
- * LiteGraph attaches a capture-phase wheel listener for graph zoom/pan, so
- * scrolling inside our DOM widget (the elements list, the JSON preview, a
- * textarea) just zooms the canvas behind it. We:
- *
- *  1. Patch `canvas._mousewheel_callback` to early-return when the wheel
- *     target is inside our widget (marked `data-ideogram` by mountWidget).
- *  2. Install a capture-phase document wheel listener that manually scrolls
- *     the nearest scrollable ancestor inside the widget and stops the event.
- */
+// LiteGraph's capture-phase wheel listener zooms the canvas, so wheel events inside
+// our DOM widget never scroll it. Fix: patch canvas._mousewheel_callback to skip
+// in-widget targets, plus a capture-phase document listener that scrolls the nearest
+// scrollable ancestor and stops the event.
 
 import { app } from '@comfy/app'
 

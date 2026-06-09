@@ -22,10 +22,8 @@ function onKey(e: KeyboardEvent) {
   if (e.key === 'Escape') close()
 }
 function bind() {
-  // pointerdown (not mousedown): the canvas calls preventDefault() on pointerdown
-  // which suppresses the compat mousedown, so a mousedown listener never fires for
-  // canvas clicks and the popover would stay open. Capture phase beats the
-  // canvas's own handler.
+  // pointerdown not mousedown: the canvas preventDefault()s pointerdown, suppressing
+  // the compat mousedown. Capture phase beats the canvas's own handler.
   document.addEventListener('pointerdown', onDoc, true)
   document.addEventListener('keydown', onKey)
 }
@@ -48,7 +46,7 @@ onBeforeUnmount(unbind)
 .ui-pop { position: relative; display: inline-flex; }
 .ui-pop-panel {
   position: absolute; top: calc(100% + 5px); z-index: 50;
-  background: var(--st-panel); border: 1px solid var(--st-border); border-radius: 8px;
+  background: var(--st-panel); border: 1px solid var(--st-border); border-radius: var(--st-radius, 6px);
   padding: 10px 12px; min-width: 240px; max-width: 320px; max-height: 360px; overflow-y: auto;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
   font-size: 11px; line-height: 1.5; color: var(--st-text); cursor: default;

@@ -15,10 +15,11 @@ __pycache__/
 .vscode/
 .DS_Store
 
+# Internal notes — not shipped
+docs/
+
 # Registry/publish package artifact (`comfy node pack` output) — not source.
 node.zip
 
-# NOTE: js/ IS committed on purpose. ComfyUI serves the built frontend
-# directly — users install by `git clone` / ComfyUI Manager and never run a
-# build, so the compiled js/main.js must ship in the repo. Rebuild with
-# `npm run build` after changing anything under src/.
+# NOTE: web/ (the built frontend) IS committed on purpose — users install by
+# clone / ComfyUI Manager and never run a build, so web/main.js must ship.

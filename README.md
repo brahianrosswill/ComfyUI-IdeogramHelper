@@ -96,7 +96,19 @@ forces art-mode.
 | `high_level_description`, `background`, `aesthetics`, `lighting` | in *(optional)* | `STRING` | Override the matching field. |
 | `medium` | in *(optional)* | combo | Photograph / illustration / … or `(keep)`. |
 | `photo`, `art_style` | in *(optional)* | `STRING` | Sets photo- / art-mode style text. |
+| `colors` | in *(optional)* | `STRING` | Image palette — comma-separated hex (raw, or from a **Palette** node), max 16. |
 | `overrides` | out | `IDEOGRAM_OVERRIDE` | Wire into the studio's `overrides` input. |
+
+### Ideogram Studio Palette — pick colours visually *(optional)*
+
+A small node with the same swatch editor as the studio (＋ to add, ✕ to remove,
+click to recolour). It outputs the palette as comma-separated hex — wire it into
+an Override's `colors` input so you can **pick colours instead of typing raw hex**.
+
+| Port | Dir | Type | Notes |
+| :--- | :-- | :--- | :--- |
+| `palette` (widget) | — | — | The visual swatch editor. |
+| `colors` | out | `STRING` | Comma-separated `#RRGGBB` → an Override's `colors`. |
 
 ### Ideogram Studio Element Override — overwrite one element by index *(optional)*
 

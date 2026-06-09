@@ -1,21 +1,11 @@
-import os
+"""ComfyUI-IdeogramHelper entry point (V3).
 
-import nodes
+ComfyUI loads this module, calls `comfy_entrypoint` to register the nodes, and
+serves `WEB_DIRECTORY` for the frontend.
+"""
 
-from .nodes import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+from .backend import comfy_entrypoint  # noqa: F401
 
-# Register the built Vue frontend (js/) as this extension's web dir.
-js_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "js")
-try:
-    from comfy_config import config_parser
+WEB_DIRECTORY = "./web"
 
-    custom_node_dir = os.path.dirname(os.path.realpath(__file__))
-    project_config = config_parser.extract_node_configuration(custom_node_dir)
-    nodes.EXTENSION_WEB_DIRS[project_config.project.name] = js_dir
-except Exception:
-    # Older ComfyUI without comfy_config: fall back to WEB_DIRECTORY.
-    pass
-
-WEB_DIRECTORY = "./js"
-
-__all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS", "WEB_DIRECTORY"]
+print("[IdeogramHelper] loaded")

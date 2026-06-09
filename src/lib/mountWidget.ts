@@ -1,13 +1,10 @@
 /**
  * Mount a standalone Vue app inside a `node.addDOMWidget` container.
  *
- * Mirrors the ComfyUI-ETK pattern (the canonical approach for Frontend
- * 1.33.9+). `addDOMWidget` rewrites `widget.value` into a getter/setter that
- * delegates to `options.getValue()` / `options.setValue(v)`. Without those,
- * every `widget.value = X` from a Vue component is a silent no-op and reads
- * return `''`. So we back the widget with closure-local storage and expose it
- * through the option accessors, and override `serializeValue` so the host
- * pulls the current value at prompt-queue time.
+ * `addDOMWidget` rewrites `widget.value` into a getter/setter delegating to
+ * `options.getValue()` / `options.setValue(v)`; without them writes are silent
+ * no-ops and reads return `''`. So we back the widget with closure storage and
+ * override `serializeValue` so the host pulls the value at prompt-queue time.
  */
 
 import { createApp, type Component, type App as VueApp } from 'vue'
@@ -69,7 +66,7 @@ export function mountWidget(node: NodeLike, opts: MountOptions): { widget: DOMWi
 
   widget.serializeValue = () => storedValue
 
-  // Defer mount one microtask so the host inserts the container first.
+  // Defer one microtask so the host inserts the container first.
   Promise.resolve().then(() => {
     try {
       const vueApp = createApp(opts.component, { widget, node })
@@ -91,8 +88,7 @@ export function mountWidget(node: NodeLike, opts: MountOptions): { widget: DOMWi
     } catch (err) {
       console.error('[IdeogramStudio] error during widget unmount', err)
     }
-    // Call bound to the widget — the base onRemove does
-    // `unregisterWidget(this.id)`, so an unbound call throws on this.id.
+    // Bind to the widget — base onRemove does `unregisterWidget(this.id)`.
     try {
       previousOnRemove?.call(widget)
     } catch (err) {

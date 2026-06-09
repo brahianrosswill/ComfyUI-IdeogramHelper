@@ -1,15 +1,14 @@
 <template>
   <div class="palette">
     <div class="swatches">
-      <div v-for="(c, i) in modelValue" :key="i" class="swatch-wrap">
-        <label class="swatch" :style="{ background: c }" :title="c">
+      <div v-for="(c, i) in modelValue" :key="i" class="swatch-wrap" @contextmenu.prevent="remove(i)">
+        <label class="swatch" :style="{ background: c }" :title="c + '  —  click: edit · right-click: remove'">
           <input
             type="color"
             :value="c"
             @input="update(i, ($event.target as HTMLInputElement).value)"
           />
         </label>
-        <button class="x" title="Remove" @click="remove(i)">×</button>
       </div>
       <button v-if="modelValue.length < max" class="add" title="Add color" @click="add">+</button>
     </div>
@@ -51,11 +50,6 @@ function update(i: number, raw: string) {
   border: 1px solid var(--st-border); cursor: pointer; overflow: hidden;
 }
 .swatch input { opacity: 0; width: 100%; height: 100%; cursor: pointer; }
-.x {
-  position: absolute; top: -6px; right: -6px; width: 15px; height: 15px;
-  border-radius: 50%; border: none; background: #b23; color: #fff;
-  font-size: 11px; line-height: 11px; cursor: pointer; padding: 0;
-}
 .add {
   width: 26px; height: 26px; border-radius: 5px; cursor: pointer;
   border: 1px dashed var(--st-border); background: transparent;

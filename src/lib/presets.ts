@@ -1,13 +1,7 @@
-// Built-in style presets — quick-pick suggestions for the style fields. Plain
-// text snippets that drop into the caption (you can still free-type anything).
-//
-// Kept deliberately to phrases that work well with Ideogram — beginner-friendly
-// camera/lighting in particular (the "camera noob" case). Gimmicky looks that
-// the model handles poorly (pixel art, low-poly, isometric, fisheye…) are left
-// out on purpose.
+// Built-in style-field presets. Limited to phrases that work well with Ideogram;
+// looks the model handles poorly (pixel art, low-poly, isometric, fisheye) omitted.
 
 export const PRESETS: Record<string, string[]> = {
-  // photo (camera / lens)
   camera: [
     '35mm, f/1.8, shallow depth of field',
     '50mm, f/1.4, natural perspective',

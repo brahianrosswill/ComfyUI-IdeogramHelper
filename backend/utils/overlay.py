@@ -1,11 +1,4 @@
-"""Render an Ideogram caption's bounding boxes + text into an overlay image.
-
-Produces an RGBA layer (boxes, fills, labels, and literal text drawn where the
-caption places them) that downstream nodes can composite over a generation to
-compare intended layout vs. result. Returned as a ComfyUI ``IMAGE`` (RGB) plus a
-``MASK`` (the alpha channel) so any image-combine / composite-by-mask node can
-overlay it.
-"""
+"""Render an Ideogram caption's bounding boxes + text into an overlay image."""
 
 from __future__ import annotations
 
@@ -17,17 +10,59 @@ from PIL import Image, ImageDraw, ImageFont
 OBJ_COLOR = (59, 130, 246)   # blue
 TEXT_COLOR = (245, 158, 11)  # amber
 
-_FONT_CANDIDATES = [
-    "/usr/share/fonts/TTF/DejaVuSans.ttf",
-    "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-    "DejaVuSans.ttf",
-    "arial.ttf",
-]
-_FONT_BOLD_CANDIDATES = [
-    "/usr/share/fonts/TTF/DejaVuSans-Bold.ttf",
-    "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-    "DejaVuSans-Bold.ttf",
-]
+
+def items_from_caption(data) -> list:
+    """Build render_overlay draw-items from a parsed caption dict."""
+    comp = (data or {}).get("compositional_deconstruction", {}) or {}
+    items = []
+    for el in comp.get("elements") or []:
+        etype = el.get("type", "obj")
+        items.append({
+            "bbox": el.get("bbox"),
+            "type": etype,
+            "text": el.get("text", ""),
+            "desc": el.get("desc", ""),
+            "color": TEXT_COLOR if etype == "text" else OBJ_COLOR,
+            "palette": el.get("color_palette") or [],
+        })
+    return items
+
+
+def global_palette(data) -> list:
+    """The image-wide palette (style_description.color_palette)."""
+    sd = (data or {}).get("style_description")
+    if isinstance(sd, dict) and isinstance(sd.get("color_palette"), list):
+        return sd["color_palette"]
+    return []
+
+
+def bboxes_from_items(items, width: int, height: int) -> list:
+    """Native ComfyUI BOUNDING_BOX from draw-items.
+
+    Items use [y0, x0, y1, x1] normalized 0..1000 (top-left); the core type is
+    pixel-space {x, y, width, height}. Returns list[list[dict]] (one frame), [] if empty.
+    """
+    out = []
+    for i, it in enumerate(items):
+        bb = it.get("bbox")
+        if not (isinstance(bb, (list, tuple)) and len(bb) == 4):
+            continue
+        try:
+            y0, x0, y1, x1 = (float(v) for v in bb)
+        except (TypeError, ValueError):
+            continue
+        x0, x1 = sorted((x0, x1))
+        y0, y1 = sorted((y0, y1))
+        label = (it.get("desc") or it.get("text") or "").strip() or f"element {i + 1}"
+        out.append({
+            "x": round(x0 / 1000 * width),
+            "y": round(y0 / 1000 * height),
+            "width": round((x1 - x0) / 1000 * width),
+            "height": round((y1 - y0) / 1000 * height),
+            "label": label,
+            "score": 1.0,
+        })
+    return [out] if out else []
 
 
 def hex_to_rgb(value, fallback):
@@ -51,13 +86,10 @@ def _luminance(rgb):
 
 
 def _load_font(size: int, bold: bool = False):
-    for path in (_FONT_BOLD_CANDIDATES if bold else []) + _FONT_CANDIDATES:
-        try:
-            return ImageFont.truetype(path, size)
-        except OSError:
-            continue
+    # Pillow's bundled default — scalable on >= 10.1, works on every OS, no font
+    # files/paths. `bold` is accepted for call-site compat but the default has no bold.
     try:
-        return ImageFont.load_default(size)  # Pillow >= 10
+        return ImageFont.load_default(size)
     except TypeError:
         return ImageFont.load_default()
 
@@ -74,7 +106,7 @@ def _fit_font(text: str, max_w: int, max_h: int, bold: bool, start: int):
 
 
 def _wrap(draw, text, font, max_w):
-    """Greedy word-wrap to a pixel width; breaks over-long words by character."""
+    """Greedy word-wrap to a pixel width; over-long words break by character."""
     lines = []
     for word in text.split():
         if lines and draw.textlength(lines[-1] + " " + word, font=font) <= max_w:
@@ -95,7 +127,7 @@ def _wrap(draw, text, font, max_w):
     return lines
 
 
-def render_overlay(
+def render_overlay_rgba(
     items,
     width: int,
     height: int,
@@ -105,8 +137,8 @@ def render_overlay(
     show_index: bool = True,
     show_text: bool = True,
     global_palette=None,
-):
-    """Render draw-items into (IMAGE [1,H,W,3], MASK [1,H,W]), both float 0..1.
+) -> "Image.Image":
+    """Render draw-items into a transparent RGBA PIL image (boxes/text/palettes).
 
     Each item: {"bbox": [y0,x0,y1,x1] (0..1000), "type": "obj"|"text",
                 "text": str, "desc": str, "color": (r,g,b)}.
@@ -117,9 +149,8 @@ def render_overlay(
     draw = ImageDraw.Draw(img)
     label_font = _load_font(label_size, bold=True)
 
-    # Precompute pixel rects so we can render in passes — drawing ALL fills
-    # first, then ALL outlines, keeps every box's outline visible even where
-    # boxes overlap (otherwise a later box's fill paints over an earlier outline).
+    # Render in passes (all fills, then all outlines) so overlapping fills never
+    # paint over an earlier box's outline.
     specs = []
     for i, el in enumerate(items):
         bbox = el.get("bbox")
@@ -139,8 +170,8 @@ def render_overlay(
         specs.append({"i": i, "el": el, "etype": etype, "color": tuple(color),
                       "rect": [px0, py0, px1, py1], "bw": px1 - px0, "bh": py1 - py0})
 
-    # Pass 1 — translucent fills (drawn on a separate layer so overlapping fills
-    # blend rather than darken to opaque, letting all boxes show through).
+    # Pass 1 — translucent fills on a separate layer so overlaps blend instead
+    # of darkening to opaque.
     if fill_alpha > 0:
         fills = Image.new("RGBA", (width, height), (0, 0, 0, 0))
         fdraw = ImageDraw.Draw(fills)
@@ -150,11 +181,11 @@ def render_overlay(
         img = Image.alpha_composite(img, fills)
         draw = ImageDraw.Draw(img)
 
-    # Pass 2 — outlines on top of every fill.
+    # Pass 2 — outlines.
     for s in specs:
         draw.rectangle(s["rect"], outline=s["color"] + (255,), width=line_width)
 
-    # Pass 3 — index badge, wrapped description, and palette swatches, inside each box.
+    # Pass 3 — index badge, wrapped description, palette swatches.
     body_font = _load_font(max(9, label_size - 1))
     body_lh = (body_font.getbbox("Ay")[3] - body_font.getbbox("Ay")[1]) + 3
     for s in specs:
@@ -165,13 +196,12 @@ def render_overlay(
         pad = max(3, int(line_width) + 1)
         inner_w = bw - 2 * pad
 
-        # palette swatches reserved at the bottom
         palette = [hex_to_rgb(h, (128, 128, 128)) for h in (el.get("palette") or [])][:8]
         sw_size = 0
         if palette and inner_w > 10:
             sw_size = max(6, min(16, int(inner_w / len(palette)) - 2))
 
-        # index badge (top-left, inside the box)
+        # index badge, top-left
         header_h = 0
         if show_index:
             num = str(s["i"] + 1)
@@ -181,7 +211,7 @@ def render_overlay(
             draw.text((px0 + 4, py0 + 3 - nb[1]), num, font=label_font, fill=label_fg)
             header_h = nh + 5
 
-        # wrapped description body (literal text first for text-elements)
+        # description body; literal text first for text-elements
         if show_text and inner_w > 12:
             parts = []
             if etype == "text":
@@ -215,7 +245,7 @@ def render_overlay(
                 draw.rectangle([sx, sy, sx + sw_size, sy + sw_size], fill=col + (255,), outline=(255, 255, 255, 220))
                 sx += sw_size + 2
 
-    # Global (image-wide) palette in the bottom-left corner.
+    # Global palette, bottom-left corner.
     gcols = [hex_to_rgb(h, None) for h in (global_palette or [])]
     gcols = [c for c in gcols if c][:16]
     if gcols:
@@ -230,6 +260,26 @@ def render_overlay(
             draw.rectangle([gx, gy, gx + gsw, gy + gsw], fill=c + (255,), outline=(255, 255, 255, 235), width=2)
             gx += gsw + ggap
 
+    return img
+
+
+def render_overlay(
+    items,
+    width: int,
+    height: int,
+    line_width: int = 3,
+    fill_alpha: float = 0.18,
+    label_size: int = 16,
+    show_index: bool = True,
+    show_text: bool = True,
+    global_palette=None,
+):
+    """Render draw-items into (IMAGE [1,H,W,3], MASK [1,H,W]), both float 0..1."""
+    img = render_overlay_rgba(
+        items, width, height, line_width=line_width, fill_alpha=fill_alpha,
+        label_size=label_size, show_index=show_index, show_text=show_text,
+        global_palette=global_palette,
+    )
     arr = np.asarray(img).astype(np.float32) / 255.0  # H, W, 4
     rgb = np.ascontiguousarray(arr[..., :3])
     alpha = np.ascontiguousarray(arr[..., 3])

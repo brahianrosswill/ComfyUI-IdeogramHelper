@@ -4,8 +4,7 @@ declare module '*.vue' {
   export default component
 }
 
-// ComfyUI runtime shims — imported as bare specifiers for types, rewritten by
-// Rollup output.paths to ../../../scripts/*.js at build time.
+// ComfyUI runtime shims; bare specifiers rewritten by Rollup output.paths at build.
 declare module '@comfy/app' {
   import type { ComfyApp } from '@comfyorg/comfyui-frontend-types'
   export const app: ComfyApp

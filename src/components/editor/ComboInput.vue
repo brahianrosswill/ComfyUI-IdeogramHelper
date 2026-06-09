@@ -5,9 +5,7 @@
       :placeholder="placeholder"
       @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)"
     />
-    <!-- native select: renders in the browser's own layer, so it never causes the
-         node's scroll container to jump (unlike a custom popover), and it always
-         shows the full list. Picking fills the input; you can still free-type. -->
+    <!-- native select: own browser layer, so it won't jolt the node's scroll container -->
     <select v-if="options.length" class="cpick" title="Pick a preset" @change="pick">
       <option value="" disabled selected hidden>presets…</option>
       <option v-for="p in options" :key="p" :value="p">{{ p }}</option>
@@ -24,7 +22,7 @@ const emit = defineEmits<{ 'update:modelValue': [string] }>()
 function pick(e: Event) {
   const sel = e.target as HTMLSelectElement
   if (sel.value) emit('update:modelValue', sel.value)
-  sel.value = '' // reset back to the "presets…" placeholder
+  sel.value = '' // reset to the placeholder
 }
 </script>
 

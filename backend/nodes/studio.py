@@ -1,31 +1,19 @@
-"""ComfyUI node: Ideogram Studio.
-
-A visual editor (Vue, mounted as a custom node widget) for composing Ideogram 4
-structured JSON captions by dragging bounding boxes and filling in prompt
-panels. The frontend serializes a structured caption object into the widget
-value; this node turns it into the canonical wire string (the ``caption`` STRING
-output) and rasterizes the boxes + text into an ``overlay`` IMAGE (with an
-``alpha`` MASK) you can composite over a generation to compare intended layout
-vs. result.
-
-The overlay is rendered at the resolution chosen inside the studio UI (so it
-matches the format you drew on); there are no node widget inputs.
-"""
+"""Ideogram Studio node: turns the Vue editor's caption payload into the canonical wire string + an overlay IMAGE/MASK."""
 
 from __future__ import annotations
 
 import json
 
-from .caption import serialize_caption
-from .overlay import render_overlay, hex_to_rgb, OBJ_COLOR, TEXT_COLOR
-from .overrides import apply_override
+from comfy_api.latest import io
+
+from ..utils.caption import serialize_caption
+from ..io_types import IdeogramExtrasType, IdeogramOverrideType, IdeogramStudioType
+from ..utils.overlay import render_overlay, hex_to_rgb, bboxes_from_items, OBJ_COLOR, TEXT_COLOR
+from ..utils.overrides import apply_override
 
 
 def _draw_items(studio_state, caption_data):
-    """Build colored draw-items. Geometry + per-box color come from the studio
-    state; text/desc/palette come from the (possibly overridden) caption so the
-    overlay reflects any Override nodes. The caption holds enabled elements in
-    output order, so we walk the studio's enabled boxes in lock-step with it."""
+    """Build colored draw-items: geometry/color from studio state, text/desc/palette from the (overridden) caption. Enabled boxes walk in lock-step with the caption's output-order elements."""
     comp = (caption_data or {}).get("compositional_deconstruction", {}) or {}
     cap_els = comp.get("elements") or []
 
@@ -34,18 +22,32 @@ def _draw_items(studio_state, caption_data):
         ci = 0  # index into the override-applied caption elements
         for el in studio_state["elements"]:
             if el.get("enabled", True) is False:
-                continue  # muted — kept in the editor, excluded from the overlay
+                continue  # muted: in the editor, excluded from the overlay
             cap = cap_els[ci] if ci < len(cap_els) else {}
             ci += 1
             etype = cap.get("type") or el.get("type", "obj")
             default = TEXT_COLOR if etype == "text" else OBJ_COLOR
             items.append({
-                "bbox": el.get("bbox"),  # overrides don't move boxes
+                "bbox": el.get("bbox"),
                 "type": etype,
                 "text": cap.get("text", el.get("text", "")),
                 "desc": cap.get("desc", el.get("desc", "")),
                 "color": hex_to_rgb(el.get("boxColor"), default),
                 "palette": cap.get("color_palette") or el.get("color_palette") or [],
+            })
+        # appended-via-override elements: in the caption but with no studio box —
+        # draw them straight from the caption (own bbox + default colour)
+        for cap in cap_els[ci:]:
+            if not isinstance(cap, dict) or not cap.get("bbox"):
+                continue
+            etype = cap.get("type", "obj")
+            items.append({
+                "bbox": cap.get("bbox"),
+                "type": etype,
+                "text": cap.get("text", ""),
+                "desc": cap.get("desc", ""),
+                "color": TEXT_COLOR if etype == "text" else OBJ_COLOR,
+                "palette": cap.get("color_palette") or [],
             })
         return items
     comp = (caption_data or {}).get("compositional_deconstruction", {}) or {}
@@ -72,30 +74,26 @@ def _float(v, default, lo, hi):
         return default
 
 
-class IdeogramStudio:
+class IdeogramStudio(io.ComfyNode):
     @classmethod
-    def INPUT_TYPES(cls):
-        # No widget inputs: everything (format/resolution + overlay style) is set
-        # inside the studio UI so nothing is configured in two places.
-        return {
-            "required": {
-                "studio": ("IDEOGRAM_STUDIO", {}),
-            },
-            "optional": {
-                # Native breakout: a bundle from Ideogram Override / Settings
-                # nodes; non-empty fields override the studio's own values.
-                "overrides": ("IDEOGRAM_OVERRIDE",),
-            },
-        }
+    def define_schema(cls) -> io.Schema:
+        return io.Schema(
+            node_id="IdeogramStudio",
+            display_name="Ideogram Studio",
+            category="Ideogram",
+            description="Visually compose an Ideogram 4 JSON caption. The 'extras' output breaks out (via Ideogram Studio Extras) into overlay / alpha / width / height — keeps the node compact.",
+            inputs=[
+                IdeogramStudioType.Input("studio"),
+                IdeogramOverrideType.Input("overrides", optional=True),
+            ],
+            outputs=[
+                io.String.Output(display_name="caption"),
+                IdeogramExtrasType.Output(display_name="extras"),
+            ],
+        )
 
-    RETURN_TYPES = ("STRING", "IDEOGRAM_EXTRAS")
-    RETURN_NAMES = ("caption", "extras")
-    OUTPUT_NODE = False
-    FUNCTION = "run"
-    CATEGORY = "Ideogram"
-    DESCRIPTION = "Visually compose an Ideogram 4 JSON caption. The 'extras' output breaks out (via Ideogram Studio Extras) into overlay / alpha / width / height — keeps the node compact."
-
-    def run(self, studio, overrides=None, **kwargs):
+    @classmethod
+    def execute(cls, studio, overrides=None) -> io.NodeOutput:
         payload = studio
         if isinstance(payload, str):
             try:
@@ -110,7 +108,6 @@ class IdeogramStudio:
             data = {}
         studio_state = payload.get("studio") if isinstance(payload.get("studio"), dict) else {}
 
-        # Apply native overrides (from breakout nodes) over the studio's values.
         ovr = overrides if isinstance(overrides, dict) else {}
         if ovr:
             data = apply_override(data, ovr)
@@ -119,7 +116,6 @@ class IdeogramStudio:
         for w in warnings:
             print(f"[IdeogramStudio] warning: {w}")
 
-        # Resolution from the studio UI, overridable via a Settings node.
         width = _int(studio_state.get("width"), 1024, 16, 8192)
         height = _int(studio_state.get("height"), 1024, 16, 8192)
         if ovr.get("width"):
@@ -128,7 +124,7 @@ class IdeogramStudio:
             height = _int(ovr.get("height"), height, 16, 8192)
         ov = studio_state.get("overlay") if isinstance(studio_state.get("overlay"), dict) else {}
 
-        # Global (image-wide) palette → drawn in the overlay's bottom-left corner.
+        # Image-wide palette: drawn in the overlay's bottom-left corner.
         sd = data.get("style_description")
         global_palette = sd.get("color_palette") if isinstance(sd, dict) and isinstance(sd.get("color_palette"), list) else []
 
@@ -143,14 +139,8 @@ class IdeogramStudio:
             global_palette=global_palette,
         )
 
-        extras = {"overlay": overlay, "alpha": alpha, "width": width, "height": height}
-        return (caption_str, extras)
-
-
-NODE_CLASS_MAPPINGS = {
-    "IdeogramStudio": IdeogramStudio,
-}
-
-NODE_DISPLAY_NAME_MAPPINGS = {
-    "IdeogramStudio": "Ideogram Studio",
-}
+        extras = {
+            "overlay": overlay, "alpha": alpha, "width": width, "height": height,
+            "bboxes": bboxes_from_items(items, width, height),
+        }
+        return io.NodeOutput(caption_str, extras)

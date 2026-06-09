@@ -23,7 +23,7 @@ DisplayName = "ComfyUI Ideogram Helper"
 Tags = ["ideogram", "prompt", "json", "studio"]
 Icon = "https://avatars.githubusercontent.com/u/60878743?v=4"
 Repository = "https://github.com/nynxz/ComfyUI-IdeogramHelper"
-includes = ["js"]
+includes = ["web"]
 
 [tool.setuptools.package-data]
 "*" = ["*.*"]
